@@ -4,15 +4,15 @@ namespace Tsudev.Audit.Tests;
 public class ChecksumTests
 {
     private const string Sums = """
-06a284ef82dc8b78c278e8053ffb028914e896b48d1b36505ecb13a24caa9c82  tsudev-swico_26.8.2001_x64-portable.zip
-997bd2318999d0fd7fe82238cecfe51ab7ee7c08c0bcd4b9fe1910aa5e884abb  tsudev-swico_26.8.2001_x64-setup.exe
+06a284ef82dc8b78c278e8053ffb028914e896b48d1b36505ecb13a24caa9c82  tsuswico_26.8.2001_x64-portable.zip
+997bd2318999d0fd7fe82238cecfe51ab7ee7c08c0bcd4b9fe1910aa5e884abb  tsuswico_26.8.2001_x64-setup.exe
 c23bb0ae0b7d02fe90736f762a7ecdd6a13a199c85f8243c344095f7488d80d7  swico.exe
 """;
 
     [Fact]
     public void Tim_dung_ma_bam_theo_ten_tep()
     {
-        Assert.True(ChecksumFile.Find(Sums, "tsudev-swico_26.8.2001_x64-setup.exe")
+        Assert.True(ChecksumFile.Find(Sums, "tsuswico_26.8.2001_x64-setup.exe")
                 == "997bd2318999d0fd7fe82238cecfe51ab7ee7c08c0bcd4b9fe1910aa5e884abb",
             "tim dung ma bam theo ten tep");
         Assert.True(ChecksumFile.Find(Sums, "swico.exe")

@@ -164,7 +164,7 @@ if __name__ == "__main__":
         open(out, "wb").write(data)
         print(f"  {out}: {nw}x{px_h}, {len(data)} byte")
 
-    # Tu day tro xuong (anh trinh thuat si, swico.ico, favicon) dung LOGO SAN PHAM SWICO
+    # Tu day tro xuong (anh trinh thuat si, swico.ico, favicon) dung LOGO SAN PHAM Tsu Swico
     # (chu du an giao 13/11/2026), khong phai logo tsudev: nguon la ban vuong trong suot do
     # website/scripts/brand-assets.mjs sinh tu assets/brand/source/logo-swico.png. Logo
     # tsudev-logo-{72,144} o tren giu nguyen vi bao cao HTML ghi ten NHA LAM (tsudev).

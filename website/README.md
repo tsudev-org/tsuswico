@@ -1,8 +1,8 @@
 # Website swico.tsudev.com
 
-Trang sản phẩm của tsudev SWICO: [Astro](https://astro.build) dựng trang tĩnh; JavaScript phía trình duyệt chỉ có
+Trang sản phẩm của Tsu Swico: [Astro](https://astro.build) dựng trang tĩnh; JavaScript phía trình duyệt chỉ có
 `public/theme.js` (bộ chọn giao diện Sáng/Tối/Hệ thống ở chân trang, mặc định Tối, khóa `tsudev-theme` như tsudev.com;
-nạp chặn trong `<head>`, CSP `script-src 'self'`), host bằng Cloudflare Workers Static Assets (Worker `tsudev-swico`, chỉ phục vụ tệp tĩnh, không chạy mã; tên
+nạp chặn trong `<head>`, CSP `script-src 'self'`), host bằng Cloudflare Workers Static Assets (Worker `tsuswico`, chỉ phục vụ tệp tĩnh, không chạy mã; tên
 miền con `swico.tsudev.com` của hệ tsudev.com, cấu hình ở `wrangler.jsonc`). Khung dùng chung với `files.tsudev.com`.
 
 * **Một nguồn tài liệu.** Nội dung lấy trực tiếp từ tệp của repo lúc build - sửa ở đó, không sửa trong `website/`:
@@ -49,4 +49,4 @@ của Workers tự tạo bản ghi DNS và chứng chỉ với quyền `workers:
 trang 404 và đường dẫn có `/` cuối hoạt động như nhau. Dự án Pages tạm đã xóa.
 
 Lần đầu chỉ cần `npm run deploy` (khối `routes` trong `wrangler.jsonc` tự gắn `swico.tsudev.com`), rồi
-`gh repo edit tsudev-org/tsudev-swico --homepage https://swico.tsudev.com`.
+`gh repo edit tsudev-org/tsuswico --homepage https://swico.tsudev.com`.

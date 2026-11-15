@@ -3,11 +3,14 @@ import { readFileSync } from 'node:fs';
 import { dirname, join, normalize } from 'node:path';
 import { Marked } from 'marked';
 
-export const SAN_PHAM = 'tsudev SWICO';
-export const REPO = 'tsudev-org/tsudev-swico';
+export const SAN_PHAM = 'Tsu Swico';
+export const REPO = 'tsudev-org/tsuswico';
 export const REPO_URL = `https://github.com/${REPO}`;
 export const RELEASES_URL = `${REPO_URL}/releases/latest`;
 export const SITE = 'https://swico.tsudev.com';
+// Ủng hộ: một trang trung tâm của hệ sinh thái (phiếu 20261112-01/-02). Site này chỉ liên kết tới, KHÔNG chép số tài
+// khoản hay ảnh QR - sửa thông tin ủng hộ ở repo tsudev, mọi sản phẩm tự đúng theo.
+export const UNG_HO_URL = 'https://tsudev.com/ung-ho/';
 
 // Gốc repo: build chạy trong thư mục website/ (npm run build), nên gốc là thư mục cha.
 const GOC = normalize(join(process.cwd(), '..'));
@@ -70,12 +73,19 @@ export function renderMd(tepMd: string, opts: { boTieuDeDau?: boolean; md?: stri
   if (opts.boTieuDeDau) md = md.replace(/^#\s+.+\n/m, '');
   const haCap = opts.haCap ?? 0;   // hạ cấp tiêu đề khi ghép tài liệu vào giữa trang
   const marked = new Marked({ gfm: true });
+  // Tiêu đề trùng chữ (CHANGELOG có nhiều mục "Thêm", "Sửa") phải ra id khác nhau như GitHub: "them", "them-1", ...
+  const daDung = new Map<string, number>();
+  const idDuyNhat = (goc: string) => {
+    const n = daDung.get(goc) ?? 0;
+    daDung.set(goc, n + 1);
+    return n === 0 ? goc : `${goc}-${n}`;
+  };
   marked.use({
     renderer: {
       heading({ tokens, depth }) {
         const text = this.parser.parseInline(tokens);
         const d = Math.min(depth + haCap, 6);
-        return `<h${d} id="${slug(text)}">${text}</h${d}>\n`;
+        return `<h${d} id="${idDuyNhat(slug(text))}">${text}</h${d}>\n`;
       },
       link({ href, title, tokens }) {
         const text = this.parser.parseInline(tokens);
@@ -122,11 +132,11 @@ export interface BanPhatHanh { tag: string; phienBan: string; ngay: string; url:
 
 /**
  * Ba cách giao cùng một chương trình (README mục Cài đặt). Nhận cả tên tệp cũ (`swico-setup-26.8.18.2.exe`) lẫn
- * quy ước mới (`tsudev-swico_26.9.0901_x64-setup.exe`, docs/VERSIONING.md). Thứ tự = thứ tự hiển thị.
+ * quy ước mới (`tsuswico_26.9.0901_x64-setup.exe`, docs/VERSIONING.md). Thứ tự = thứ tự hiển thị.
  */
 export const LOAI_GOI: { ma: string; tieuDe: string; moTa: string; mau: RegExp }[] = [
-  { ma: 'setup', tieuDe: 'Bộ cài đặt', moTa: 'Cài cố định, có mục gỡ cài đặt, hỗ trợ /VERYSILENT để triển khai hàng loạt.', mau: /^(swico-setup-.+\.exe|tsudev-swico_.+_x64-setup\.exe)$/ },
-  { ma: 'portable', tieuDe: 'Bản di động (ZIP)', moTa: 'Cắm USB đi từng máy: giải nén chạy thẳng, không đụng registry.', mau: /^(swico-portable-.+\.zip|tsudev-swico_.+_x64-portable\.zip)$/ },
+  { ma: 'setup', tieuDe: 'Bộ cài đặt', moTa: 'Cài cố định, có mục gỡ cài đặt, hỗ trợ /VERYSILENT để triển khai hàng loạt.', mau: /^(swico-setup-.+\.exe|tsuswico_.+_x64-setup\.exe)$/ },
+  { ma: 'portable', tieuDe: 'Bản di động (ZIP)', moTa: 'Cắm USB đi từng máy: giải nén chạy thẳng, không đụng registry.', mau: /^(swico-portable-.+\.zip|tsuswico_.+_x64-portable\.zip)$/ },
   { ma: 'exe', tieuDe: 'Chỉ tệp chạy', moTa: 'Một tệp swico.exe để nhúng vào script, GPO hoặc hệ thống RMM.', mau: /^swico\.exe$/ },
 ];
 const PHU: { tieuDe: string; moTa: string; mau: RegExp }[] = [
@@ -143,7 +153,7 @@ let boNho: Promise<BanPhatHanh | null> | undefined;
  */
 export function banMoiNhat(): Promise<BanPhatHanh | null> {
   boNho ??= (async () => {
-    const headers: Record<string, string> = { Accept: 'application/vnd.github+json', 'User-Agent': 'tsudev-swico-website' };
+    const headers: Record<string, string> = { Accept: 'application/vnd.github+json', 'User-Agent': 'tsuswico-website' };
     if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
     const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, { headers });
     if (res.status === 404) return null;

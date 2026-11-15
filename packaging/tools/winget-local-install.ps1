@@ -1,6 +1,6 @@
 <#
     winget-local-install.ps1
-    Cai tsudev SWICO bang winget NGAY BAY GIO, khong can cho Microsoft duyet.
+    Cai Tsu Swico bang winget NGAY BAY GIO, khong can cho Microsoft duyet.
 
     Vi sao can script nay: "winget install tsudev.SWICO" chi chay duoc sau khi
     manifest duoc hop nhat vao kho cong dong microsoft/winget-pkgs - viec do can
@@ -16,7 +16,7 @@
 [CmdletBinding()]
 param(
     [string]$Version,
-    [string]$Repo = 'tsudev-org/tsudev-swico',
+    [string]$Repo = 'tsudev-org/tsuswico',
     [switch]$ValidateOnly
 )
 $ErrorActionPreference = 'Stop'

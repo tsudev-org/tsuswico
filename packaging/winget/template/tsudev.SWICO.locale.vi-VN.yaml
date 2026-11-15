@@ -4,16 +4,16 @@ PackageVersion: {{VERSION}}
 PackageLocale: vi-VN
 Publisher: tsudev
 PublisherUrl: https://tsudev.com
-PublisherSupportUrl: https://github.com/tsudev-org/tsudev-swico/issues
-PackageName: tsudev SWICO
+PublisherSupportUrl: https://github.com/tsudev-org/tsuswico/issues
+PackageName: Tsu Swico
 PackageUrl: https://swico.tsudev.com
 License: Apache-2.0
-LicenseUrl: https://github.com/tsudev-org/tsudev-swico/blob/main/LICENSE
+LicenseUrl: https://github.com/tsudev-org/tsuswico/blob/main/LICENSE
 Copyright: Copyright (c) 2026 tsudev
-CopyrightUrl: https://github.com/tsudev-org/tsudev-swico/blob/main/NOTICE
+CopyrightUrl: https://github.com/tsudev-org/tsuswico/blob/main/NOTICE
 ShortDescription: Kiểm tra bản quyền Windows và thu thập cấu hình phần cứng
 Description: |-
-  tsudev SWICO kiểm tra tình trạng kích hoạt bản quyền Windows và Office, thu
+  Tsu Swico kiểm tra tình trạng kích hoạt bản quyền Windows và Office, thu
   thập cấu hình phần cứng, và rà soát các dấu hiệu kích hoạt bất thường trên máy.
 
   Kết quả xuất ra bốn định dạng cùng lúc: HTML để đọc, JSON để tích hợp, XLSX và
@@ -31,11 +31,11 @@ Tags:
   - inventory
   - license
   - windows
-ReleaseNotesUrl: https://github.com/tsudev-org/tsudev-swico/releases/tag/v{{VERSION}}
+ReleaseNotesUrl: https://github.com/tsudev-org/tsuswico/releases/tag/v{{VERSION}}
 Documentations:
   - DocumentLabel: Hướng dẫn sử dụng
     DocumentUrl: https://swico.tsudev.com/huong-dan/
   - DocumentLabel: Tuyên bố quyền riêng tư
-    DocumentUrl: https://github.com/tsudev-org/tsudev-swico/blob/main/PRIVACY.md
+    DocumentUrl: https://github.com/tsudev-org/tsuswico/blob/main/PRIVACY.md
 ManifestType: defaultLocale
 ManifestVersion: 1.6.0

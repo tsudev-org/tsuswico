@@ -11,7 +11,7 @@
 > | `.github/workflows/ci.yml` | Kiểm `VersionPrefix` ở **mỗi PR** |
 >
 > **Nguồn quy ước:** [`.standards/docs/DESIGN_SYSTEM.md`](../.standards/docs/DESIGN_SYSTEM.md) mục 6 - áp dụng
-> cho toàn hệ sinh thái tsudev. Tài liệu này là bản diễn giải cho repo SWICO,
+> cho toàn hệ sinh thái tsudev. Tài liệu này là bản diễn giải cho repo Tsu Swico,
 > kèm những gì bị cấm và **vì sao**.
 
 ---
@@ -21,7 +21,7 @@
 ```
 {ten-app}_{YY}.{M}.{DD}{NN}_{arch}-setup.{ext}
 
-tsudev-swico_26.8.1901_x64-setup.exe
+tsuswico_26.8.1901_x64-setup.exe
 ```
 
 | Thành phần | Nghĩa | Ví dụ |
@@ -38,9 +38,9 @@ Ví dụ đầy đủ cho ngày 19/08/2026:
 
 | Bản phát hành trong ngày | Chuỗi phiên bản | Tên file cài đặt |
 |---|---|---|
-| Thứ nhất | `26.8.1901` | `tsudev-swico_26.8.1901_x64-setup.exe` |
-| Thứ hai | `26.8.1902` | `tsudev-swico_26.8.1902_x64-setup.exe` |
-| Thứ ba | `26.8.1903` | `tsudev-swico_26.8.1903_x64-setup.exe` |
+| Thứ nhất | `26.8.1901` | `tsuswico_26.8.1901_x64-setup.exe` |
+| Thứ hai | `26.8.1902` | `tsuswico_26.8.1902_x64-setup.exe` |
+| Thứ ba | `26.8.1903` | `tsuswico_26.8.1903_x64-setup.exe` |
 
 Sang ngày hôm sau, số đếm **bắt đầu lại từ `01`**:
 
@@ -129,9 +129,9 @@ mọi nơi khác lấy theo:
 |---|---|---|
 | `Directory.Build.props` → `VersionPrefix` | số hiệu trần | `26.8.1901` |
 | Tag git *(kích hoạt `release.yml`)* | `v` + số hiệu | `v26.8.1901` |
-| **Tên GitHub Release** | tên đầy đủ | `tsudev-swico_26.8.1901` |
-| File cài đặt | | `tsudev-swico_26.8.1901_x64-setup.exe` |
-| Bản portable | | `tsudev-swico_26.8.1901_x64-portable.zip` |
+| **Tên GitHub Release** | tên đầy đủ | `tsuswico_26.8.1901` |
+| File cài đặt | | `tsuswico_26.8.1901_x64-setup.exe` |
+| Bản portable | | `tsuswico_26.8.1901_x64-portable.zip` |
 | `swico.exe --version` | số hiệu trần | `26.8.1901` |
 | Inno Setup `AppVersion` | số hiệu trần | `26.8.1901` |
 | Thư mục manifest winget | số hiệu trần | `manifests/t/tsudev/SWICO/26.8.1901/` |
@@ -172,7 +172,7 @@ chỉ có tối đa 2 chữ số, còn `DDNN` luôn từ 3 chữ số trở lên
 | Dạng | File cài đặt | Bản portable |
 |---|---|---|
 | Cũ | `swico-setup-*.exe` | `swico-portable-*.zip` |
-| Mới | `tsudev-swico_*_x64-setup.exe` | `tsudev-swico_*_x64-portable.zip` |
+| Mới | `tsuswico_*_x64-setup.exe` | `tsuswico_*_x64-portable.zip` |
 
 Bỏ dạng cũ đi thì một bản phát hành cũ sẽ bị coi là "không có file cài đặt", và
 người dùng nhận được thông báo *phải tự cập nhật* thay vì **được** cập nhật. Đó
@@ -208,14 +208,14 @@ sed -i 's|<VersionPrefix>.*</VersionPrefix>|<VersionPrefix>26.8.2001</VersionPre
 #    26.8.2001 - 20/08/2026 - nội dung thay đổi
 
 # 3. Commit, gắn tag, đẩy lên
-git commit -am "release: tsudev-swico_26.8.2001"
+git commit -am "release: tsuswico_26.8.2001"
 git tag v26.8.2001
 git push origin main --tags
 ```
 
 `release.yml` sẽ tự: kiểm tra quy ước → chạy test → publish → ký số (nếu SignPath
 đã cấu hình) → đóng gói installer → sinh SBOM, manifest winget, `SHA256SUMS.txt`
-→ tạo bản phát hành **nháp** mang tên `tsudev-swico_26.8.2001`.
+→ tạo bản phát hành **nháp** mang tên `tsuswico_26.8.2001`.
 
 ### Nếu phải phát hành lại trong ngày
 

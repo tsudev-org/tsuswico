@@ -11,9 +11,9 @@ namespace Tsudev.Audit.Core.Updates;
 /// <code>
 ///   {ten-app}_{YY}.{M}.{DD}{NN}_{arch}-setup.{ext}
 ///
-///   tsudev-swico_26.8.1901_x64-setup.exe   ban thu 01 ngay 19/08/2026
-///   tsudev-swico_26.8.1902_x64-setup.exe   ban thu 02 CUNG NGAY
-///   tsudev-swico_26.8.2001_x64-setup.exe   ban thu 01 ngay 20/08/2026
+///   tsuswico_26.8.1901_x64-setup.exe   ban thu 01 ngay 19/08/2026
+///   tsuswico_26.8.1902_x64-setup.exe   ban thu 02 CUNG NGAY
+///   tsuswico_26.8.2001_x64-setup.exe   ban thu 01 ngay 20/08/2026
 /// </code>
 ///
 /// Chuoi phien ban trong ma nguon va manifest la <c>26.8.1901</c> - DONG BO voi
@@ -42,22 +42,26 @@ namespace Tsudev.Audit.Core.Updates;
 public static class ReleaseName
 {
     /// <summary>Ten ung dung trong ten file phat hanh.</summary>
-    public const string AppName = "tsudev-swico";
+    /// <remarks>Doi tu <c>tsudev-swico</c> sang <c>tsuswico</c> ngay 16/11/2026 (ten san pham
+    /// Tsu Swico, repo <c>tsudev-org/tsuswico</c>). Chua ban nao phat hanh theo dang
+    /// <c>tsudev-swico_</c>, nen doi tien to dang moi khong lam gay duong cap nhat nao.</remarks>
+    public const string AppName = "tsuswico";
 
     /// <summary>Kien truc mac dinh. Du an hien chi phat hanh win-x64.</summary>
     public const string DefaultArch = "x64";
 
-    /// <summary>Tien to cua ten phat hanh dang moi: <c>tsudev-swico_</c>.</summary>
+    /// <summary>Tien to cua ten phat hanh dang moi: <c>tsuswico_</c>.</summary>
     public const string NamePrefix = AppName + "_";
 
     /// <summary>
     /// Tien to cua ten phat hanh DANG CU (<c>tsudev-swico-v26.8.19</c>).
     /// Giu lai CHI de doc duoc cac ban phat hanh cu - khong sinh ra ten moi
-    /// theo dang nay nua.
+    /// theo dang nay nua. Co tinh KHONG ghep tu <see cref="AppName"/>: ten cu
+    /// phai giu nguyen chuoi cu thi moi doc duoc ban cu.
     /// </summary>
-    public const string Prefix = AppName + "-v";
+    public const string Prefix = "tsudev-swico-v";
 
-    /// <summary>Ten ban phat hanh, vi du <c>tsudev-swico_26.8.1901</c>.</summary>
+    /// <summary>Ten ban phat hanh, vi du <c>tsuswico_26.8.1901</c>.</summary>
     public static string For(VersionNumber version) => NamePrefix + version;
 
     /// <summary>Tag git, vi du <c>v26.8.1901</c>. Ngan hon ten phat hanh co chu
@@ -66,7 +70,7 @@ public static class ReleaseName
         => string.Create(CultureInfo.InvariantCulture, $"v{version}");
 
     /// <summary>
-    /// Ten file cai dat, vi du <c>tsudev-swico_26.8.1901_x64-setup.exe</c>.
+    /// Ten file cai dat, vi du <c>tsuswico_26.8.1901_x64-setup.exe</c>.
     ///
     /// Chuc nang tu cap nhat tim file cai dat THEO TEN, nen ham nay va
     /// <see cref="GitHubReleaseParser"/> phai luon noi cung mot thu tieng.
@@ -74,7 +78,7 @@ public static class ReleaseName
     public static string InstallerFileName(VersionNumber version, string arch = DefaultArch)
         => string.Create(CultureInfo.InvariantCulture, $"{NamePrefix}{version}_{arch}-setup.exe");
 
-    /// <summary>Ten ban portable, vi du <c>tsudev-swico_26.8.1901_x64-portable.zip</c>.</summary>
+    /// <summary>Ten ban portable, vi du <c>tsuswico_26.8.1901_x64-portable.zip</c>.</summary>
     public static string PortableFileName(VersionNumber version, string arch = DefaultArch)
         => string.Create(CultureInfo.InvariantCulture, $"{NamePrefix}{version}_{arch}-portable.zip");
 
@@ -101,7 +105,7 @@ public static class ReleaseName
     /// hieu sai quy uoc o day la phat tan cai sai do ra may nguoi dung.
     /// </summary>
     /// <param name="text">Chuoi can kiem tra. Chap nhan ca ba dang:
-    /// <c>26.8.1901</c>, <c>v26.8.1901</c>, <c>tsudev-swico_26.8.1901</c>.</param>
+    /// <c>26.8.1901</c>, <c>v26.8.1901</c>, <c>tsuswico_26.8.1901</c>.</param>
     /// <param name="version">So hieu doc duoc, khi hop le.</param>
     /// <param name="problem">Ly do khong hop le, bang tieng Viet, khi khong hop le.</param>
     public static bool Validate(string? text, out VersionNumber version, out string? problem)

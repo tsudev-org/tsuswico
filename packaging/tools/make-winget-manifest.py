@@ -4,7 +4,7 @@ Sinh manifest winget tu template, dien phien ban va SHA256 THAT cua file setup.
 
     python3 packaging/tools/make-winget-manifest.py \
         --version 26.8.1901 \
-        --installer packaging/output/tsudev-swico_26.8.1901_x64-setup.exe \
+        --installer packaging/output/tsuswico_26.8.1901_x64-setup.exe \
         --out packaging/output/winget
 
 Vi sao KHONG cam ket san manifest vao repo: manifest bat buoc phai chua SHA256
@@ -35,7 +35,7 @@ def main() -> int:
 
     # Duong dan trong kho winget-pkgs duoc suy ra TU PackageIdentifier, khong
     # duoc dat tuy y: manifests/<chu-cai-dau>/<NhaPhatHanh>/<Goi>/<PhienBan>/
-    out = pathlib.Path(a.out) / "manifests" / "t" / "tsudev" / "SWICO" / a.version
+    out = pathlib.Path(a.out) / "manifests" / "t" / "tsudev" / "Tsu Swico" / a.version
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)

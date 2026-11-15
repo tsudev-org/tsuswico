@@ -1,5 +1,5 @@
 ; ============================================================================
-;  tsudev SWICO - kich ban dong goi Inno Setup 6
+;  Tsu Swico - kich ban dong goi Inno Setup 6
 ;
 ;  Bien dich:
 ;     iscc /DAppVersion=26.8.1901 packaging\innosetup\swico.iss
@@ -13,9 +13,9 @@
   #define AppVersion "26.8.1901"
 #endif
 
-#define AppName        "tsudev SWICO"
+#define AppName        "Tsu Swico"
 #define AppPublisher   "tsudev"
-#define AppUrl         "https://github.com/tsudev-org/tsudev-swico"
+#define AppUrl         "https://github.com/tsudev-org/tsuswico"
 #define AppExeName     "swico.exe"
 #define SourceExe      "..\..\publish\" + AppExeName
 
@@ -67,7 +67,7 @@ OutputDir=..\output
 ;  Chuc nang tu cap nhat tim file cai dat THEO TEN, nen ten o day phai khop
 ;  voi ReleaseName.InstallerFileName trong ma nguon. Doi mot ben ma quen ben
 ;  kia thi cap nhat hong IM LANG - xem docs/VERSIONING.md.
-OutputBaseFilename=tsudev-swico_{#AppVersion}_x64-setup
+OutputBaseFilename=tsuswico_{#AppVersion}_x64-setup
 ; Icon di kem trong repo. Neu thieu, ISCC bao loi va dung han - nen kiem tra
 ; su ton tai thay vi tin la no luon o do.
 #if FileExists(AddBackslash(SourcePath) + "..\..\assets\swico.ico")

@@ -14,10 +14,10 @@
     <VersionPrefix>26.8.1901</VersionPrefix>
     <Company>tsudev</Company>
     <Authors>tsudev</Authors>
-    <Product>tsudev SWICO</Product>
+    <Product>Tsu Swico</Product>
     <Copyright>Copyright (c) 2026 tsudev</Copyright>
     <Description>Kiểm tra bản quyền Windows và thu thập cấu hình phần cứng</Description>
-    <RepositoryUrl>https://github.com/tsudev-org/tsudev-swico</RepositoryUrl>
+    <RepositoryUrl>https://github.com/tsudev-org/tsuswico</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 

@@ -3,7 +3,7 @@
 **Trạng thái:** ⬜ chưa làm · 🔄 đang làm · ✅ xong · ⛔ chờ người dùng · ⏭️ đã dời
 
 > **Bản v2** - viết lại ngày 18/08/2026 sau khi đối chiếu với artifact
-> "Kế hoạch tái cấu trúc toàn diện - tsudev SWICO". Xem `docs/DECISIONS.md`
+> "Kế hoạch tái cấu trúc toàn diện - Tsu Swico". Xem `docs/DECISIONS.md`
 > để biết vì sao phạm vi và thứ tự đổi so với bản v1.
 
 ---
@@ -46,7 +46,7 @@
 
 ## Phase 3 - Danh tính, pháp lý, đóng gói, CI/CD ✅
 
-- ✅ Chốt tên: **`tsudev SWICO`**, assembly `swico.exe`, winget `tsudev.SWICO`
+- ✅ Chốt tên: **`Tsu Swico`**, assembly `swico.exe`, winget `tsudev.SWICO`
 - ✅ `LICENSE` (Apache-2.0), `NOTICE`, `THIRD-PARTY-NOTICES.md`
 - ✅ `EULA.txt` - mục 3 nói rõ báo cáo **không phải kết luận pháp lý**
 - ✅ `PRIVACY.md` - công cụ không kết nối mạng, không gửi dữ liệu đi đâu
@@ -175,7 +175,7 @@ Làm ở phiên S004 (20/08/2026).
       `docs/PROJECT_STRUCTURE.md`, `docs/ARCHITECTURE.md`, `tokens/`, `logs/`
 - ✅ `.gitignore` **hợp nhất** (giữ `tsudev-bao-cao-ra-quet-*/` - dữ liệu audit thật)
 - ✅ **D-S004-1** - đổi quy ước đặt tên sang `YY.M.DDNN`:
-      `26.8.19` → `26.8.1901`, `swico-setup-*.exe` → `tsudev-swico_*_x64-setup.exe`
+      `26.8.19` → `26.8.1901`, `swico-setup-*.exe` → `tsuswico_*_x64-setup.exe`
 - ✅ `VersionNumber` đọc **cả hai dạng**, `26.8.18` ≡ `26.8.1801`
 - ✅ `GitHubReleaseParser` nhận **cả hai dạng tên tệp** đính kèm
 - ✅ Đo thật: MSBuild giữ `26.9.0901` ở `AssemblyInformationalVersion` nhưng

@@ -209,3 +209,11 @@ kbd { border: 1px solid var(--border-strong); border-bottom-width: 2px; border-r
 .the-chu li + li { margin-top: 0; }
 .van-ban .minh-hoa { margin: 1.25rem 0; }
 .van-ban .minh-hoa img { border: 0; }
+
+/* Khối Cài bằng lệnh (/tai-ve/, phiếu 20261114-02) */
+.cai-lenh { margin: 1rem 0 1.25rem; }
+.cai-lenh__kenh { margin: 0.75rem 0; }
+.cai-lenh__ten { margin: 0 0 0.35rem; }
+.cai-lenh__khoi { position: relative; }
+.cai-lenh__khoi pre { margin: 0; padding-right: 5.5rem; }
+.cai-lenh__chep { position: absolute; top: 0.5rem; right: 0.5rem; }

@@ -62,7 +62,7 @@ else
   )"
 fi
 
-# ── Nhóm ngoài git của tsudev-swico ─────────────────────────────────────────
+# ── Nhóm ngoài git của tsuswico ─────────────────────────────────────────
 # Đã kiểm 03/11/2026: .gitignore loại `*secret*`, `*credential*`, `*.pfx`,
 # `secrets.json` - nhưng KHÔNG file nào như thế tồn tại. Toàn bộ nhóm ignore
 # là bin/ obj/ dist/ publish/, sinh lại được bằng `./build.ps1`.

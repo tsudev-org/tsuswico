@@ -19,7 +19,7 @@ public sealed class HtmlReportRenderer
     public const string BrandName = "tsudev";
 
     /// <summary>Ten san pham day du, hien o chan trang va the &lt;meta generator&gt;.</summary>
-    public const string ProductName = "tsudev SWICO";
+    public const string ProductName = "Tsu Swico";
 
     /// <summary>Mau nen chu dao - theme xanh nhat, dung THONG NHAT ca bao cao lan dashboard.</summary>
     public const string ThemeBackground = "#eaf2fc";

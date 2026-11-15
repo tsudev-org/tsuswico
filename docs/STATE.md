@@ -45,8 +45,9 @@ CI        : ✅ run 32360493509 XANH cả hai job (Linux + smoke test Windows) c
             `26.8.1901` chạy trên runner GitHub. Bước `Kiem tra quy uoc dat ten`
             của `release.yml` vẫn CHƯA từng chạy (chỉ kích hoạt khi gắn tag).
 Release   : ✅ v26.8.18.2 đã phát hành chính thức (Latest)
-Repo      : ✅ github.com/tsudev-org/tsudev-swico - PUBLIC (chuyển từ tsudev-tsudev/swico 09/11/2026;
-            TÊN CŨ BẤT KHẢ XÂM PHẠM - bản đã cài cập nhật nhờ chuyển hướng)
+Repo      : ✅ github.com/tsudev-org/tsuswico - PUBLIC (chuyển từ tsudev-tsudev/swico 09/11/2026, đổi tên
+            từ tsudev-org/tsudev-swico 16/11/2026 - ADR-0001; HAI TÊN CŨ BẤT KHẢ XÂM PHẠM - bản đã cài cập nhật
+            nhờ chuyển hướng)
 Website   : ✅ https://swico.tsudev.com - Workers Static Assets, mã ở website/ (S007)
 SDK       : ✅ ghim 8.0.424 qua global.json (dev và CI dùng CÙNG một SDK)
 Windows   : ✅ đã chạy thật, cài thật, dữ liệu đúng, đối chiếu với bản PowerShell cũ xong
@@ -58,11 +59,11 @@ Git       : ✅ ngang bằng origin/main (đếm bằng `git log --oneline origi
 
 | Hạng mục | Giá trị |
 |---|---|
-| Tên | `tsudev SWICO` |
+| Tên | **Tsu Swico** (từ 16/11/2026, `docs/adr/0001-ten-san-pham-tsu-swico.md`; trước đó `tsudev SWICO`) |
 | Assembly | `swico.exe` |
-| Winget ID | `tsudev.SWICO` |
+| Winget ID | `tsudev.SWICO` - **đã lên winget** (PR #419878 merge), giữ nguyên mã sau khi đổi tên |
 | Phiên bản | trong repo: **26.8.1901** · đã phát hành: **26.8.18.2** (dạng cũ) |
-| Đặt tên phát hành | `tsudev-swico_YY.M.DDNN_x64-setup.exe` - `docs/VERSIONING.md`, có 33 test |
+| Đặt tên phát hành | `tsuswico_YY.M.DDNN_x64-setup.exe` - `docs/VERSIONING.md`, có 33 test |
 | Namespace | `Tsudev.Audit.*` - **giữ nguyên**, chi tiết nội bộ |
 | Tên miền | `https://tsudev.com` (bộ test khẳng định điều này); trang sản phẩm `https://swico.tsudev.com` |
 | Hạng sản phẩm | **C - Ngoại tuyến** (`.standards/docs/AUTH_AND_ACCOUNT.md` mục 1) |

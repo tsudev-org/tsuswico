@@ -13,7 +13,7 @@ Nguyên tắc cốt lõi: chỉ dùng token, không hard-code giao diện; ngày
 
 ---
 
-## Ghi chú của repo SWICO - dựng lại bộ quy ước cho repo khác
+## Ghi chú của repo Tsu Swico - dựng lại bộ quy ước cho repo khác
 
 File `tsudev-conventions.zip` đã được **xoá khỏi repo này** ngày 20/08/2026 sau
 khi giải nén đầy đủ (nó nằm trong `.gitignore` nên vốn không được git theo dõi).
