@@ -3,7 +3,7 @@
 - **Mã phiếu**: 20261112-01
 - **Từ**: phiên tsudev-files-01 (12/11/2026), theo yêu cầu trực tiếp của chủ dự án
 - **Đến**: phiên làm việc trên `tsudev-swico`
-- **Trạng thái**: CHỜ NHẬN
+- **Trạng thái**: ĐÓNG (16/11/2026) - PR tsuswico #20, đã deploy
 
 ## 1. Đọc trước
 
@@ -26,7 +26,7 @@ Theo phiếu gốc mục 4: gỡ kênh cũ, `FUNDING.yml`, trang/nút Ủng hộ
 
 ## 4. Kết quả xử lý (phiên nhận điền, và ghi một dòng vào phiếu gốc mục 6)
 
--
+- 16/11/2026 (phiên tsudev-swico-34): rà lại - không có kênh/nút/FUNDING ủng hộ cũ nào. Thêm "Ủng hộ tsudev" ở chân trang swico.tsudev.com + `.github/FUNDING.yml`, đều mở `https://tsudev.com/ung-ho/` (một hằng `UNG_HO_URL`). Không có STK/QR trong repo hay bản build. App là CLI không có hộp Giới thiệu nên không thêm nút trong app. Production đo 16/11: liên kết hiện ở mọi trang.
 
 ## 5. Bổ sung 12/11/2026 - phương án theo nền tảng (đã chốt)
 

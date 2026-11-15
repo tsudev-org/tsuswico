@@ -3,7 +3,7 @@
 - **Mã phiếu**: 20261114-02
 - **Từ**: phiên 52 repo `tsudev`, 14/11/2026 - kế hoạch tổng 20261114-01, việc C5
 - **Gửi**: tsudev-cwico, tsudev-swico, tsudev-contact, tsudev-trafficmonitor, tsufiles, lotus-share
-- **Trạng thái**: MỞ - ghi "Đã đọc" + PR + trạng thái production vào cuối bản sao trong repo mình
+- **Trạng thái**: ĐÓNG (16/11/2026) - PR tsuswico #20, đã deploy
 
 ## Yêu cầu
 
@@ -26,3 +26,14 @@ Scoop, Homebrew, APT, DNF), mỗi lệnh có nút Chép, nhóm theo hệ điều
 - Trang production hiện đúng các kênh như `tsudev.com/apps` cho cùng app (đối chiếu từng lệnh).
 - `node ~/projects/logs/tools/quet-giao-dien.cjs https://<site>.tsudev.com /` ra OK.
 - ⛔ Chạm chân trang / logo / script cài ⇒ PR + chờ chủ dự án duyệt (cổng Bảo vệ bản quyền).
+
+## Kết quả (phiên tsudev-swico-34, 16/11/2026)
+
+Đã đọc. `website/scripts/cai-bang-lenh.mjs` chạy trong `npm run build`: tải catalog APT/RPM (ghim vân tay khoá), Scoop,
+Homebrew; lọc `homepage` = `https://swico.tsudev.com`, bỏ gói chuyển tiếp; mã winget đọc từ `packaging/package.json`.
+Tải/kiểm lỗi ⇒ build dừng có thông báo. Nhóm theo hệ điều hành, nút Chép (`public/chep.js`, CSP `'self'`), nằm trên nút tải.
+Production: Windows - `winget install --id tsudev.SWICO -e`, `scoop install tsudev/tsuswico` (gói mới, scoop-bucket#9).
+
+Lệch có chủ đích: KHÔNG ghi "Gói được ký" - tệp `.exe` chưa ký Authenticode (SignPath chờ duyệt); trang chỉ ghi điều
+đúng: trình quản lý gói tự kiểm SHA-256. Đối chiếu với `tsudev.com/apps`: thẻ ở đó còn `tsudev-swico` tới khi phiên
+tsudev chạy `pkg:catalog` (phiếu `tsudev/logs/handover/20261116-S1`).

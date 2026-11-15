@@ -214,6 +214,12 @@ kbd { border: 1px solid var(--border-strong); border-bottom-width: 2px; border-r
 .cai-lenh { margin: 1rem 0 1.25rem; }
 .cai-lenh__kenh { margin: 0.75rem 0; }
 .cai-lenh__ten { margin: 0 0 0.35rem; }
-.cai-lenh__khoi { position: relative; }
-.cai-lenh__khoi pre { margin: 0; padding-right: 5.5rem; }
-.cai-lenh__chep { position: absolute; top: 0.5rem; right: 0.5rem; }
+.cai-lenh__khoi { display: flex; gap: 0.5rem; align-items: flex-start; }
+.cai-lenh__khoi pre { margin: 0; flex: 1 1 auto; min-width: 0; }
+.cai-lenh__chep { flex: none; margin-top: 0.5rem; }
+
+/* Chân trang di động: khối giới thiệu trọn hàng, hai cột liên kết xếp cạnh nhau (phiếu 20261113-07 mục 3.3) */
+@media (max-width: 640px) {
+  .chan-trang__trong { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; }
+  .chan-trang__cot { grid-column: 1 / -1; }
+}
