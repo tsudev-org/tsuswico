@@ -279,3 +279,4 @@ tsudev-bao-cao-ra-quet-*/
 tsudev-ket-qua-ra-quet-*/
 /logs/*.log
 /logs/*.tmp
+website/src/data/cai-bang-lenh.json

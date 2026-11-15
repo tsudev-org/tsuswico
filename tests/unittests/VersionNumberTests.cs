@@ -12,9 +12,9 @@ public class VersionNumberTests
     [InlineData("v26.8.1901", 26, 8, 19, 0, "chap nhan tien to 'v' cua tag GitHub")]
     [InlineData("26.8.1901+9e1f2c", 26, 8, 19, 0, "cat bam commit do SDK them")]
     [InlineData("26.8.2001-rc1", 26, 8, 20, 0, "cat hau to -rc1")]
-    [InlineData("tsudev-swico_26.8.1902", 26, 8, 19, 2, "doc duoc ca TEN PHAT HANH day du, khong chi tag")]
-    [InlineData("TSUDEV-SWICO_26.8.1901", 26, 8, 19, 0, "tien to ten phat hanh khong phan biet hoa thuong")]
-    [InlineData("tsudev-swico_26.8.1901_x64-setup.exe", 26, 8, 19, 0, "doc duoc so hieu tu chinh TEN FILE CAI DAT")]
+    [InlineData("tsuswico_26.8.1902", 26, 8, 19, 2, "doc duoc ca TEN PHAT HANH day du, khong chi tag")]
+    [InlineData("TSUSWICO_26.8.1901", 26, 8, 19, 0, "tien to ten phat hanh khong phan biet hoa thuong")]
+    [InlineData("tsuswico_26.8.1901_x64-setup.exe", 26, 8, 19, 0, "doc duoc so hieu tu chinh TEN FILE CAI DAT")]
     [InlineData("26.9.0901", 26, 9, 9, 0, "26.9.0901 = ngay 9 thang 9 ban 01")]
     // --- DOC DUOC DANG CU: hai ban 26.8.18 va 26.8.18.2 DA PHAT HANH ra ngoai ---
     [InlineData("26.8.18", 26, 8, 18, 0, "van doc duoc dang cu 26.8.18")]

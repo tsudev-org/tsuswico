@@ -16,9 +16,9 @@ public class ReleaseNameTests
     [Theory]
     [InlineData("26.8.1901", "dang so hieu tran")]
     [InlineData("v26.8.1901", "dang tag git")]
-    [InlineData("tsudev-swico_26.8.1901", "dang ten phat hanh day du")]
+    [InlineData("tsuswico_26.8.1901", "dang ten phat hanh day du")]
     [InlineData("26.8.1902", "ban thu hai trong ngay")]
-    [InlineData("tsudev-swico_26.8.1903", "ban thu ba trong ngay")]
+    [InlineData("tsuswico_26.8.1903", "ban thu ba trong ngay")]
     [InlineData("26.9.0101", "thang mot chu so")]
     [InlineData("26.12.3101", "ngay cuoi thang")]
     [InlineData("27.1.0101", "ranh gioi cuoi nam")]
@@ -83,9 +83,9 @@ public class ReleaseNameTests
     [Fact]
     public void Dung_ten_phat_hanh_va_tag()
     {
-        Assert.True(ReleaseName.For(new VersionNumber(26, 8, 19)) == "tsudev-swico_26.8.1901",
+        Assert.True(ReleaseName.For(new VersionNumber(26, 8, 19)) == "tsuswico_26.8.1901",
             "dung ten phat hanh cua ban thu nhat");
-        Assert.True(ReleaseName.For(new VersionNumber(26, 8, 19, 2)) == "tsudev-swico_26.8.1902",
+        Assert.True(ReleaseName.For(new VersionNumber(26, 8, 19, 2)) == "tsuswico_26.8.1902",
             "dung ten phat hanh cua ban thu hai");
         Assert.True(ReleaseName.TagFor(new VersionNumber(26, 8, 19, 2)) == "v26.8.1902",
             "tag git dung dang ngan de release.yml bat duoc mau 'v*'");
@@ -94,11 +94,11 @@ public class ReleaseNameTests
     [Fact]
     public void Dung_ten_file_cai_dat_va_ban_portable()
     {
-        Assert.True(ReleaseName.InstallerFileName(new VersionNumber(26, 8, 19)) == "tsudev-swico_26.8.1901_x64-setup.exe",
+        Assert.True(ReleaseName.InstallerFileName(new VersionNumber(26, 8, 19)) == "tsuswico_26.8.1901_x64-setup.exe",
             "ten file cai dat dung dinh dang cua DESIGN_SYSTEM muc 6");
-        Assert.True(ReleaseName.PortableFileName(new VersionNumber(26, 8, 19, 2)) == "tsudev-swico_26.8.1902_x64-portable.zip",
+        Assert.True(ReleaseName.PortableFileName(new VersionNumber(26, 8, 19, 2)) == "tsuswico_26.8.1902_x64-portable.zip",
             "ten ban portable dung dinh dang");
-        Assert.True(ReleaseName.InstallerFileName(new VersionNumber(26, 9, 9)) == "tsudev-swico_26.9.0901_x64-setup.exe",
+        Assert.True(ReleaseName.InstallerFileName(new VersionNumber(26, 9, 9)) == "tsuswico_26.9.0901_x64-setup.exe",
             "ngay mot chu so van ra ten file du hai chu so");
     }
 

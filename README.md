@@ -1,6 +1,6 @@
 <img src="assets/tsudev-logo-144.png" alt="tsudev" height="56">
 
-# tsudev SWICO
+# Tsu Swico
 
 Kiểm tra tình trạng bản quyền Windows/Office và thu thập cấu hình phần cứng -
 **một file `.exe` duy nhất**, không cần cài .NET Runtime.
@@ -15,8 +15,8 @@ khoản; kết nối mạng duy nhất là kiểm tra phiên bản mới, tắt 
 **Trang sản phẩm:** [swico.tsudev.com](https://swico.tsudev.com) - tải về, hướng
 dẫn, báo cáo mẫu xem trực tiếp trên trình duyệt.
 
-[![CI](https://github.com/tsudev-org/tsudev-swico/actions/workflows/ci.yml/badge.svg)](https://github.com/tsudev-org/tsudev-swico/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/tsudev-org/tsudev-swico)](https://github.com/tsudev-org/tsudev-swico/releases/latest)
+[![CI](https://github.com/tsudev-org/tsuswico/actions/workflows/ci.yml/badge.svg)](https://github.com/tsudev-org/tsuswico/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/tsudev-org/tsuswico)](https://github.com/tsudev-org/tsuswico/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 <p>
@@ -33,14 +33,14 @@ dẫn, báo cáo mẫu xem trực tiếp trên trình duyệt.
 
 ## Đánh số phiên bản
 
-Mỗi bản phát hành mang tên `tsudev-swico_YY.M.DDNN_x64-setup.exe` - **CalVer**,
+Mỗi bản phát hành mang tên `tsuswico_YY.M.DDNN_x64-setup.exe` - **CalVer**,
 phiên bản chính là ngày phát hành, hai chữ số cuối là **thứ tự bản trong ngày**:
 
 | Tên file cài đặt | Nghĩa |
 |---|---|
-| `tsudev-swico_26.8.1901_x64-setup.exe` | bản thứ **01** ngày 19/08/2026 |
-| `tsudev-swico_26.8.1902_x64-setup.exe` | bản thứ **02** cùng ngày 19/08/2026 |
-| `tsudev-swico_26.9.0301_x64-setup.exe` | bản thứ 01 ngày 03/09/2026 |
+| `tsuswico_26.8.1901_x64-setup.exe` | bản thứ **01** ngày 19/08/2026 |
+| `tsuswico_26.8.1902_x64-setup.exe` | bản thứ **02** cùng ngày 19/08/2026 |
+| `tsuswico_26.9.0301_x64-setup.exe` | bản thứ 01 ngày 03/09/2026 |
 
 Ngày và số thứ tự đều **đệm đủ hai chữ số**. Đó không phải chuyện thẩm mỹ: thành
 phần thứ ba được đọc bằng phép chia cho 100, nên `26.9.0901` là ngày 9 bản 1, còn
@@ -57,12 +57,12 @@ Quy ước gốc của hệ sinh thái: [`.standards/docs/DESIGN_SYSTEM.md`](.st
 
 ## Cài đặt
 
-Tải từ [Releases](https://github.com/tsudev-org/tsudev-swico/releases):
+Tải từ [Releases](https://github.com/tsudev-org/tsuswico/releases):
 
 | Cách | Tệp | Dùng khi |
 |---|---|---|
-| **Cài đặt** | `tsudev-swico_<phiên-bản>_x64-setup.exe` | Cài cố định, có mục gỡ cài đặt, hỗ trợ `/VERYSILENT` để triển khai hàng loạt |
-| **Portable** | `tsudev-swico_<phiên-bản>_x64-portable.zip` | Cắm USB đi từng máy - giải nén chạy thẳng, không đụng registry |
+| **Cài đặt** | `tsuswico_<phiên-bản>_x64-setup.exe` | Cài cố định, có mục gỡ cài đặt, hỗ trợ `/VERYSILENT` để triển khai hàng loạt |
+| **Portable** | `tsuswico_<phiên-bản>_x64-portable.zip` | Cắm USB đi từng máy - giải nén chạy thẳng, không đụng registry |
 | **Chỉ file exe** | `swico.exe` | Nhúng vào script hoặc RMM |
 
 Cả ba chứa **cùng một chương trình**; chỉ khác cách giao đến máy đích. Đối chiếu
@@ -93,10 +93,16 @@ nó tự nén bên trong, giờ thì không.
 Đổi lại ở cả ba dạng: không còn bước giải nén runtime ở lần chạy đầu, và mã máy
 đã biên dịch sẵn (ReadyToRun) nên không phải đợi JIT lúc khởi động.
 
-> ⚠️ **`winget install tsudev.SWICO` chưa dùng được.** Gói chưa được nộp lên kho
-> cộng đồng `microsoft/winget-pkgs`, nên lệnh này sẽ báo *"No package found
-> matching input criteria"*. Manifest đã sẵn sàng và đính kèm mỗi bản phát hành;
-> quy trình nộp ở [`docs/WINGET.md`](docs/WINGET.md).
+### Cài bằng trình quản lý gói
+
+```powershell
+winget install --id tsudev.SWICO -e          # bộ cài, có sẵn trên Windows 10/11
+scoop bucket add tsudev https://github.com/tsudev-org/scoop-bucket
+scoop install tsudev/tsuswico                # bản portable
+```
+
+Mã gói winget `tsudev.SWICO` giữ nguyên sau khi đổi tên sản phẩm thành Tsu Swico (đổi mã là tạo gói mới, người đã
+cài sẽ không nhận bản cập nhật). Trình quản lý gói tự kiểm SHA-256 trước khi cài.
 
 ## Cách dùng
 
@@ -122,7 +128,7 @@ Công cụ in **từng bước một, ngay khi bước đó chạy xong**, kèm 
 chính nó - không dồn lại tới cuối:
 
 Dưới đây là đầu ra **thật**, chép từ log CI chạy trên runner Windows
-([run 32201733164](https://github.com/tsudev-org/tsudev-swico/actions/runs/32201733164)):
+([run 32201733164](https://github.com/tsudev-org/tsuswico/actions/runs/32201733164)):
 
 ```
 [2] Đang thu thập cấu hình phần cứng...
@@ -357,7 +363,7 @@ Kịch bản kiểm chứng đầy đủ: [`docs/WINDOWS-VERIFICATION.md`](docs/
 | [`docs/DECISIONS.md`](docs/DECISIONS.md) | Các quyết định đã chốt và lý do |
 | [`docs/CONTINUITY.md`](docs/CONTINUITY.md) | Giao thức nối tiếp giữa các phiên làm việc |
 | [`docs/SIGNING.md`](docs/SIGNING.md) | Ký số qua SignPath Foundation |
-| [`docs/WINGET.md`](docs/WINGET.md) | Đưa gói lên winget và vì sao chưa dùng được |
+| [`docs/WINGET.md`](docs/WINGET.md) | Đưa gói lên winget, cập nhật phiên bản mới |
 | [`docs/UPDATES.md`](docs/UPDATES.md) | Chức năng tự cập nhật và các quyết định thiết kế |
 | [`docs/VERSIONING.md`](docs/VERSIONING.md) | Quy ước đặt tên phiên bản phát hành |
 | [`docs/DETECTION-RULES.md`](docs/DETECTION-RULES.md) | Bộ luật phát hiện và cách cập nhật |
@@ -367,5 +373,5 @@ Kịch bản kiểm chứng đầy đủ: [`docs/WINDOWS-VERIFICATION.md`](docs/
 ## Giấy phép
 
 [Apache-2.0](LICENSE). Bạn được fork và phân phối bản sửa đổi, nhưng **không
-được dùng tên "tsudev" hay "SWICO"** để phát hành bản của mình (mục 6 của
+được dùng tên "tsudev" hay "Tsu Swico"** để phát hành bản của mình (mục 6 của
 giấy phép). Xem [`NOTICE`](NOTICE).

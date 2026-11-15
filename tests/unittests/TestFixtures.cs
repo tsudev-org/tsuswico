@@ -99,8 +99,8 @@ public static class H
     public static bool NameOk(string? s) => ReleaseName.Validate(s, out _, out _);
     public static string? WhyBad(string s) { ReleaseName.Validate(s, out _, out var p); return p; }
 
-    public static ReleaseInfo Rel(string tag, string? installer = "https://x/tsudev-swico_x64-setup.exe",
-                                  string? portable = "https://x/tsudev-swico_x64-portable.zip")
+    public static ReleaseInfo Rel(string tag, string? installer = "https://x/tsuswico_x64-setup.exe",
+                                  string? portable = "https://x/tsuswico_x64-portable.zip")
         => new(V(tag), tag, "https://x/releases/" + tag, installer, "https://x/SHA256SUMS.txt",
                DateTimeOffset.Now, portable);
 

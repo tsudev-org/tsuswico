@@ -14,7 +14,7 @@ như chắc chắn lỗi nằm gọn trong `src/Tsudev.Audit.Windows/WindowsAdap
 
 ## Chuẩn bị - đọc kỹ mục này trước
 
-> ⚠️ **Repo `github.com/tsudev-org/tsudev-swico` CHƯA TỒN TẠI.** Đó là URL điền tạm,
+> ⚠️ **Repo `github.com/tsudev-org/tsuswico` CHƯA TỒN TẠI.** Đó là URL điền tạm,
 > dùng trước cho tài liệu và manifest. Mã nguồn hiện **chỉ nằm trên máy dev
 > Linux**, chưa từng được đẩy lên GitHub. `git clone` sẽ báo không tìm thấy.
 
@@ -103,7 +103,7 @@ Rồi trên Windows `git clone` như bình thường.
 > | Dấu nhắc | Đây là gì | `Get-CimInstance` |
 > |---|---|---|
 > | `PS C:\Users\...>` | PowerShell trên Windows ✅ | chạy được |
-> | `~/projects/tsudev-swico$` | bash trên Linux ❌ | *command not found* |
+> | `~/projects/tsuswico$` | bash trên Linux ❌ | *command not found* |
 >
 > Cách mở đúng: bấm **Start** → gõ `powershell` → chuột phải →
 > **Run as administrator**.
@@ -185,14 +185,14 @@ Chạy tối thiểu trên 3 máy khác nhau. Càng khác nhau càng tốt.
 
 | # | Việc cần làm | Kỳ vọng | Kết quả thật |
 |---|---|---|---|
-| F1 | Chạy `tsudev-swico_<phiên-bản>_x64-setup.exe` | Hiện EULA, cài được, hiện tiếng Việt | |
+| F1 | Chạy `tsuswico_<phiên-bản>_x64-setup.exe` | Hiện EULA, cài được, hiện tiếng Việt | |
 | F2 | Mở Command Prompt mới, gõ `swico --help` | Chạy được (nếu đã chọn thêm vào PATH) | |
-| F3 | Bảng điều khiển → Programs | Có mục "tsudev SWICO", gỡ được | |
+| F3 | Bảng điều khiển → Programs | Có mục "Tsu Swico", gỡ được | |
 | F4 | Sau khi gỡ: kiểm tra biến PATH | Đường dẫn đã bị rút ra, không để lại rác | |
 | F5 | Cài đè phiên bản cũ | Nâng cấp tại chỗ, **không** tạo mục thứ hai | |
-| **F7** | Biên dịch `swico.iss` với `/DAppVersion=26.8.1901` | `ISCC` không lỗi; file ra tên `tsudev-swico_26.8.1901_x64-setup.exe` | ⚠️ **CHƯA kiểm** |
+| **F7** | Biên dịch `swico.iss` với `/DAppVersion=26.8.1901` | `ISCC` không lỗi; file ra tên `tsuswico_26.8.1901_x64-setup.exe` | ⚠️ **CHƯA kiểm** |
 | **F8** | Biên dịch với `/DAppVersion=26.9.0901` (**ngày một chữ số**) | `ISCC` **không** báo lỗi số 0 đứng đầu ở `VersionInfoVersion` | ⚠️ **CHƯA kiểm - rủi ro còn lại của việc đổi quy ước** |
-| F6 | `tsudev-swico_<phiên-bản>_x64-setup.exe /VERYSILENT` | Cài im lặng, không hiện cửa sổ nào | |
+| F6 | `tsuswico_<phiên-bản>_x64-setup.exe /VERYSILENT` | Cài im lặng, không hiện cửa sổ nào | |
 
 ## G. Phần mềm diệt virus
 

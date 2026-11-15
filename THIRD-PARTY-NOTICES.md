@@ -1,6 +1,6 @@
 # Thông báo về thành phần của bên thứ ba
 
-`tsudev SWICO` được xây dựng với chủ trương **giữ số phụ thuộc ở mức tối
+`Tsu Swico` được xây dựng với chủ trương **giữ số phụ thuộc ở mức tối
 thiểu**. Mỗi gói thêm vào là thêm một giấy phép phải rà soát, thêm một nguồn lỗ
 hổng phải theo dõi, và thêm dung lượng cho file thực thi đơn.
 

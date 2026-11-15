@@ -23,7 +23,7 @@ namespace Tsudev.Audit.Windows;
 public sealed class GitHubUpdateFeed : IUpdateFeed
 {
     private const string LatestReleaseApi =
-        "https://api.github.com/repos/tsudev-org/tsudev-swico/releases/latest";
+        "https://api.github.com/repos/tsudev-org/tsuswico/releases/latest";
 
     private readonly TimeSpan _timeout;
     private readonly string _userAgent;
@@ -34,7 +34,7 @@ public sealed class GitHubUpdateFeed : IUpdateFeed
         // duoc bat ho ngoi nhin man hinh trong khi ta doi mot may chu co the
         // dang bi tuong lua chan im lang.
         _timeout = timeout ?? TimeSpan.FromSeconds(6);
-        _userAgent = $"tsudev-SWICO/{currentVersion}";
+        _userAgent = $"TsuSwico/{currentVersion}";
     }
 
     public ReleaseInfo? GetLatest(out string? failureReason)
@@ -138,7 +138,7 @@ public static class UpdateInstaller
         {
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);
             using var http = new HttpClient { Timeout = TimeSpan.FromMinutes(10) };
-            http.DefaultRequestHeaders.Add("User-Agent", $"tsudev-SWICO/{release.Version}");
+            http.DefaultRequestHeaders.Add("User-Agent", $"TsuSwico/{release.Version}");
 
             report($"Đang tải {fileName}...");
             using (var stream = http.GetStreamAsync(release.InstallerUrl).GetAwaiter().GetResult())

@@ -1,4 +1,4 @@
-# Đưa SWICO lên winget
+# Đưa Tsu Swico lên winget
 
 ## Vì sao `winget install tsudev.SWICO` chưa chạy được
 
@@ -37,7 +37,7 @@ Sinh lại thủ công khi cần:
 ```bash
 python3 packaging/tools/make-winget-manifest.py \
     --version 26.8.1901 \
-    --installer packaging/output/tsudev-swico_26.8.1901_x64-setup.exe \
+    --installer packaging/output/tsuswico_26.8.1901_x64-setup.exe \
     --out packaging/winget-out
 ```
 
@@ -48,7 +48,7 @@ manifest sinh tự động, nên đường này chạy được ngay:
 
 ```powershell
 # PowerShell với quyền Administrator
-irm https://raw.githubusercontent.com/tsudev-org/tsudev-swico/main/packaging/tools/winget-local-install.ps1 -OutFile wg.ps1
+irm https://raw.githubusercontent.com/tsudev-org/tsuswico/main/packaging/tools/winget-local-install.ps1 -OutFile wg.ps1
 .\wg.ps1
 ```
 
@@ -63,8 +63,8 @@ Hoặc làm tay:
 ```powershell
 winget settings --enable LocalManifestFiles
 # giải nén winget-manifest-<phiên-bản>.zip từ Releases
-winget validate --manifest .\manifests\t\tsudev\SWICO\<phiên-bản>
-winget install  --manifest .\manifests\t\tsudev\SWICO\<phiên-bản>
+winget validate --manifest .\manifests\t\tsudev\Tsu Swico\<phiên-bản>
+winget install  --manifest .\manifests\t\tsudev\Tsu Swico\<phiên-bản>
 ```
 
 > Khác biệt duy nhất so với kho công khai: người dùng phải bật một thiết lập và
@@ -93,7 +93,7 @@ winget install Microsoft.WingetCreate
 
 wingetcreate submit `
   --token <GitHub personal access token> `
-  packaging\winget-out\manifests\t\tsudev\SWICO\26.8.1901
+  packaging\winget-out\manifests\t\tsudev\Tsu Swico\26.8.1901
 ```
 
 Công cụ tự fork `microsoft/winget-pkgs`, tạo nhánh và mở pull request.
@@ -109,8 +109,8 @@ Công cụ tự fork `microsoft/winget-pkgs`, tạo nhánh và mở pull request
 ### Kiểm tra trước khi nộp
 
 ```powershell
-winget validate --manifest packaging\winget-out\manifests\t\tsudev\SWICO\26.8.1901
-winget install --manifest packaging\winget-out\manifests\t\tsudev\SWICO\26.8.1901
+winget validate --manifest packaging\winget-out\manifests\t\tsudev\Tsu Swico\26.8.1901
+winget install --manifest packaging\winget-out\manifests\t\tsudev\Tsu Swico\26.8.1901
 ```
 
 Lệnh thứ hai cài **từ manifest cục bộ** - cách duy nhất kiểm chứng manifest đúng

@@ -3,8 +3,8 @@ namespace Tsudev.Audit.Tests;
 /// <summary>Muc 14 cua bo test cu: cong kiem tra cap nhat.</summary>
 public class UpdateCheckerTests
 {
-    private static ReleaseInfo Rel(string tag, string? installer = "https://x/tsudev-swico_x64-setup.exe",
-                                   string? portable = "https://x/tsudev-swico_x64-portable.zip")
+    private static ReleaseInfo Rel(string tag, string? installer = "https://x/tsuswico_x64-setup.exe",
+                                   string? portable = "https://x/tsuswico_x64-portable.zip")
         => H.Rel(tag, installer, portable);
 
     [Fact]
@@ -70,7 +70,7 @@ public class UpdateCheckerTests
         Assert.True(portable.MustUpdate, "ban portable co ban moi -> VAN chan quet (bo luat cu van la bo luat cu)");
         Assert.True(!portable.CanSelfInstall && portable.MustUpdateManually,
             "ban portable KHONG tu cai duoc -> phai cap nhat thu cong");
-        Assert.True(portable.Message!.Contains("tsudev-swico_x64-portable.zip", StringComparison.Ordinal),
+        Assert.True(portable.Message!.Contains("tsuswico_x64-portable.zip", StringComparison.Ordinal),
             "chi ro cho tai ban portable moi, khong phai file setup");
     }
 

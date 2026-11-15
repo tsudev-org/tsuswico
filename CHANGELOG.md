@@ -6,7 +6,16 @@
 
 ## [Chưa phát hành]
 
+### Đổi
+
+- **Sản phẩm đổi tên thành Tsu Swico** (`docs/adr/0001-ten-san-pham-tsu-swico.md`): CLI, báo cáo, bộ cài, website,
+  tài liệu. Repo chuyển sang `tsudev-org/tsuswico`; tệp phát hành dạng mới `tsuswico_<phiên-bản>_x64-setup.exe`.
+  Lệnh `swico.exe` và mã winget `tsudev.SWICO` giữ nguyên. Bản đã cài vẫn cập nhật được nhờ chuyển hướng của GitHub.
+
 ### Thêm
+
+- Liên kết **Ủng hộ tsudev** ở chân trang website và `.github/FUNDING.yml`, đều mở trang trung tâm
+  `https://tsudev.com/ung-ho/` (không chép số tài khoản/QR vào repo này).
 
 - **Bảng liệt kê trong báo cáo có bộ chọn số dòng** (QU-STD-TABLE, `DATA_TABLE.md`): chân bảng chia ba - bộ chọn
   `10 / 20 / 50 / 100 / 200` (mặc định 10, nhớ theo từng bảng) ở trái, tóm tắt `1-10 / 36` đọc được bằng trình đọc

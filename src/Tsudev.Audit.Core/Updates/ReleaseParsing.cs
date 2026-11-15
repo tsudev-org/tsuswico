@@ -30,7 +30,7 @@ public static class GitHubReleaseParser
     ///
     /// <code>
     ///   swico-setup-26.8.19.exe                 dang CU
-    ///   tsudev-swico_26.8.1901_x64-setup.exe    dang MOI (docs/DESIGN_SYSTEM.md muc 6)
+    ///   tsuswico_26.8.1901_x64-setup.exe    dang MOI (docs/DESIGN_SYSTEM.md muc 6)
     /// </code>
     ///
     /// VI SAO PHAI NHAN CA HAI. Chuc nang tu cap nhat tim file cai dat THEO TEN.
@@ -50,7 +50,7 @@ public static class GitHubReleaseParser
     ///
     /// <code>
     ///   swico-portable-26.8.19.zip                 dang CU
-    ///   tsudev-swico_26.8.1901_x64-portable.zip    dang MOI
+    ///   tsuswico_26.8.1901_x64-portable.zip    dang MOI
     /// </code>
     /// </summary>
     public static bool IsPortableAsset(string name)
@@ -100,7 +100,7 @@ public static class GitHubReleaseParser
                     if (string.IsNullOrWhiteSpace(url)) continue;
 
                     // Thu tu kiem tra: ban portable TRUOC file cai dat. Ten dang
-                    // moi cua ca hai deu bat dau bang "tsudev-swico_", nen phai
+                    // moi cua ca hai deu bat dau bang "tsuswico_", nen phai
                     // loai .zip ra truoc thi phep thu ".exe" moi khong nhap nhang.
                     if (IsPortableAsset(name))
                         portable = url;

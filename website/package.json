@@ -1,16 +1,17 @@
 {
-  "name": "tsudev-swico-website",
+  "name": "tsuswico-website",
   "private": true,
   "type": "module",
   "description": "Trang sản phẩm swico.tsudev.com (Astro, trang tĩnh, không JavaScript phía trình duyệt)",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build && node scripts/check-dist.mjs",
+    "dev": "node scripts/cai-bang-lenh.mjs && astro dev",
+    "build": "node scripts/cai-bang-lenh.mjs && astro build && node scripts/check-dist.mjs",
     "preview": "astro preview",
     "deploy": "npm run build && wrangler deploy",
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:theme": "node scripts/check-theme.mjs",
-    "bao-cao-mau": "node scripts/sinh-bao-cao-mau.mjs"
+    "bao-cao-mau": "node scripts/sinh-bao-cao-mau.mjs",
+    "cai-bang-lenh": "node scripts/cai-bang-lenh.mjs"
   },
   "dependencies": {
     "astro": "7.4.7",

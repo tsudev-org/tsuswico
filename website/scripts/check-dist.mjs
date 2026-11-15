@@ -22,7 +22,7 @@ function duyet(thuMuc) {
 function kiemTra(tep, html) {
   const ten = tep.slice(dist.length);
   const title = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '';
-  if (!/^(.+ - )?tsudev SWICO \| tsudev$/.test(title)) loi.push(`${ten}: title sai khuôn: ${title}`);
+  if (!/^(.+ - )?Tsu Swico \| tsudev$/.test(title)) loi.push(`${ten}: title sai khuôn: ${title}`);
   if (!html.includes('<meta property="og:site_name" content="tsudev">')) loi.push(`${ten}: thiếu og:site_name tsudev`);
   if (!/<link rel="canonical" href="https:\/\/swico\.tsudev\.com\//.test(html)) loi.push(`${ten}: thiếu canonical`);
   const mota = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
@@ -31,7 +31,10 @@ function kiemTra(tep, html) {
   // Script: đúng một thẻ <script src="/theme.js"></script> (không defer/async/module: phải chặn để không nháy màu),
   // nằm trong <head> và trước stylesheet đầu tiên. Script nội tuyến bị CSP chặn im lặng ở production.
   const theScript = [...html.matchAll(/<script(?![^>]*type="application\/ld\+json")[^>]*>/g)].map((m) => m[0]);
-  if (theScript.length !== 1 || theScript[0] !== '<script src="/theme.js">') loi.push(`${ten}: script phải đúng một <script src="/theme.js">: ${theScript.join(' ')}`);
+  // Ngoại lệ duy nhất: /tai-ve/ thêm <script src="/chep.js" defer> cho nút Chép (tệp tĩnh cùng nguồn, không chặn).
+  const phu = ten === '/tai-ve/index.html' ? ['<script src="/chep.js" defer>'] : [];
+  const chinh = theScript.filter((t) => !phu.includes(t));
+  if (chinh.length !== 1 || chinh[0] !== '<script src="/theme.js">' || theScript.length > 1 + phu.length) loi.push(`${ten}: script phải đúng một <script src="/theme.js">: ${theScript.join(' ')}`);
   const viTriScript = html.indexOf('<script src="/theme.js">');
   const viTriCss = html.search(/<link[^>]*rel="stylesheet"/);
   if (viTriScript < 0 || viTriScript > html.indexOf('</head>') || (viTriCss >= 0 && viTriScript > viTriCss)) loi.push(`${ten}: theme.js phải nằm trong <head>, trước stylesheet`);

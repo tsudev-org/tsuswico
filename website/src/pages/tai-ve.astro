@@ -1,11 +1,12 @@
 ---
 import Trang from '../layouts/Trang.astro';
 import { banMoiNhat, mb, RELEASES_URL, REPO, REPO_URL } from '../lib/noi-dung';
+import caiBangLenh from '../data/cai-bang-lenh.json';
 
 const ban = await banMoiNhat();
-const vd = ban?.goi.find((g) => g.ma === 'setup')?.ten ?? 'tsudev-swico_<phiên bản>_x64-setup.exe';
+const vd = ban?.goi.find((g) => g.ma === 'setup')?.ten ?? 'tsuswico_<phiên bản>_x64-setup.exe';
 ---
-<Trang tieuDe="Tải về" moTa="Tải tsudev SWICO cho Windows 10, 11: bộ cài, bản di động hoặc chỉ tệp swico.exe; mã SHA-256 từng gói, cách kiểm tra tệp và cài im lặng." duongDan="/tai-ve/">
+<Trang tieuDe="Tải về" moTa="Tải Tsu Swico cho Windows 10, 11: bộ cài, bản di động hoặc chỉ tệp swico.exe; mã SHA-256 từng gói, cách kiểm tra tệp và cài im lặng." duongDan="/tai-ve/">
   <div class="khung tai-lieu">
     <nav class="tai-lieu__menu" aria-label="Tải về">
       <p>Tải về</p>
@@ -22,24 +23,38 @@ const vd = ban?.goi.find((g) => g.ma === 'setup')?.ten ?? 'tsudev-swico_<phiên 
     <article class="van-ban">
       {ban ? (
         <>
-          <h1>Tải tsudev SWICO {ban.phienBan}</h1>
+          <h1>Tải Tsu Swico {ban.phienBan}</h1>
           <p>Phát hành ngày {ban.ngay}. Mọi gói được GitHub Actions build từ mã nguồn công khai; trang này chỉ dẫn tới <a href={ban.url} target="_blank" rel="noopener noreferrer">trang phát hành trên GitHub</a>, không lưu bản sao.</p>
         </>
       ) : (
         <>
-          <h1>Tải tsudev SWICO</h1>
+          <h1>Tải Tsu Swico</h1>
           <div class="chu-y"><p><strong>Bản phát hành đầu tiên đang được chuẩn bị.</strong> Khi có, danh sách gói kèm SHA-256 hiện ngay tại đây và ở <a href={RELEASES_URL} target="_blank" rel="noopener noreferrer">trang phát hành trên GitHub</a>.</p></div>
         </>
       )}
 
       <h2 id="cai-bang-lenh">Cài bằng lệnh</h2>
-      <p>Cách nhanh nhất, tự cập nhật về sau; trình quản lý gói tự kiểm mã SHA-256 trước khi cài.</p>
-      <h3>winget (bộ cài, có sẵn trên Windows 10/11)</h3>
-      <pre tabindex="0"><code>winget install --id tsudev.SWICO -e</code></pre>
-      <h3>Scoop (bản portable, không cần quyền quản trị để cài)</h3>
-      <pre tabindex="0"><code>scoop bucket add tsudev https://github.com/tsudev-org/scoop-bucket
-scoop install tsudev/tsudev-swico</code></pre>
-      <p>Bản Scoop thêm lệnh <code>tsudev-swico</code>; khi chạy, SWICO vẫn xin quyền Administrator vì các bước đọc bản quyền cần quyền đó. Mã nguồn gói: <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/t/tsudev/SWICO" target="_blank" rel="noopener noreferrer">microsoft/winget-pkgs</a>, <a href="https://github.com/tsudev-org/scoop-bucket" target="_blank" rel="noopener noreferrer">tsudev-org/scoop-bucket</a>.</p>
+      <p>Cách nhanh nhất và tự cập nhật về sau. Trình quản lý gói tự kiểm mã SHA-256 của tệp trước khi cài. Danh sách
+        dưới đây sinh lúc build từ catalog chính thức của từng kho gói, nên luôn khớp tên gói hiện hành.</p>
+      {caiBangLenh.nhom.map((n) => (
+        <section class="cai-lenh" aria-labelledby={`cai-lenh-${n.heDieuHanh.toLowerCase()}`}>
+          <h3 id={`cai-lenh-${n.heDieuHanh.toLowerCase()}`}>{n.heDieuHanh}</h3>
+          {n.kenh.map((k) => (
+            <div class="cai-lenh__kenh">
+              <p class="cai-lenh__ten"><strong>{k.kenh}</strong>{k.ghiChu && <span class="dem"> - {k.ghiChu}</span>}</p>
+              <div class="cai-lenh__khoi">
+                <pre tabindex="0"><code>{k.lenh.join('\n')}</code></pre>
+                <button type="button" class="nut nut--phu nut--nho cai-lenh__chep" data-chep={k.lenh.join('\n')} hidden>Chép<span class="an-di"> lệnh {k.kenh}</span></button>
+              </div>
+              {k.lenhTao && k.lenhTao.length > 0 && <p class="dem">Thêm lệnh {k.lenhTao.map((c, i) => <>{i > 0 && ', '}<code>{c}</code></>)}.</p>}
+            </div>
+          ))}
+        </section>
+      ))}
+      <p>Khi chạy, Tsu Swico xin quyền Administrator vì các bước đọc bản quyền cần quyền đó. Mã nguồn gói:
+        {caiBangLenh.nhom.flatMap((n) => n.kenh).filter((k) => k.nguon).map((k, i) => <>{i > 0 && ', '}<a href={k.nguon} target="_blank" rel="noopener noreferrer">{k.kenh}</a></>)}.</p>
+      <p class="an-di" aria-live="polite" id="chep-trang-thai"></p>
+      <script is:inline src="/chep.js" defer></script>
 
       <h2 id="chon-goi">Chọn gói</h2>
       <p>Ba gói chứa <strong>cùng một chương trình</strong>, chỉ khác cách giao tới máy đích.</p>
@@ -100,7 +115,7 @@ scoop install tsudev/tsudev-swico</code></pre>
       <h2 id="tu-build">Tự build từ mã nguồn</h2>
       <p>Cần .NET SDK 8. Phần lõi (logic quét, chấm điểm, dựng báo cáo) build và chạy test được cả trên Linux, macOS.</p>
       <pre tabindex="0"><code>git clone {REPO_URL}.git
-cd tsudev-swico
+cd tsuswico
 dotnet test tests/unittests
 dotnet publish src/Tsudev.Audit.Cli -c Release -r win-x64</code></pre>
     </article>

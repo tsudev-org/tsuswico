@@ -1,6 +1,6 @@
 {
-  "name": "tsudev SWICO | tsudev",
-  "short_name": "SWICO",
+  "name": "Tsu Swico | tsudev",
+  "short_name": "Tsu Swico",
   "description": "Kiểm tra bản quyền Windows, Office và thu thập cấu hình phần cứng bằng một tệp .exe; dữ liệu không rời khỏi máy.",
   "lang": "vi",
   "start_url": "/",

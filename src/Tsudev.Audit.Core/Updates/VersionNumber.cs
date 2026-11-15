@@ -48,7 +48,7 @@ public readonly record struct VersionNumber(int Year, int Month, int Day, int Re
 
     /// <summary>
     /// Cac ky tu bat dau phan hau to can cat bo. Co ca '_' vi ten file phat
-    /// hanh dang moi la <c>tsudev-swico_26.8.1901_x64-setup.exe</c>: sau khi bo
+    /// hanh dang moi la <c>tsuswico_26.8.1901_x64-setup.exe</c>: sau khi bo
     /// tien to thi phan con lai la <c>26.8.1901_x64-setup.exe</c>, va cat tu
     /// dau '_' cho ra dung so hieu. So hieu phien ban khong bao gio chua '_'
     /// nen cat o day khong lam mat gi.

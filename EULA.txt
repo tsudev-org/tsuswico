@@ -1,5 +1,5 @@
 ĐIỀU KHOẢN SỬ DỤNG PHẦN MỀM
-tsudev SWICO
+Tsu Swico
 
 Vui lòng đọc kỹ trước khi cài đặt. Bằng việc cài đặt hoặc sử dụng phần mềm này,
 bạn xác nhận đã đọc, hiểu và đồng ý với các điều khoản dưới đây.
@@ -18,7 +18,7 @@ lẫn thương mại.
 2. NHÃN HIỆU
 
 Giấy phép Apache 2.0 cấp cho bạn quyền đối với mã nguồn. Giấy phép đó KHÔNG cấp
-quyền sử dụng tên "tsudev" hay "SWICO" để đặt tên cho sản phẩm phái sinh của
+quyền sử dụng tên "tsudev" hay "Tsu Swico" để đặt tên cho sản phẩm phái sinh của
 bạn. Bạn được tự do fork và phân phối bản sửa đổi, nhưng phải dưới một tên khác.
 
 
@@ -100,4 +100,4 @@ nào, dù rõ ràng hay ngụ ý, theo đúng quy định tại mục 7 và 8 c�
 Toàn bộ mã nguồn được công khai. Bạn có thể tự kiểm chứng mọi điều nêu trên -
 đặc biệt là cam kết ở mục 4 - bằng cách đọc mã nguồn tại:
 
-https://github.com/tsudev-org/tsudev-swico
+https://github.com/tsudev-org/tsuswico

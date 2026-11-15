@@ -1,6 +1,6 @@
 # Tuyên bố quyền riêng tư
 
-**Áp dụng cho:** `tsudev SWICO` phiên bản 3.x (bản CLI)
+**Áp dụng cho:** `Tsu Swico` phiên bản 3.x (bản CLI)
 **Cập nhật:** 18/08/2026
 
 ## Tóm tắt trong một câu
@@ -37,13 +37,13 @@ quyền yêu cầu biết chính xác dữ liệu đi đâu.
 Khi khởi động, công cụ gọi **một** yêu cầu GET tới:
 
 ```
-https://api.github.com/repos/tsudev-org/tsudev-swico/releases/latest
+https://api.github.com/repos/tsudev-org/tsuswico/releases/latest
 ```
 
 **Được gửi đi** (không thể tránh với bất kỳ yêu cầu HTTP nào):
 
 - Địa chỉ IP công cộng của máy
-- Chuỗi nhận dạng `tsudev-SWICO/<phiên-bản>` - cho GitHub biết phiên bản đang dùng
+- Chuỗi nhận dạng `TsuSwico/<phiên-bản>` - cho GitHub biết phiên bản đang dùng
 
 **KHÔNG được gửi đi:** tên máy, tên người dùng, số sê-ri phần cứng, danh sách
 phần mềm, trạng thái bản quyền, kết quả quét - **không một dữ liệu nào** trong

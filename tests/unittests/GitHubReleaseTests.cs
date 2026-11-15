@@ -6,11 +6,11 @@ public class GitHubReleaseTests
     private const string ReleaseJson = """
 {
   "tag_name": "v26.8.2001",
-  "html_url": "https://github.com/tsudev-org/tsudev-swico/releases/tag/v26.8.2001",
+  "html_url": "https://github.com/tsudev-org/tsuswico/releases/tag/v26.8.2001",
   "published_at": "2026-08-20T10:00:00Z",
   "assets": [
-    { "name": "tsudev-swico_26.8.2001_x64-setup.exe", "browser_download_url": "https://x/tsudev-swico_26.8.2001_x64-setup.exe" },
-    { "name": "tsudev-swico_26.8.2001_x64-portable.zip", "browser_download_url": "https://x/portable.zip" },
+    { "name": "tsuswico_26.8.2001_x64-setup.exe", "browser_download_url": "https://x/tsuswico_26.8.2001_x64-setup.exe" },
+    { "name": "tsuswico_26.8.2001_x64-portable.zip", "browser_download_url": "https://x/portable.zip" },
     { "name": "SHA256SUMS.txt", "browser_download_url": "https://x/SHA256SUMS.txt" },
     { "name": "swico.exe", "browser_download_url": "https://x/swico.exe" }
   ]
@@ -40,7 +40,7 @@ public class GitHubReleaseTests
 
         Assert.True(parsed is not null && perr is null, "doc duoc JSON ban phat hanh");
         Assert.True(parsed!.Version == H.V("26.8.2001"), "lay dung phien ban tu tag_name");
-        Assert.True(parsed.InstallerUrl == "https://x/tsudev-swico_26.8.2001_x64-setup.exe",
+        Assert.True(parsed.InstallerUrl == "https://x/tsuswico_26.8.2001_x64-setup.exe",
             "chon dung file cai dat, KHONG nham sang swico.exe hay ban portable");
         Assert.True(parsed.ChecksumsUrl == "https://x/SHA256SUMS.txt", "tim thay file ma bam");
         Assert.True(parsed.PublishedAt is not null, "doc duoc thoi diem phat hanh");
@@ -81,13 +81,13 @@ public class GitHubReleaseTests
     [Fact]
     public void Nhan_dien_tep_dinh_kem_theo_ten()
     {
-        Assert.True(GitHubReleaseParser.IsInstallerAsset("tsudev-swico_26.8.2001_x64-setup.exe")
+        Assert.True(GitHubReleaseParser.IsInstallerAsset("tsuswico_26.8.2001_x64-setup.exe")
                  && GitHubReleaseParser.IsInstallerAsset("swico-setup-26.8.18.exe"),
             "IsInstallerAsset nhan ca hai dang ten");
         Assert.True(!GitHubReleaseParser.IsInstallerAsset("swico.exe")
-                 && !GitHubReleaseParser.IsInstallerAsset("tsudev-swico_26.8.2001_x64-portable.zip"),
+                 && !GitHubReleaseParser.IsInstallerAsset("tsuswico_26.8.2001_x64-portable.zip"),
             "IsInstallerAsset KHONG nham sang swico.exe hay ban portable");
-        Assert.True(GitHubReleaseParser.IsPortableAsset("tsudev-swico_26.8.2001_x64-portable.zip")
+        Assert.True(GitHubReleaseParser.IsPortableAsset("tsuswico_26.8.2001_x64-portable.zip")
                  && GitHubReleaseParser.IsPortableAsset("swico-portable-26.8.18.zip"),
             "IsPortableAsset nhan ca hai dang ten");
     }

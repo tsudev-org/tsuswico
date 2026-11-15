@@ -82,7 +82,7 @@ public static class UpdatePrompt
         ArgumentNullException.ThrowIfNull(result);
         var latest = result.Latest;
 
-        var title = "tsudev SWICO - Đã có phiên bản mới";
+        var title = "Tsu Swico - Đã có phiên bản mới";
         var heading = $"Phiên bản {latest?.Version} đã sẵn sàng";
         var body =
             $"Bạn đang dùng phiên bản {result.Current}.\n\n" +

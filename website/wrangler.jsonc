@@ -3,7 +3,7 @@
 // tsudev.com cùng tài khoản (Pages cần thêm CNAME bằng tay). public/_headers vẫn áp dụng như trên Pages.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tsudev-swico",
+  "name": "tsuswico",
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": "./dist",
