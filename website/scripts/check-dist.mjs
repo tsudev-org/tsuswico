@@ -41,6 +41,10 @@ function kiemTra(tep, html) {
   // Bộ chọn giao diện (phiếu 20261110-05): đúng ba lựa chọn, radiogroup, nằm ở chân trang; mặc định Tối.
   const luaChon = [...html.matchAll(/data-chon-giao-dien="([a-z]+)"/g)].map((m) => m[1]).join(',');
   if (luaChon !== 'light,dark,system') loi.push(`${ten}: bộ chọn giao diện cần đúng light,dark,system: ${luaChon}`);
+  // Mỗi id chỉ một lần (neo #... và aria-labelledby phải trỏ đúng một phần tử) - phiếu 20261113-07.
+  const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+  const trung = [...new Set(ids.filter((x, i) => ids.indexOf(x) !== i))];
+  if (trung.length) loi.push(`${ten}: trùng id ${trung.join(', ')}`);
   const viTriChon = html.indexOf('id="giao-dien"');
   if (viTriChon < html.indexOf('<footer') || !/id="giao-dien" role="radiogroup" aria-label="Giao diện"/.test(html)) loi.push(`${ten}: bộ chọn giao diện phải là radiogroup trong <footer>`);
   if (!/<html lang="vi" data-theme="dark">/.test(html)) loi.push(`${ten}: mặc định phải là data-theme="dark"`);

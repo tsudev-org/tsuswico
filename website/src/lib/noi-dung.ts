@@ -73,12 +73,19 @@ export function renderMd(tepMd: string, opts: { boTieuDeDau?: boolean; md?: stri
   if (opts.boTieuDeDau) md = md.replace(/^#\s+.+\n/m, '');
   const haCap = opts.haCap ?? 0;   // hạ cấp tiêu đề khi ghép tài liệu vào giữa trang
   const marked = new Marked({ gfm: true });
+  // Tiêu đề trùng chữ (CHANGELOG có nhiều mục "Thêm", "Sửa") phải ra id khác nhau như GitHub: "them", "them-1", ...
+  const daDung = new Map<string, number>();
+  const idDuyNhat = (goc: string) => {
+    const n = daDung.get(goc) ?? 0;
+    daDung.set(goc, n + 1);
+    return n === 0 ? goc : `${goc}-${n}`;
+  };
   marked.use({
     renderer: {
       heading({ tokens, depth }) {
         const text = this.parser.parseInline(tokens);
         const d = Math.min(depth + haCap, 6);
-        return `<h${d} id="${slug(text)}">${text}</h${d}>\n`;
+        return `<h${d} id="${idDuyNhat(slug(text))}">${text}</h${d}>\n`;
       },
       link({ href, title, tokens }) {
         const text = this.parser.parseInline(tokens);
