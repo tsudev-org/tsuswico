@@ -60,3 +60,8 @@ thái. Mỗi repo: kiểm từng phiếu với mã + production ⇒ ĐÓNG kèm 
 4. Nộp đơn SignPath Foundation cho `tsudev-org` (D5).
 5. PAT `WINGET_TOKEN` (`public_repo`) đặt làm secret ở các repo app cần winget.
 6. Giữ khoá riêng `age` cho bản sao lưu DB (P1.9) và bản sao khoá ký ngoại tuyến (G11).
+
+## Tiến độ repo này (bản sao)
+
+- 16/11/2026 (tsudev-swico-34): P0 đối soát - ĐÓNG 20260820-03/04, 20261110-01, 20261111-01, 20261112-01, 20261113-03/07,
+  20261114-02. Còn mở: 20261115-01 mục 2.3 (Best Practices), SignPath (👤 chờ duyệt). Thêm: đổi tên Tsu Swico (ADR-0001).

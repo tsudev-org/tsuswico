@@ -15,8 +15,8 @@
 > **`docs/STATE.md` thắng**. File này chỉ trỏ tới đó, không chép lại nội dung
 > (`AGENTS.md` mục 1: mỗi tri thức ghi một lần duy nhất).
 
-- **Phiên gần nhất:** S007 - 09-10/11/2026
-- **Bàn giao gần nhất:** `logs/handover/20261110-01_khep-phien-S007.md`
+- **Phiên gần nhất:** S008 (tsudev-swico-34) - 16/11/2026
+- **Bàn giao gần nhất:** `logs/handover/20261116-01_khep-phien-S008.md`
 
 ## Hàng đợi task (làm từ trên xuống)
 
@@ -31,7 +31,10 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       việc đổi quy ước; phía .NET đã đo xong, phía Inno Setup thì chưa.
 - [ ] **QU-3** ⛔ Quyết có phát hành **bản cầu nối** dạng cũ không, để hai bản đã
       cài (`26.8.18`, `26.8.18.2`) không mất đường cập nhật - `docs/STATE.md` mục 4.7.
-- [ ] **3.1** ⛔ PR winget #419878 vướng `Validation-Executable-Error` - cần Windows
+- [x] **3.1** ✅ PR winget #419878 đã MERGE (`tsudev.SWICO` 26.8.18.2 trên winget) - đo 16/11/2026.
+- [ ] **XM-2.3** ⬜ Hồ sơ OpenSSF Best Practices (phiếu `20261115-01` mục 2.3): `docs/best-practices.json/.md`, `bp.cjs` - cần phiên đăng nhập bestpractices.dev.
+- [ ] **TEN-1** 👤 Đổi thư mục cục bộ `~/projects/tsudev-swico` → `~/projects/tsuswico` khi KHÔNG có phiên nào mở trong đó (ADR-0001).
+- [ ] **TEN-2** ⬜ Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
 - [ ] **3.4** ⛔ Cấu hình SignPath sau khi được duyệt - chờ bên ngoài
@@ -64,6 +67,11 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 | (không có) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 16/11/2026 - **S008:** sản phẩm đổi tên **Tsu Swico**, repo `tsudev-org/tsuswico` (ADR-0001), Worker `tsuswico`;
+  Scoop `tsuswico` (+ gói chuyển tiếp); Ủng hộ → `tsudev.com/ung-ho/`; khối Cài bằng lệnh sinh lúc build; ký
+  SHA256SUMS Sigstore + provenance + Scorecard; README tiếng Anh; sửa trùng id, nút Chép, footer di động.
+  PR #20, #23; scoop-bucket#9. 187 PASS, axe 0 lỗi. Chi tiết: `logs/handover/20261116-01_khep-phien-S008.md`.
 
 - 10/11/2026 - **S007:** trang sản phẩm **https://swico.tsudev.com** (`website/`, Workers Static Assets);
   README nhận diện + hạng C (phiếu `20261109-01` đóng); updater trỏ `tsudev-org/tsudev-swico`;
@@ -103,6 +111,9 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - 19/08/2026 - Khởi tạo bộ quy ước v1.0.0
 
 ## Quyết định quan trọng
+
+- 16/11/2026 - **ADR-0001: tên Tsu Swico / `tsuswico`** (chủ dự án). Giữ `swico.exe`, winget `tsudev.SWICO`, tên miền.
+  Tên `tsudev-swico` (org) và `swico` (tsudev-tsudev) cấm tạo lại.
 
 - 20/08/2026 - **D-S004-1: đổi quy ước đặt tên phiên bản** sang `DESIGN_SYSTEM.md`
   mục 6. Chủ project quyết sau khi được nêu rõ rủi ro: chạm vào đường cập nhật

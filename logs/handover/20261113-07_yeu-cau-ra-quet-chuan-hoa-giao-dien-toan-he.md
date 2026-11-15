@@ -5,7 +5,7 @@
 - **Gửi**: mọi repo có website / trang `*.tsudev.com` - tsudev-cwico, tsudev-swico, tsudev-contact,
   tsudev-trafficmonitor, tsufiles (`tsudev-files`), lotus-share, linux-packages (trang kho, nếu có),
   6 repo game TsuGameLabs + tsudev-game-kit
-- **Trạng thái**: MỞ - mỗi repo ghi "Đã đọc" + kết quả vào cuối phiếu BẢN SAO trong repo mình
+- **Trạng thái**: ĐÓNG (16/11/2026) - PR tsuswico #20, #23; một ngoại lệ ngoài repo (mục kết quả)
 
 ## 1. Yêu cầu của chủ dự án
 
@@ -59,3 +59,22 @@ mâu thuẫn nội dung hoặc thiếu chuyên nghiệp; sửa để giao diện
 - Công cụ ở mục 2.1 in `OK` cho mọi trang × khổ × chế độ trên PRODUCTION (mã thoát 0), hoặc ghi rõ ngoại lệ có lý do.
 - Ảnh 390px + 1280px trước/sau của trang chủ và một trang con, đính kèm PR.
 - Ghi vào cuối bản sao phiếu này: "Đã đọc" + danh sách lỗi tìm thấy + PR + trạng thái production.
+
+## Kết quả (phiên tsudev-swico-34, 16/11/2026)
+
+Đã đọc. Quét `quet-giao-dien.cjs` 11 trang (gồm 404) × 390/1280 × Tối/Sáng trên production, rồi soi ảnh bằng mắt.
+
+Lỗi tìm thấy và đã sửa:
+1. Trùng `id` ở `/nhat-ky/` (`thêm`, `thay-đổi`) và `/quyen-rieng-tu/` (`tự-kiểm-chứng`) - tiêu đề Markdown lặp chữ; nay
+   đánh số kiểu GitHub, `check-dist` chặn trùng id (PR #20).
+2. Nút "Chép" của khối Cài bằng lệnh đè lên lệnh Scoop dài ở khổ 390 - nay nằm cạnh khối lệnh (PR #23).
+3. Chân trang di động xếp một cột dài - nay lưới 2 cột, khối giới thiệu trọn hàng (PR #23, mục 3.3).
+4. Đầu trang hiện "tsudev Tsu Swico" lặp tên - nay "Tsu Swico" (PR #20).
+
+Không áp dụng: mục 3.1/3.2 (site không có đăng nhập). Đã đạt sẵn: mỗi trang một `h1` (cả 404), `<title>` "Trang - Tsu Swico | tsudev",
+Sáng/Tối/Hệ thống, axe 16 trang × 2 chế độ 0 lỗi.
+
+**Ngoại lệ (ngoài repo, cần chủ dự án):** mọi trang có lỗi console "Executing inline script violates ... script-src 'self'".
+Script đó là `window.__CF$cv$params` do **Cloudflare tự chèn** (Bot Fight Mode / JavaScript detections ở cấp zone
+tsudev.com), không có trong `dist/`. CSP của site chặn nó đúng như thiết kế. Muốn hết lỗi: tắt JS detections cho zone
+hoặc chấp nhận - ảnh hưởng mọi `*.tsudev.com`, không sửa từ repo con. Trang 404 trả HTTP 404 là có chủ đích.
