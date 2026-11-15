@@ -12,12 +12,15 @@ mục 1): mọi chức năng quét chạy trọn vẹn không cần Internet và
 khoản; kết nối mạng duy nhất là kiểm tra phiên bản mới, tắt được bằng
 `--no-update-check`.
 
+[English](README.en.md) · **Tiếng Việt**
+
 **Trang sản phẩm:** [swico.tsudev.com](https://swico.tsudev.com) - tải về, hướng
 dẫn, báo cáo mẫu xem trực tiếp trên trình duyệt.
 
 [![CI](https://github.com/tsudev-org/tsuswico/actions/workflows/ci.yml/badge.svg)](https://github.com/tsudev-org/tsuswico/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/tsudev-org/tsuswico)](https://github.com/tsudev-org/tsuswico/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/tsudev-org/tsuswico/badge)](https://scorecard.dev/viewer/?uri=github.com/tsudev-org/tsuswico)
 
 <p>
   <img src="website/public/anh/bao-cao-ban-quyen-sang.png" alt="Báo cáo bản quyền mẫu: điểm rủi ro 47/100, 4 dấu hiệu kích hoạt trái phép" width="49%">
@@ -67,6 +70,23 @@ Tải từ [Releases](https://github.com/tsudev-org/tsuswico/releases):
 
 Cả ba chứa **cùng một chương trình**; chỉ khác cách giao đến máy đích. Đối chiếu
 tệp tải về với `SHA256SUMS.txt` đính kèm mỗi bản phát hành.
+
+### Xác minh tệp tải về
+
+Từ bản phát hành kế tiếp sau 26.8.18.2, `SHA256SUMS.txt` được ký bằng **Sigstore keyless** (danh tính là workflow
+`release.yml` của repo này, không có khóa riêng nào có thể lộ) và mọi tệp có **chứng thực nguồn gốc build** (SLSA
+provenance) của GitHub:
+
+```bash
+cosign verify-blob SHA256SUMS.txt --bundle SHA256SUMS.txt.sigstore.json \
+  --certificate-identity-regexp '^https://github.com/tsudev-org/tsuswico/\.github/workflows/release\.yml@' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+sha256sum -c SHA256SUMS.txt --ignore-missing          # PowerShell: Get-FileHash <tệp> -Algorithm SHA256
+gh attestation verify tsuswico_<phiên-bản>_x64-setup.exe -R tsudev-org/tsuswico
+```
+
+Hai bản đã phát hành (26.8.18, 26.8.18.2) chỉ có `SHA256SUMS.txt`, chưa có chữ ký. Ký mã Authenticode cho tệp `.exe`
+đang chờ SignPath Foundation duyệt (`docs/SIGNING.md`).
 
 **Về dung lượng:** từ bản 26.8.18.2, file `swico.exe` không còn được nén sẵn bên
 trong. Nghe ngược trực giác, nhưng nén hai lần là phản tác dụng - payload đã nén
