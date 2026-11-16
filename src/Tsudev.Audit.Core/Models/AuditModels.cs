@@ -64,6 +64,26 @@ public sealed class DataTable
     /// <summary>Bat o tim kiem + sap xep cho bang nay (bang dai).</summary>
     public bool Searchable { get; set; }
 
+    /// <summary>
+    /// Chi so cac cot chua SO (dem, dung luong, diem...). Renderer HTML can phai
+    /// cac cot nay (quy uoc bang: so can phai de so sanh hang don vi theo cot).
+    /// Khai bang <see cref="Numeric"/>, khong doan tu noi dung: Serial/ma san pham
+    /// trong giong so nhung la dinh danh, phai can trai.
+    /// </summary>
+    public HashSet<int> NumericColumns { get; set; } = new();
+
+    /// <summary>Danh dau cot so theo TEN cot; ten sai -> nem loi ngay (bat loi go nham o test).</summary>
+    public DataTable Numeric(params string[] columns)
+    {
+        foreach (var name in columns)
+        {
+            var i = Columns.IndexOf(name);
+            if (i < 0) throw new ArgumentException($"Khong co cot '{name}' trong bang '{Title}'.", nameof(columns));
+            NumericColumns.Add(i);
+        }
+        return this;
+    }
+
     public static DataTable Create(string title, params string[] columns)
         => new() { Title = title, Columns = columns.ToList() };
 

@@ -250,6 +250,7 @@ th,td{padding:var(--sp-2) var(--sp-4);text-align:left;
       border-bottom:1px solid var(--c-border);vertical-align:top}
 th{background:var(--c-bg-subtle);font-weight:var(--fw-semibold);
    white-space:nowrap;position:sticky;top:0}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
 tbody tr:nth-child(even){background:var(--c-bg-base)}
 tbody tr:hover{background:var(--c-bg-hover)}
 
@@ -358,14 +359,14 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <div class="table-block">
 <h3>Phạm vi qu&#233;t (6 hạng mục cố định - lu&#244;n hiển thị d&#249; c&#243; ph&#225;t hiện hay kh&#244;ng)</h3>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Phạm vi qu&#233;t (6 hạng mục cố định - lu&#244;n hiển thị d&#249; c&#243; ph&#225;t hiện hay kh&#244;ng)"><table>
-<thead><tr><th>Hạng mục qu&#233;t</th><th>Nguồn dữ liệu</th><th>Mức độ nếu ph&#225;t hiện</th><th>Số ph&#225;t hiện tr&#234;n m&#225;y n&#224;y</th></tr></thead>
+<thead><tr><th>Hạng mục qu&#233;t</th><th>Nguồn dữ liệu</th><th>Mức độ nếu ph&#225;t hiện</th><th class="num">Số ph&#225;t hiện tr&#234;n m&#225;y n&#224;y</th></tr></thead>
 <tbody>
-<tr><td>T&#234;n file/thư mục nghi vấn</td><td>%ProgramFiles%, %ProgramFiles(x86)%, %ProgramData%, %SystemDrive%\, %TEMP%, %USERPROFILE%\Desktop, %USERPROFILE%\Downloads</td><td>Cao</td><td>1</td></tr>
-<tr><td>Scheduled Task nghi vấn</td><td>Task Scheduler (trừ task hệ thống hợp lệ SoftwareProtectionPlatform)</td><td>Cao</td><td>0</td></tr>
-<tr><td>Windows Service nghi vấn</td><td>Danh s&#225;ch to&#224;n bộ Windows Service (Win32_Service)</td><td>Cao</td><td>1</td></tr>
-<tr><td>Hosts file bị chỉnh sửa</td><td>%SystemRoot%\System32\drivers\etc\hosts</td><td>Trung b&#236;nh</td><td>0</td></tr>
-<tr><td>File hook hệ thống bản quyền</td><td>%SystemRoot%\System32 / %SystemRoot%\SysWOW64 (SppExtComObjHook.dll, SppExtComObjPatcher.exe)</td><td>Rất cao</td><td>1</td></tr>
-<tr><td>KMS server t&#249;y chỉnh trong registry</td><td>HKLM\...\SoftwareProtectionPlatform</td><td>Cao</td><td>1</td></tr>
+<tr><td>T&#234;n file/thư mục nghi vấn</td><td>%ProgramFiles%, %ProgramFiles(x86)%, %ProgramData%, %SystemDrive%\, %TEMP%, %USERPROFILE%\Desktop, %USERPROFILE%\Downloads</td><td>Cao</td><td class="num">1</td></tr>
+<tr><td>Scheduled Task nghi vấn</td><td>Task Scheduler (trừ task hệ thống hợp lệ SoftwareProtectionPlatform)</td><td>Cao</td><td class="num">0</td></tr>
+<tr><td>Windows Service nghi vấn</td><td>Danh s&#225;ch to&#224;n bộ Windows Service (Win32_Service)</td><td>Cao</td><td class="num">1</td></tr>
+<tr><td>Hosts file bị chỉnh sửa</td><td>%SystemRoot%\System32\drivers\etc\hosts</td><td>Trung b&#236;nh</td><td class="num">0</td></tr>
+<tr><td>File hook hệ thống bản quyền</td><td>%SystemRoot%\System32 / %SystemRoot%\SysWOW64 (SppExtComObjHook.dll, SppExtComObjPatcher.exe)</td><td>Rất cao</td><td class="num">1</td></tr>
+<tr><td>KMS server t&#249;y chỉnh trong registry</td><td>HKLM\...\SoftwareProtectionPlatform</td><td>Cao</td><td class="num">1</td></tr>
 </tbody>
 </table></div>
 </div>
