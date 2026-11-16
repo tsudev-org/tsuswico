@@ -49,7 +49,10 @@
               "8.0 GB"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": [
+            7
+          ]
         }
       ],
       "Badges": []
@@ -79,7 +82,12 @@
               "-"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": [
+            2,
+            3,
+            4
+          ]
         }
       ],
       "Badges": []
@@ -117,7 +125,11 @@
               "-"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": [
+            1,
+            2
+          ]
         }
       ],
       "Badges": []
@@ -145,7 +157,10 @@
               "2B2QEXM7"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": [
+            2
+          ]
         },
         {
           "Title": "",
@@ -167,7 +182,12 @@
               "-"
             ]
           ],
-          "Searchable": true
+          "Searchable": true,
+          "NumericColumns": [
+            3,
+            4,
+            5
+          ]
         }
       ],
       "Badges": []
@@ -193,7 +213,10 @@
               "31.0.101.5186"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": [
+            1
+          ]
         }
       ],
       "Badges": []
@@ -221,7 +244,8 @@
               "Có"
             ]
           ],
-          "Searchable": true
+          "Searchable": true,
+          "NumericColumns": []
         }
       ],
       "Badges": []
@@ -248,7 +272,10 @@
               "-"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": [
+            1
+          ]
         }
       ],
       "Badges": []
@@ -273,7 +300,8 @@
               "Nhanh (<5 giây)"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": []
         }
       ],
       "MethodNote": "Nếu kết quả báo lỗi, chạy với quyền Administrator: <code>DISM /Online /Cleanup-Image /RestoreHealth</code> rồi <code>sfc /scannow</code>. Mục System File Checker mặc định TẮT (mất 5-15 phút) - bật bằng tham số <code>--sfc</code>.",
@@ -303,7 +331,10 @@
               "-"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": [
+            3
+          ]
         },
         {
           "Title": "Lịch sử phát hiện mối đe dọa (file .exe, .doc, ... đã bị Defender gắn cờ)",
@@ -321,7 +352,8 @@
               "-"
             ]
           ],
-          "Searchable": true
+          "Searchable": true,
+          "NumericColumns": []
         }
       ],
       "MethodNote": "Danh sách trên chỉ hiện các mối đe dọa Windows Defender ĐÃ TỪNG quét thấy. Để chắc chắn máy sạch tại thời điểm hiện tại, hãy chạy Quick/Full Scan trong Windows Security trước khi chạy lại tool này.",

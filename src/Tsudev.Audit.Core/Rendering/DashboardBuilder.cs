@@ -153,7 +153,8 @@ public sealed class DashboardBuilder
         };
 
         var table = DataTable.Create("Danh sách báo cáo",
-            "Máy", "Loại báo cáo", "Thời điểm quét", "Kết luận", "Điểm rủi ro", "Số phát hiện", "Cấu hình", "Mở báo cáo");
+            "Máy", "Loại báo cáo", "Thời điểm quét", "Kết luận", "Điểm rủi ro", "Số phát hiện", "Cấu hình", "Mở báo cáo")
+            .Numeric("Điểm rủi ro", "Số phát hiện");
         table.Searchable = true;
 
         foreach (var e in entries)

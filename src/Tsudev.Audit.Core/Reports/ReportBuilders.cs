@@ -100,7 +100,8 @@ public static class LicenseReportBuilder
         report.RiskScore = score;
 
         var scopeTable = DataTable.Create("Phạm vi quét (6 hạng mục cố định - luôn hiển thị dù có phát hiện hay không)",
-            "Hạng mục quét", "Nguồn dữ liệu", "Mức độ nếu phát hiện", "Số phát hiện trên máy này");
+            "Hạng mục quét", "Nguồn dữ liệu", "Mức độ nếu phát hiện", "Số phát hiện trên máy này")
+            .Numeric("Số phát hiện trên máy này");
         foreach (var s in scope)
             scopeTable.AddRow(s.Category, s.DataSource, RiskLabels.Vietnamese(s.LevelIfFound), s.FoundCount);
 

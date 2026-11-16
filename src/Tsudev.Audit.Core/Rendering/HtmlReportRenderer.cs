@@ -398,7 +398,8 @@ public sealed class HtmlReportRenderer
         // phim (WCAG 2.1.1; axe scrollable-region-focusable).
         sb.Append("<div class=\"table-scroll\" tabindex=\"0\" role=\"region\" aria-label=\"")
           .Append(E(string.IsNullOrWhiteSpace(table.Title) ? "Bảng dữ liệu" : table.Title)).Append("\"><table>\n<thead><tr>");
-        foreach (var col in table.Columns) sb.Append("<th>").Append(E(col)).Append("</th>");
+        for (int i = 0; i < table.Columns.Count; i++)
+            sb.Append(table.NumericColumns.Contains(i) ? "<th class=\"num\">" : "<th>").Append(E(table.Columns[i])).Append("</th>");
         sb.Append("</tr></thead>\n<tbody>\n");
 
         foreach (var row in table.Rows)
@@ -407,7 +408,7 @@ public sealed class HtmlReportRenderer
             for (int i = 0; i < table.Columns.Count; i++)
             {
                 var cell = i < row.Length ? row[i] : "-";
-                sb.Append("<td>").Append(E(cell)).Append("</td>");
+                sb.Append(table.NumericColumns.Contains(i) ? "<td class=\"num\">" : "<td>").Append(E(cell)).Append("</td>");
             }
             sb.Append("</tr>\n");
         }
@@ -667,6 +668,7 @@ public sealed class HtmlReportRenderer
               border-bottom:1px solid var(--c-border);vertical-align:top}
         th{background:var(--c-bg-subtle);font-weight:var(--fw-semibold);
            white-space:nowrap;position:sticky;top:0}
+        th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
         tbody tr:nth-child(even){background:var(--c-bg-base)}
         tbody tr:hover{background:var(--c-bg-hover)}
 

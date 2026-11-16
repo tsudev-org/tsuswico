@@ -250,6 +250,7 @@ th,td{padding:var(--sp-2) var(--sp-4);text-align:left;
       border-bottom:1px solid var(--c-border);vertical-align:top}
 th{background:var(--c-bg-subtle);font-weight:var(--fw-semibold);
    white-space:nowrap;position:sticky;top:0}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
 tbody tr:nth-child(even){background:var(--c-bg-base)}
 tbody tr:hover{background:var(--c-bg-hover)}
 
@@ -319,12 +320,12 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <h3>Danh s&#225;ch b&#225;o c&#225;o</h3>
 <input class="filter" type="search" placeholder="Lọc trong bảng..." oninput="tsudevFilter(this)" aria-label="Lọc trong bảng">
 <div class="table-scroll" tabindex="0" role="region" aria-label="Danh s&#225;ch b&#225;o c&#225;o"><table>
-<thead><tr><th>M&#225;y</th><th>Loại b&#225;o c&#225;o</th><th>Thời điểm qu&#233;t</th><th>Kết luận</th><th>Điểm rủi ro</th><th>Số ph&#225;t hiện</th><th>Cấu h&#236;nh</th><th>Mở b&#225;o c&#225;o</th></tr></thead>
+<thead><tr><th>M&#225;y</th><th>Loại b&#225;o c&#225;o</th><th>Thời điểm qu&#233;t</th><th>Kết luận</th><th class="num">Điểm rủi ro</th><th class="num">Số ph&#225;t hiện</th><th>Cấu h&#236;nh</th><th>Mở b&#225;o c&#225;o</th></tr></thead>
 <tbody>
-<tr><td>DEMO-KETOAN-01</td><td>Phần cứng</td><td>09:31 09/11/2026</td><td>Chưa x&#225;c định</td><td>-</td><td>0</td><td>Dell Inc. OptiPlex 7010 &#183; 1 CPU &#183; 16.0 GB</td><td><a href="mau-DEMO-KETOAN-01/Windows_Hardware_Inventory_DEMO-KETOAN-01_20261109_093100.html">Mở &rarr;</a></td></tr>
-<tr><td>DEMO-KETOAN-01</td><td>Bản quyền</td><td>09:30 09/11/2026</td><td>✅ KH&#212;NG PH&#193;T HIỆN DẤU HIỆU K&#205;CH HOẠT TR&#193;I PH&#201;P</td><td>0/100 (Thấp)</td><td>0</td><td>-</td><td><a href="mau-DEMO-KETOAN-01/Windows_License_Audit_DEMO-KETOAN-01_20261109_093000.html">Mở &rarr;</a></td></tr>
-<tr><td>DEMO-KHO-02</td><td>Phần cứng</td><td>09:45 09/11/2026</td><td>Chưa x&#225;c định</td><td>-</td><td>0</td><td>Dell Inc. Latitude 5440 &#183; 1 CPU &#183; 8.0 GB</td><td><a href="mau-DEMO-KHO-02/Windows_Hardware_Inventory_DEMO-KHO-02_20261109_094500.html">Mở &rarr;</a></td></tr>
-<tr><td>DEMO-KHO-02</td><td>Bản quyền</td><td>09:44 09/11/2026</td><td>❌ C&#211; DẤU HIỆU R&#213; R&#192;NG CỦA K&#205;CH HOẠT TR&#193;I PH&#201;P</td><td>47/100 (Cao)</td><td>4</td><td>-</td><td><a href="mau-DEMO-KHO-02/Windows_License_Audit_DEMO-KHO-02_20261109_094400.html">Mở &rarr;</a></td></tr>
+<tr><td>DEMO-KETOAN-01</td><td>Phần cứng</td><td>09:31 09/11/2026</td><td>Chưa x&#225;c định</td><td class="num">-</td><td class="num">0</td><td>Dell Inc. OptiPlex 7010 &#183; 1 CPU &#183; 16.0 GB</td><td><a href="mau-DEMO-KETOAN-01/Windows_Hardware_Inventory_DEMO-KETOAN-01_20261109_093100.html">Mở &rarr;</a></td></tr>
+<tr><td>DEMO-KETOAN-01</td><td>Bản quyền</td><td>09:30 09/11/2026</td><td>✅ KH&#212;NG PH&#193;T HIỆN DẤU HIỆU K&#205;CH HOẠT TR&#193;I PH&#201;P</td><td class="num">0/100 (Thấp)</td><td class="num">0</td><td>-</td><td><a href="mau-DEMO-KETOAN-01/Windows_License_Audit_DEMO-KETOAN-01_20261109_093000.html">Mở &rarr;</a></td></tr>
+<tr><td>DEMO-KHO-02</td><td>Phần cứng</td><td>09:45 09/11/2026</td><td>Chưa x&#225;c định</td><td class="num">-</td><td class="num">0</td><td>Dell Inc. Latitude 5440 &#183; 1 CPU &#183; 8.0 GB</td><td><a href="mau-DEMO-KHO-02/Windows_Hardware_Inventory_DEMO-KHO-02_20261109_094500.html">Mở &rarr;</a></td></tr>
+<tr><td>DEMO-KHO-02</td><td>Bản quyền</td><td>09:44 09/11/2026</td><td>❌ C&#211; DẤU HIỆU R&#213; R&#192;NG CỦA K&#205;CH HOẠT TR&#193;I PH&#201;P</td><td class="num">47/100 (Cao)</td><td class="num">4</td><td>-</td><td><a href="mau-DEMO-KHO-02/Windows_License_Audit_DEMO-KHO-02_20261109_094400.html">Mở &rarr;</a></td></tr>
 </tbody>
 </table></div>
 <div class="table-foot"><label class="page-size">Số dòng mỗi trang <select data-page-size><option value="10" selected>10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option><option value="200">200</option></select></label><p class="table-sum" aria-live="polite">4 dòng</p><nav class="pager" aria-label="Phân trang"></nav></div>

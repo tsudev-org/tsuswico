@@ -59,7 +59,8 @@
               "09:30 09/11/2026"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": []
         }
       ],
       "Badges": []
@@ -88,7 +89,8 @@
               "OEM:DM"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": []
         }
       ],
       "PreformattedText": "Không tìm thấy slmgr.vbs trên máy này.",
@@ -118,7 +120,8 @@
               "-"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": []
         }
       ],
       "Badges": []
@@ -174,7 +177,10 @@
               "0"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": [
+            3
+          ]
         },
         {
           "Title": "Danh sách chi tiết từng dấu hiệu phát hiện được",
@@ -192,7 +198,8 @@
               "-"
             ]
           ],
-          "Searchable": false
+          "Searchable": false,
+          "NumericColumns": []
         }
       ],
       "MethodNote": "<b>Về phương pháp và giới hạn:</b> Đây là quét heuristic theo các dấu hiệu ĐÃ BIẾT của những công cụ kích hoạt trái phép phổ biến - KHÔNG thể phát hiện 100% mọi biến thể, đặc biệt các bản tùy biến/đổi tên mới hoặc kỹ thuật kích hoạt qua Digital License/HWID không để lại artifact rõ ràng. Không có phát hiện KHÔNG đồng nghĩa máy sạch tuyệt đối; ngược lại có phát hiện cũng nên xác minh thủ công trước khi kết luận, vì một số tên file/service có thể trùng lặp ngẫu nhiên. Kết quả này mang tính hỗ trợ ra quyết định, KHÔNG phải bằng chứng pháp lý thay thế cho việc đối chiếu hồ sơ mua bản quyền chính thức của tổ chức.<br><br><b>Cách tính điểm rủi ro:</b> API Genuine thất bại +40đ; mỗi phát hiện Rất cao +15đ (tối đa 30đ); Cao +10đ (tối đa 30đ); Trung bình +5đ (tối đa 15đ); mỗi phần mềm cần kiểm tra thủ công +2đ (tối đa 15đ).",
@@ -272,7 +279,8 @@
               "{A4}"
             ]
           ],
-          "Searchable": true
+          "Searchable": true,
+          "NumericColumns": []
         }
       ],
       "Badges": []
@@ -301,7 +309,8 @@
               "-"
             ]
           ],
-          "Searchable": true
+          "Searchable": true,
+          "NumericColumns": []
         }
       ],
       "Badges": []

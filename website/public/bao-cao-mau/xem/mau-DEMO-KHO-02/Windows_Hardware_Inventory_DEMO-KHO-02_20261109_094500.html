@@ -250,6 +250,7 @@ th,td{padding:var(--sp-2) var(--sp-4);text-align:left;
       border-bottom:1px solid var(--c-border);vertical-align:top}
 th{background:var(--c-bg-subtle);font-weight:var(--fw-semibold);
    white-space:nowrap;position:sticky;top:0}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
 tbody tr:nth-child(even){background:var(--c-bg-base)}
 tbody tr:hover{background:var(--c-bg-hover)}
 
@@ -324,9 +325,9 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <h2>1. Tổng quan thiết bị</h2>
 <div class="table-block">
 <div class="table-scroll" tabindex="0" role="region" aria-label="Bảng dữ liệu"><table>
-<thead><tr><th>T&#234;n m&#225;y</th><th>Loại thiết bị</th><th>H&#227;ng sản xuất</th><th>Model</th><th>Số Serial (Chassis)</th><th>BIOS Version</th><th>Mainboard - Model</th><th>Tổng RAM</th></tr></thead>
+<thead><tr><th>T&#234;n m&#225;y</th><th>Loại thiết bị</th><th>H&#227;ng sản xuất</th><th>Model</th><th>Số Serial (Chassis)</th><th>BIOS Version</th><th>Mainboard - Model</th><th class="num">Tổng RAM</th></tr></thead>
 <tbody>
-<tr><td>DEMO-KHO-02</td><td>Kh&#244;ng x&#225;c định</td><td>Dell Inc.</td><td>Latitude 5440</td><td>DEMO002</td><td>1.21.0</td><td>0DEMO1</td><td>8.0 GB</td></tr>
+<tr><td>DEMO-KHO-02</td><td>Kh&#244;ng x&#225;c định</td><td>Dell Inc.</td><td>Latitude 5440</td><td>DEMO002</td><td>1.21.0</td><td>0DEMO1</td><td class="num">8.0 GB</td></tr>
 </tbody>
 </table></div>
 </div>
@@ -335,9 +336,9 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <h2>2. CPU (Bộ xử l&#253;)</h2>
 <div class="table-block">
 <div class="table-scroll" tabindex="0" role="region" aria-label="Bảng dữ liệu"><table>
-<thead><tr><th>T&#234;n CPU</th><th>H&#227;ng sản xuất</th><th>Số nh&#226;n (Core)</th><th>Số luồng (Thread)</th><th>Xung nhịp tối đa (MHz)</th><th>Socket</th></tr></thead>
+<thead><tr><th>T&#234;n CPU</th><th>H&#227;ng sản xuất</th><th class="num">Số nh&#226;n (Core)</th><th class="num">Số luồng (Thread)</th><th class="num">Xung nhịp tối đa (MHz)</th><th>Socket</th></tr></thead>
 <tbody>
-<tr><td>13th Gen Intel(R) Core(TM) i5-1335U</td><td>-</td><td>10</td><td>12</td><td>2500</td><td>-</td></tr>
+<tr><td>13th Gen Intel(R) Core(TM) i5-1335U</td><td>-</td><td class="num">10</td><td class="num">12</td><td class="num">2500</td><td>-</td></tr>
 </tbody>
 </table></div>
 </div>
@@ -346,10 +347,10 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <h2>3. RAM (Bộ nhớ) - 2 thanh đang cắm / 2 khe cắm</h2>
 <div class="table-block">
 <div class="table-scroll" tabindex="0" role="region" aria-label="Bảng dữ liệu"><table>
-<thead><tr><th>Khe cắm (Slot)</th><th>Dung lượng</th><th>Tốc độ (MHz)</th><th>Loại RAM</th><th>H&#227;ng sản xuất</th><th>Serial Number</th></tr></thead>
+<thead><tr><th>Khe cắm (Slot)</th><th class="num">Dung lượng</th><th class="num">Tốc độ (MHz)</th><th>Loại RAM</th><th>H&#227;ng sản xuất</th><th>Serial Number</th></tr></thead>
 <tbody>
-<tr><td>DIMM1</td><td>4.0 GB</td><td>3200</td><td>DDR4</td><td>Samsung</td><td>-</td></tr>
-<tr><td>DIMM2</td><td>4.0 GB</td><td>3200</td><td>DDR4</td><td>Samsung</td><td>-</td></tr>
+<tr><td>DIMM1</td><td class="num">4.0 GB</td><td class="num">3200</td><td>DDR4</td><td>Samsung</td><td>-</td></tr>
+<tr><td>DIMM2</td><td class="num">4.0 GB</td><td class="num">3200</td><td>DDR4</td><td>Samsung</td><td>-</td></tr>
 </tbody>
 </table></div>
 </div>
@@ -358,18 +359,18 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <h2>4. Ổ đĩa &amp; ph&#226;n v&#249;ng</h2>
 <div class="table-block">
 <div class="table-scroll" tabindex="0" role="region" aria-label="Bảng dữ liệu"><table>
-<thead><tr><th>T&#234;n / Model</th><th>Chuẩn giao tiếp</th><th>Dung lượng</th><th>Serial Number</th><th>Firmware</th></tr></thead>
+<thead><tr><th>T&#234;n / Model</th><th>Chuẩn giao tiếp</th><th class="num">Dung lượng</th><th>Serial Number</th><th>Firmware</th></tr></thead>
 <tbody>
-<tr><td>NVMe DEMO SSD 512GB</td><td>SCSI</td><td>476.9 GB</td><td>DEMO-0000-0001</td><td>2B2QEXM7</td></tr>
+<tr><td>NVMe DEMO SSD 512GB</td><td>SCSI</td><td class="num">476.9 GB</td><td>DEMO-0000-0001</td><td>2B2QEXM7</td></tr>
 </tbody>
 </table></div>
 </div>
 <div class="table-block" data-paged="1">
 <input class="filter" type="search" placeholder="Lọc trong bảng..." oninput="tsudevFilter(this)" aria-label="Lọc trong bảng">
 <div class="table-scroll" tabindex="0" role="region" aria-label="Bảng dữ liệu"><table>
-<thead><tr><th>Ổ đĩa</th><th>Nh&#227;n</th><th>Hệ thống file</th><th>Tổng dung lượng</th><th>Dung lượng trống</th><th>Tỷ lệ c&#242;n trống (%)</th></tr></thead>
+<thead><tr><th>Ổ đĩa</th><th>Nh&#227;n</th><th>Hệ thống file</th><th class="num">Tổng dung lượng</th><th class="num">Dung lượng trống</th><th class="num">Tỷ lệ c&#242;n trống (%)</th></tr></thead>
 <tbody>
-<tr><td>-</td><td>Kh&#244;ng đọc được ph&#226;n v&#249;ng n&#224;o</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>-</td><td>Kh&#244;ng đọc được ph&#226;n v&#249;ng n&#224;o</td><td>-</td><td class="num">-</td><td class="num">-</td><td class="num">-</td></tr>
 </tbody>
 </table></div>
 <div class="table-foot"><label class="page-size">Số dòng mỗi trang <select data-page-size><option value="10" selected>10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option><option value="200">200</option></select></label><p class="table-sum" aria-live="polite">1 dòng</p><nav class="pager" aria-label="Phân trang"></nav></div>
@@ -379,9 +380,9 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <h2>5. Card đồ họa (GPU)</h2>
 <div class="table-block">
 <div class="table-scroll" tabindex="0" role="region" aria-label="Bảng dữ liệu"><table>
-<thead><tr><th>T&#234;n GPU</th><th>VRAM (ước t&#237;nh)</th><th>Độ ph&#226;n giải hiện tại</th><th>Phi&#234;n bản Driver</th></tr></thead>
+<thead><tr><th>T&#234;n GPU</th><th class="num">VRAM (ước t&#237;nh)</th><th>Độ ph&#226;n giải hiện tại</th><th>Phi&#234;n bản Driver</th></tr></thead>
 <tbody>
-<tr><td>Intel(R) UHD Graphics 770</td><td>1.0 GB</td><td>1920 x 1080</td><td>31.0.101.5186</td></tr>
+<tr><td>Intel(R) UHD Graphics 770</td><td class="num">1.0 GB</td><td>1920 x 1080</td><td>31.0.101.5186</td></tr>
 </tbody>
 </table></div>
 </div>
@@ -404,9 +405,9 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <p class="desc">Liệt k&#234; thiết bị c&#243; m&#227; lỗi (ConfigManagerErrorCode kh&#225;c 0) - tương đương dấu chấm than v&#224;ng hoặc dấu X đỏ trong Device Manager.</p>
 <div class="table-block">
 <div class="table-scroll" tabindex="0" role="region" aria-label="Bảng dữ liệu"><table>
-<thead><tr><th>T&#234;n thiết bị</th><th>M&#227; lỗi</th><th>&#221; nghĩa</th><th>Nh&#224; sản xuất</th></tr></thead>
+<thead><tr><th>T&#234;n thiết bị</th><th class="num">M&#227; lỗi</th><th>&#221; nghĩa</th><th>Nh&#224; sản xuất</th></tr></thead>
 <tbody>
-<tr><td>-</td><td>Kh&#244;ng ph&#225;t hiện thiết bị n&#224;o bị lỗi driver</td><td>-</td><td>-</td></tr>
+<tr><td>-</td><td class="num">Kh&#244;ng ph&#225;t hiện thiết bị n&#224;o bị lỗi driver</td><td>-</td><td>-</td></tr>
 </tbody>
 </table></div>
 </div>
@@ -431,9 +432,9 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <div class="table-block">
 <h3>Trạng th&#225;i bảo vệ hiện tại</h3>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Trạng th&#225;i bảo vệ hiện tại"><table>
-<thead><tr><th>Bảo vệ thời gian thực</th><th>Chống virus bật</th><th>Phi&#234;n bản chữ k&#253;</th><th>Tuổi chữ k&#253; (ng&#224;y)</th><th>Qu&#233;t nhanh gần nhất</th></tr></thead>
+<thead><tr><th>Bảo vệ thời gian thực</th><th>Chống virus bật</th><th>Phi&#234;n bản chữ k&#253;</th><th class="num">Tuổi chữ k&#253; (ng&#224;y)</th><th>Qu&#233;t nhanh gần nhất</th></tr></thead>
 <tbody>
-<tr><td>Kh&#244;ng lấy được</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>Kh&#244;ng lấy được</td><td>-</td><td>-</td><td class="num">-</td><td>-</td></tr>
 </tbody>
 </table></div>
 </div>

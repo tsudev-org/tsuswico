@@ -53,6 +53,26 @@ public class HtmlRenderTests
         Assert.Empty(Regex.Matches(html, "\\son(?!input)[a-z]+=\""));
     }
 
+    /// <summary>QU-7a: cot so can phai (quy uoc bang), cot dinh danh giong so (Serial) van can trai.</summary>
+    [Fact]
+    public void Cot_so_can_phai_cot_dinh_danh_can_trai()
+    {
+        var t = DataTable.Create("Ổ đĩa", "Tên / Model", "Dung lượng", "Serial Number").Numeric("Dung lượng");
+        t.AddRow("Disk 0", "512 GB", "123456789");
+        var report = new AuditReport { ComputerName = "PC", Title = "T" };
+        report.Sections.Add(new ReportSection { Id = "s", NavLabel = "s", Heading = "s", Tables = { t } });
+        var html = new HtmlReportRenderer().Render(report);
+
+        Assert.Contains("<th class=\"num\">Dung lượng</th>", html);
+        Assert.Contains("<td class=\"num\">512 GB</td>", html);
+        Assert.Contains("<td>123456789</td>", html);
+        Assert.Contains("td.num{text-align:right", html);
+        Assert.Throws<ArgumentException>(() => DataTable.Create("x", "A").Numeric("B"));
+
+        // Bang that da khai cot so: o phan cung cua bao cao mau co cot can phai.
+        Assert.Contains("class=\"num\"", new HtmlReportRenderer().Render(Infected.Hw));
+    }
+
     [Fact]
     public void Du_lieu_doc_hai_duoc_escape()
     {

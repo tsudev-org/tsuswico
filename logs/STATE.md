@@ -22,7 +22,7 @@
 
 Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái.
 
-> **Việc làm được ngay, không cần ai** (thứ tự: phiếu `20261110-01` mục 1c): `QU-7`, `QU-STD-TABLE`, `3.5`, `QU-STD-BRAND`. Mọi việc
+> **Việc làm được ngay, không cần ai** (thứ tự: phiếu `20261110-01` mục 1c): ~~`QU-7`~~ ✅, ~~`QU-STD-TABLE`~~ ✅, `3.5` (còn logging, `--json-only`, căn cột tiến trình), `QU-STD-BRAND`. Mọi việc
 > còn lại đều chặn ở người dùng hoặc bên ngoài - xem cột lý do.
 
 - [ ] **QU-2** ⛔ Nhờ người dùng kiểm **Inno Setup** biên dịch được với
@@ -39,16 +39,17 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
 - [ ] **3.4** ⛔ Cấu hình SignPath sau khi được duyệt - chờ bên ngoài
 - [ ] **3.5** ⬜ Việc kỹ thuật - **làm được ngay, không cần người dùng**.
-      ~~xUnit~~ ✅ xong ở S006 (`docs/STATE.md` mục 3.5-1). Còn lại, theo thứ tự
-      giá trị: tách file gộp (`InventoryCollectors.cs` 4 class,
-      `LicenseCollectors.cs` 5 class) ▸ logging có cấu trúc ▸ `--json-only`
-      ▸ căn cột dòng tiến trình.
+      ~~xUnit~~ ✅ xong ở S006 (`docs/STATE.md` mục 3.5-1). ~~tách file gộp~~ ✅ 16/11/2026 (phiên tsudev-27):
+      `InventoryCollectors.cs` + `LicenseCollectors.cs` → 12 tệp, mỗi tệp MỘT kiểu (kể cả record). Còn lại, theo
+      thứ tự giá trị: logging có cấu trúc ▸ `--json-only` ▸ căn cột dòng tiến trình.
 - [ ] **3.6** ⬜ Quyết định có phát hành `26.8.1901` không - **đọc mục 4.7 trước**
 - [x] **QU-6** ✅ S007 - tự giải theo bộ quy ước v3.2.0 (`BRAND_ASSETS.md`): wordmark lấy token, xem `docs/STATE.md` mục S007. Dòng cũ: ⛔ Quyết có đưa **4 sắc chữ ký thương hiệu** `tsudev` vào
       `tokens/design-tokens.json` không - hiện là bốn giá trị màu **duy nhất**
       còn viết cứng (`DesignTokens.cs`). Sửa file thuộc bộ quy ước nên **cần
       chủ project cho phép trực tiếp**. `docs/STATE.md` mục QU-4.
-- [ ] **QU-7** ⬜ Hai món quy ước còn nợ sau QU-4, **làm được ngay**: (a) số
+- [x] **QU-7** ✅ 16/11/2026 (phiên tsudev-27): `DataTable.Numeric(...)` khai cột số theo TÊN (sai tên ⇒ ném lỗi), HTML
+      gắn `class="num"` (căn phải + `tabular-nums`); 10 bảng đã khai; Serial/mã sản phẩm CỐ Ý căn trái. JSON báo cáo
+      có thêm trường `NumericColumns` (cộng thêm, không phá). Báo cáo mẫu website sinh lại. Dòng cũ: (a) số
       **căn phải** trong bảng - `DataTable` chưa mang kiểu cột nên phải thêm;
       (b) ~~**Warm Mode** cần nút chuyển~~ - BỎ: chủ dự án bỏ chế độ Ấm toàn hệ sinh thái (phiếu `20261110-05`,
       10/11/2026); chỉ còn Sáng / Tối / Hệ thống. `docs/STATE.md` mục QU-4.
