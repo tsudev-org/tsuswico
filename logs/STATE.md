@@ -33,7 +33,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       cài (`26.8.18`, `26.8.18.2`) không mất đường cập nhật - `docs/STATE.md` mục 4.7.
 - [x] **3.1** ✅ PR winget #419878 đã MERGE (`tsudev.SWICO` 26.8.18.2 trên winget) - đo 16/11/2026.
 - [ ] **XM-2.3** ⬜ Hồ sơ OpenSSF Best Practices (phiếu `20261115-01` mục 2.3): `docs/best-practices.json/.md`, `bp.cjs` - cần phiên đăng nhập bestpractices.dev.
-- [ ] **TEN-1** 👤 Đổi thư mục cục bộ `~/projects/tsudev-swico` → `~/projects/tsuswico` khi KHÔNG có phiên nào mở trong đó (ADR-0001).
+- [x] **TEN-1** ✅ Thư mục cục bộ đã đổi `~/projects/tsudev-swico` → `~/projects/tsuswico` (16/11/2026, phiên S008, chủ dự án cho phép làm trong phiên).
 - [ ] **TEN-2** ⬜ Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
@@ -68,6 +68,9 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 16/11/2026 - **S008 (tiếp):** tắt JavaScript Detections của zone `tsudev.com` (xem Quyết định); 7 site trả 200,
+  không còn `challenge-platform`; quét trình duyệt swico + files sạch console (trừ trang 404 cố ý). Đổi thư mục
+  cục bộ thành `~/projects/tsuswico` (TEN-1).
 - 16/11/2026 - **S008:** sản phẩm đổi tên **Tsu Swico**, repo `tsudev-org/tsuswico` (ADR-0001), Worker `tsuswico`;
   Scoop `tsuswico` (+ gói chuyển tiếp); Ủng hộ → `tsudev.com/ung-ho/`; khối Cài bằng lệnh sinh lúc build; ký
   SHA256SUMS Sigstore + provenance + Scorecard; README tiếng Anh; sửa trùng id, nút Chép, footer di động.
@@ -112,6 +115,13 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 
 ## Quyết định quan trọng
 
+- 16/11/2026 - **Tắt JavaScript Detections (`enable_js=false`) cho zone `tsudev.com`** - chủ dự án giao agent tự chọn
+  phương án an toàn cho cả hệ. Lý do: Bot Fight Mode đã tắt (`fight_mode=false`) và gói Free không dùng được trường
+  `cf.bot_management.js_detection` trong luật WAF ⇒ script chèn ở tầng biên không cấp tín hiệu cho cơ chế chặn nào,
+  chỉ thêm mã bên thứ ba vào mọi trang. Cách khác đều kém hơn: nới CSP (`'unsafe-inline'`) mở lỗ XSS; băm không phủ
+  được (tham số đổi mỗi request); thêm Worker sinh nonce cho mọi site tĩnh tốn công và tốn lượt gọi. Turnstile của
+  tsudev.com độc lập, không bị ảnh hưởng. Qua API `PUT /zones/{id}/bot_management`; ảnh chụp trước/sau chỉ khác đúng
+  trường `enable_js`. Muốn bật lại Bot Fight Mode thì phải bật lại `enable_js` - khi đó lỗi console CSP quay lại.
 - 16/11/2026 - **ADR-0001: tên Tsu Swico / `tsuswico`** (chủ dự án). Giữ `swico.exe`, winget `tsudev.SWICO`, tên miền.
   Tên `tsudev-swico` (org) và `swico` (tsudev-tsudev) cấm tạo lại.
 
