@@ -15,7 +15,7 @@ phẩm, trừ chỗ lịch sử hoặc tương thích bắt buộc giữ.
 | --- | --- | --- |
 | Tên hiển thị (CLI, báo cáo, bộ cài, website, tài liệu) | `tsudev SWICO` | **Tsu Swico** |
 | Repo GitHub | `tsudev-org/tsudev-swico` | `tsudev-org/tsuswico` (đổi 16/11/2026, cùng id `1338164150`) |
-| Thư mục cục bộ | `~/projects/tsudev-swico` | `~/projects/tsuswico` |
+| Thư mục cục bộ | `~/projects/tsudev-swico` | `~/projects/tsuswico` (đã đổi 16/11/2026) |
 | Tệp phát hành dạng mới | `tsudev-swico_<v>_x64-setup.exe` | `tsuswico_<v>_x64-setup.exe` (`ReleaseName.AppName`) |
 | Chuỗi nhận dạng HTTP | `tsudev-SWICO/<v>` | `TsuSwico/<v>` |
 | Worker Cloudflare | `tsudev-swico` | `tsuswico` (giữ tên miền `swico.tsudev.com`) |

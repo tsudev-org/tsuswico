@@ -78,3 +78,6 @@ Sáng/Tối/Hệ thống, axe 16 trang × 2 chế độ 0 lỗi.
 Script đó là `window.__CF$cv$params` do **Cloudflare tự chèn** (Bot Fight Mode / JavaScript detections ở cấp zone
 tsudev.com), không có trong `dist/`. CSP của site chặn nó đúng như thiết kế. Muốn hết lỗi: tắt JS detections cho zone
 hoặc chấp nhận - ảnh hưởng mọi `*.tsudev.com`, không sửa từ repo con. Trang 404 trả HTTP 404 là có chủ đích.
+
+> **16/11/2026 - ĐÃ XỬ LÝ:** JavaScript Detections của zone `tsudev.com` đã tắt (`enable_js=false`); script này không
+> còn được chèn. Lý do và cách đo: `logs/STATE.md` mục Quyết định quan trọng.
