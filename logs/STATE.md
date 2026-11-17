@@ -32,7 +32,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - [ ] **QU-3** ⛔ Quyết có phát hành **bản cầu nối** dạng cũ không, để hai bản đã
       cài (`26.8.18`, `26.8.18.2`) không mất đường cập nhật - `docs/STATE.md` mục 4.7.
 - [x] **3.1** ✅ PR winget #419878 đã MERGE (`tsudev.SWICO` 26.8.18.2 trên winget) - đo 16/11/2026.
-- [ ] **XM-2.3** ⬜ Hồ sơ OpenSSF Best Practices (phiếu `20261115-01` mục 2.3): `docs/best-practices.json/.md`, `bp.cjs` - cần phiên đăng nhập bestpractices.dev.
+- [x] **XM-2.3** ✅ 17/11/2026 (phiên tsudev-27): hồ sơ [16837](https://www.bestpractices.dev/projects/16837) passing 100% (`docs/best-practices.json`; `dynamic_analysis` Unmet trung thực). Kèm #27 (ghim SHA 16 action, quyền token, Dependabot, SECURITY.md, CONTRIBUTING.md, mẫu issue), bật CodeQL default setup, #28 sửa 2 cảnh báo CodeQL high ở website.
 - [x] **TEN-1** ✅ Thư mục cục bộ đã đổi `~/projects/tsudev-swico` → `~/projects/tsuswico` (16/11/2026, phiên S008, chủ dự án cho phép làm trong phiên).
 - [ ] **TEN-2** ⬜ Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
