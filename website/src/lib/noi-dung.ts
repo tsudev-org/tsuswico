@@ -63,16 +63,29 @@ export function laNgoai(href: string): boolean {
 }
 
 /**
- * Bỏ MỌI chú thích HTML. Một lượt `replace` để sót `<!--` khi chú thích lồng/chồng nhau (`<!-<!-- -->-`) - CodeQL
- * js/incomplete-multi-character-sanitization. Lặp tới khi chuỗi không đổi, rồi gỡ mọi `<!--` lẻ còn lại.
+ * Bỏ MỌI chú thích HTML. Một lượt `replace` bằng regex để sót `<!--` khi chú thích lồng/chồng nhau (`<!-<!-- -->-`) -
+ * CodeQL js/incomplete-multi-character-sanitization.
  */
 export function boChuThich(s: string): string {
-  let truoc: string;
-  do {
-    truoc = s;
-    s = s.replace(/<!--[\s\S]*?-->/g, '');
-  } while (s !== truoc);
-  return s.replace(/<!--/g, '');
+  // Duyệt chuỗi thay vì replace bằng regex: mỗi `<!--` cắt tới `-->` kế tiếp (không có thì cắt tới hết). Một lượt
+  // có thể GHÉP ra `<!--` mới (`<!-<!-- -->-` -> `<!--`) nên lặp tới khi hết; mỗi lượt chuỗi ngắn đi nên chắc chắn dừng.
+  while (s.includes('<!--')) {
+    let ra = '';
+    let i = 0;
+    for (;;) {
+      const dau = s.indexOf('<!--', i);
+      if (dau < 0) {
+        ra += s.slice(i);
+        break;
+      }
+      ra += s.slice(i, dau);
+      const cuoi = s.indexOf('-->', dau + 4);
+      if (cuoi < 0) break;
+      i = cuoi + 3;
+    }
+    s = ra;
+  }
+  return s;
 }
 
 const thoat = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
