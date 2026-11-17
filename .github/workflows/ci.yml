@@ -21,13 +21,13 @@ jobs:
     name: Build & test (Linux)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       # Doc phien ban TU global.json, khong ghi cung o day.
       # Runner cua GitHub co san .NET 10 SDK, ma `dotnet build` luon chon SDK
       # MOI NHAT tren may - khong ghim thi CI build bang .NET 10 con may dev
       # build bang .NET 8, ra hai ket qua phan tich khac nhau.
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
         with:
           global-json-file: global.json
 
@@ -58,8 +58,8 @@ jobs:
       run:
         working-directory: website
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
@@ -82,13 +82,13 @@ jobs:
     name: Smoke test (Windows)
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       # Doc phien ban TU global.json, khong ghi cung o day.
       # Runner cua GitHub co san .NET 10 SDK, ma `dotnet build` luon chon SDK
       # MOI NHAT tren may - khong ghim thi CI build bang .NET 10 con may dev
       # build bang .NET 8, ra hai ket qua phan tich khac nhau.
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
         with:
           global-json-file: global.json
 
@@ -194,14 +194,14 @@ jobs:
 
       - name: Luu ket qua quet de doi chieu khi can
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ket-qua-quet-${{ github.sha }}
           path: out/**/*.json
           retention-days: 7
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: swico-unsigned-${{ github.sha }}
           path: publish/swico.exe
