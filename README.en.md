@@ -11,6 +11,7 @@ to install. A product of [tsudev](https://tsudev.com). Product page: [swico.tsud
 [![CI](https://github.com/tsudev-org/tsuswico/actions/workflows/ci.yml/badge.svg)](https://github.com/tsudev-org/tsuswico/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/tsudev-org/tsuswico)](https://github.com/tsudev-org/tsuswico/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16837/badge)](https://www.bestpractices.dev/projects/16837)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/tsudev-org/tsuswico/badge)](https://scorecard.dev/viewer/?uri=github.com/tsudev-org/tsuswico)
 
 **Offline by design.** Every scan runs fully without Internet access or an account. The only network call is the
