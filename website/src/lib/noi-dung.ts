@@ -62,13 +62,26 @@ export function laNgoai(href: string): boolean {
   }
 }
 
+/**
+ * Bỏ MỌI chú thích HTML. Một lượt `replace` để sót `<!--` khi chú thích lồng/chồng nhau (`<!-<!-- -->-`) - CodeQL
+ * js/incomplete-multi-character-sanitization. Lặp tới khi chuỗi không đổi, rồi gỡ mọi `<!--` lẻ còn lại.
+ */
+export function boChuThich(s: string): string {
+  let truoc: string;
+  do {
+    truoc = s;
+    s = s.replace(/<!--[\s\S]*?-->/g, '');
+  } while (s !== truoc);
+  return s.replace(/<!--/g, '');
+}
+
 const thoat = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 /** Chuyển Markdown của repo sang HTML: sửa liên kết tương đối, thêm id cho tiêu đề, rel cho liên kết ngoài. */
 export function renderMd(tepMd: string, opts: { boTieuDeDau?: boolean; md?: string; haCap?: number } = {}): { html: string; tieuDe: string } {
   let md = opts.md ?? docTep(tepMd);
   // Bỏ chú thích HTML (khối <!-- update ... --> của CHANGELOG, ghi chú nội bộ): không hiển thị, không cần gửi đi.
-  md = md.replace(/<!--[\s\S]*?-->/g, '');
+  md = boChuThich(md);
   const tieuDe = md.match(/^#\s+(.+)$/m)?.[1]?.trim() ?? '';
   if (opts.boTieuDeDau) md = md.replace(/^#\s+.+\n/m, '');
   const haCap = opts.haCap ?? 0;   // hạ cấp tiêu đề khi ghép tài liệu vào giữa trang
@@ -111,7 +124,7 @@ export function renderMd(tepMd: string, opts: { boTieuDeDau?: boolean; md?: stri
 
 /** Các mục `## ...` của một tệp Markdown có tiêu đề nằm trong `ten` (giữ thứ tự của tệp). Một nguồn: README.md. */
 export function mucMd(tepMd: string, ten: string[]): string {
-  const md = docTep(tepMd).replace(/<!--[\s\S]*?-->/g, '');
+  const md = boChuThich(docTep(tepMd));
   const khoi = md.split(/^(?=## )/m).filter((k) => k.startsWith('## '));
   const chon = khoi.filter((k) => ten.includes(k.match(/^## (.+)$/m)![1].trim()));
   if (chon.length !== ten.length) throw new Error(`${tepMd}: thiếu mục ${ten.filter((t) => !chon.some((k) => k.startsWith(`## ${t}`))).join(', ')}`);
