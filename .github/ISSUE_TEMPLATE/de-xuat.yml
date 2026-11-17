@@ -1,0 +1,14 @@
+name: Đề xuất / Feature request
+description: Ý tưởng cải thiện Tsu Swico
+labels: [enhancement]
+body:
+  - type: textarea
+    id: van-de
+    attributes:
+      label: Vấn đề cần giải quyết / Problem
+    validations:
+      required: true
+  - type: textarea
+    id: giai-phap
+    attributes:
+      label: Giải pháp đề xuất / Proposed solution

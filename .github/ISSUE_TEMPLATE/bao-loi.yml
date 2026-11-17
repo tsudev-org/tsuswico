@@ -1,0 +1,32 @@
+name: Báo lỗi / Bug report
+description: Tsu Swico chạy sai hoặc báo cáo sai
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Lỗ hổng bảo mật: KHÔNG báo ở đây - xem SECURITY.md. Che tên máy, serial, khoá sản phẩm trước khi đính kèm báo cáo.
+  - type: input
+    id: phien-ban
+    attributes:
+      label: Phiên bản / Version
+      placeholder: 26.8.18.2
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows
+      placeholder: Windows 11 24H2
+  - type: textarea
+    id: tai-hien
+    attributes:
+      label: Các bước tái hiện / Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: mong-doi
+    attributes:
+      label: Mong đợi và thực tế / Expected vs actual
+    validations:
+      required: true

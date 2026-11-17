@@ -1,0 +1,276 @@
+{
+  "fields": {
+    "name": "Tsu Swico",
+    "homepage_url": "https://swico.tsudev.com"
+  },
+  "criteria": {
+    "description_good": [
+      "Met",
+      "README.en.md describes Tsu Swico: a Windows tool that checks Windows and Office licensing and collects a hardware inventory into HTML/XLSX/JSON reports, with data never leaving the machine: https://github.com/tsudev-org/tsuswico/blob/main/README.en.md"
+    ],
+    "interact": [
+      "Met",
+      "README.en.md and CONTRIBUTING.md explain how to get the source and binaries, report bugs (issue forms), request features and contribute: https://github.com/tsudev-org/tsuswico/blob/main/CONTRIBUTING.md"
+    ],
+    "contribution": [
+      "Met",
+      "CONTRIBUTING.md explains the pull request process: https://github.com/tsudev-org/tsuswico/blob/main/CONTRIBUTING.md"
+    ],
+    "contribution_requirements": [
+      "Met",
+      "CONTRIBUTING.md lists the requirements: xUnit tests for every change, zero-warning build (TreatWarningsAsErrors, .NET analyzers latest-recommended), Conventional Commits: https://github.com/tsudev-org/tsuswico/blob/main/CONTRIBUTING.md"
+    ],
+    "floss_license": [
+      "Met",
+      "Apache-2.0: https://github.com/tsudev-org/tsuswico/blob/main/LICENSE"
+    ],
+    "floss_license_osi": [
+      "Met",
+      "Apache-2.0 is OSI approved."
+    ],
+    "license_location": [
+      "Met",
+      "https://github.com/tsudev-org/tsuswico/blob/main/LICENSE"
+    ],
+    "documentation_basics": [
+      "Met",
+      "README.en.md covers installation (winget, Scoop, installer, portable), usage and report contents; docs/ holds architecture, updates and versioning: https://github.com/tsudev-org/tsuswico/blob/main/docs/ARCHITECTURE.md"
+    ],
+    "documentation_interface": [
+      "Met",
+      "The command-line options are documented in README.en.md and printed by --help (src/Tsudev.Audit.Core/Cli/CliOptions.cs): https://github.com/tsudev-org/tsuswico/blob/main/src/Tsudev.Audit.Core/Cli/CliOptions.cs"
+    ],
+    "sites_https": [
+      "Met",
+      "Project site https://swico.tsudev.com and the GitHub repository/releases are HTTPS only."
+    ],
+    "discussion": [
+      "Met",
+      "GitHub Issues are public and searchable: https://github.com/tsudev-org/tsuswico/issues"
+    ],
+    "english": [
+      "Met",
+      "English documentation and bug reports are accepted: https://github.com/tsudev-org/tsuswico/blob/main/README.en.md"
+    ],
+    "maintained": [
+      "Met",
+      "Actively maintained, regular commits in November 2026: https://github.com/tsudev-org/tsuswico/commits/main"
+    ],
+    "repo_public": [
+      "Met",
+      "https://github.com/tsudev-org/tsuswico"
+    ],
+    "repo_track": [
+      "Met",
+      "Git tracks every change with author and date."
+    ],
+    "repo_interim": [
+      "Met",
+      "Work in progress is pushed to branches and pull requests between releases."
+    ],
+    "repo_distributed": [
+      "Met",
+      "Git."
+    ],
+    "version_unique": [
+      "Met",
+      "Each release has a unique version and git tag: https://github.com/tsudev-org/tsuswico/tags"
+    ],
+    "version_semver": [
+      "Met",
+      "Calendar Versioning (YY.M.DD with a build counter), documented in docs/VERSIONING.md: https://github.com/tsudev-org/tsuswico/blob/main/docs/VERSIONING.md"
+    ],
+    "version_tags": [
+      "Met",
+      "Releases are tagged (v26.8.18, v26.8.18.2): https://github.com/tsudev-org/tsuswico/tags"
+    ],
+    "release_notes": [
+      "Met",
+      "CHANGELOG.md summarises each release in human-readable form: https://github.com/tsudev-org/tsuswico/blob/main/CHANGELOG.md"
+    ],
+    "release_notes_vulns": [
+      "N/A",
+      "No publicly known vulnerability has been fixed in any release so far."
+    ],
+    "report_process": [
+      "Met",
+      "Bug reports use GitHub Issues with an issue form: https://github.com/tsudev-org/tsuswico/issues/new/choose"
+    ],
+    "report_tracker": [
+      "Met",
+      "GitHub Issues: https://github.com/tsudev-org/tsuswico/issues"
+    ],
+    "report_responses": [
+      "Met",
+      "No external bug report has been filed so far; the maintainer reads every issue and acknowledges reports within days."
+    ],
+    "enhancement_responses": [
+      "Met",
+      "No external enhancement request has been filed so far; the feature request form routes them to the maintainer, who answers each one."
+    ],
+    "report_archive": [
+      "Met",
+      "GitHub Issues are public and searchable: https://github.com/tsudev-org/tsuswico/issues?q=is%3Aissue"
+    ],
+    "vulnerability_report_process": [
+      "Met",
+      "SECURITY.md explains how to report vulnerabilities: https://github.com/tsudev-org/tsuswico/blob/main/SECURITY.md"
+    ],
+    "vulnerability_report_private": [
+      "Met",
+      "GitHub private vulnerability reporting is enabled: https://github.com/tsudev-org/tsuswico/security/advisories/new"
+    ],
+    "vulnerability_report_response": [
+      "Met",
+      "No vulnerability report was received in the last 6 months. SECURITY.md commits to a reply within 7 days and a fix for critical issues within 30 days."
+    ],
+    "build": [
+      "Met",
+      "dotnet build builds the solution; build.ps1 and the release workflow produce the installer and portable package on GitHub Actions: https://github.com/tsudev-org/tsuswico/blob/main/.github/workflows/release.yml"
+    ],
+    "build_common_tools": [
+      "Met",
+      "dotnet CLI (MSBuild) and Inno Setup."
+    ],
+    "build_floss_tools": [
+      "Met",
+      "The .NET SDK and Inno Setup are FLOSS."
+    ],
+    "test": [
+      "Met",
+      "An automated xUnit suite (188 tests: license verdicts, detection rules, parsers, risk scoring, HTML/XLSX rendering, update checks) is in tests/unittests: https://github.com/tsudev-org/tsuswico/tree/main/tests/unittests"
+    ],
+    "test_invocation": [
+      "Met",
+      "dotnet test tests/unittests (documented in CONTRIBUTING.md)."
+    ],
+    "test_most": [
+      "Met",
+      "Logic is kept in the platform-independent core library precisely so that tests cover it (docs/ARCHITECTURE.md rule 1): verdicts, rules, parsing, scoring, rendering and the update checker are all tested."
+    ],
+    "test_continuous_integration": [
+      "Met",
+      "GitHub Actions builds and tests on Linux and Windows for every push and pull request: https://github.com/tsudev-org/tsuswico/blob/main/.github/workflows/ci.yml"
+    ],
+    "test_policy": [
+      "Met",
+      "CONTRIBUTING.md requires tests for every new feature or bug fix: https://github.com/tsudev-org/tsuswico/blob/main/CONTRIBUTING.md"
+    ],
+    "tests_are_added": [
+      "Met",
+      "Recent changes added tests with the code, e.g. numeric column alignment came with Cot_so_can_phai_cot_dinh_danh_can_trai (PR #26): https://github.com/tsudev-org/tsuswico/pull/26"
+    ],
+    "tests_documented_added": [
+      "Met",
+      "The test policy is written in CONTRIBUTING.md: https://github.com/tsudev-org/tsuswico/blob/main/CONTRIBUTING.md"
+    ],
+    "warnings": [
+      "Met",
+      "The .NET analyzers run at AnalysisLevel latest-recommended with nullable reference types: https://github.com/tsudev-org/tsuswico/blob/main/Directory.Build.props"
+    ],
+    "warnings_fixed": [
+      "Met",
+      "TreatWarningsAsErrors is on, so the build fails on any warning; main builds with zero warnings."
+    ],
+    "warnings_strict": [
+      "Met",
+      "TreatWarningsAsErrors with latest-recommended analyzers and nullable enabled."
+    ],
+    "know_secure_design": [
+      "Met",
+      "Design rules keep all network code in one file (UpdateAdapters.cs), all JSON in one serializer, and HTML escaping as the single injection barrier; PRIVACY.md and docs/UPDATES.md document the data flows and the update verification: https://github.com/tsudev-org/tsuswico/blob/main/docs/UPDATES.md"
+    ],
+    "know_common_errors": [
+      "Met",
+      "Mitigated errors are documented with code: HTML injection in reports (single escaping barrier + CSP in sample reports), running an unverified downloaded executable (SHA-256 check before launch), leaking machine data (no telemetry, only one network call): https://github.com/tsudev-org/tsuswico/blob/main/PRIVACY.md"
+    ],
+    "crypto_published": [
+      "Met",
+      "Only published algorithms: SHA-256 for update verification and TLS (via the operating system) for HTTPS."
+    ],
+    "crypto_call": [
+      "Met",
+      "The program calls .NET System.Security.Cryptography and the platform TLS stack; it implements no cryptography itself."
+    ],
+    "crypto_floss": [
+      "Met",
+      "SHA-256 and TLS are implementable with FLOSS (.NET runtime is FLOSS)."
+    ],
+    "crypto_keylength": [
+      "Met",
+      "TLS key lengths are the operating system defaults (TLS 1.2+ with modern cipher suites); no custom keys are used."
+    ],
+    "crypto_working": [
+      "Met",
+      "No broken algorithms are used; integrity relies on SHA-256."
+    ],
+    "crypto_weaknesses": [
+      "Met",
+      "No SHA-1, MD5 or other weak algorithm is used for security."
+    ],
+    "crypto_pfs": [
+      "Met",
+      "HTTPS uses the platform TLS stack, which negotiates ECDHE (forward secrecy)."
+    ],
+    "crypto_password_storage": [
+      "N/A",
+      "The program stores no passwords."
+    ],
+    "crypto_random": [
+      "N/A",
+      "The program generates no keys or nonces."
+    ],
+    "delivery_mitm": [
+      "Met",
+      "Releases are delivered over HTTPS from GitHub; SHA256SUMS.txt is signed with Sigstore (cosign) and builds carry GitHub artifact attestations; the updater verifies the SHA-256 before running an update."
+    ],
+    "delivery_unsigned": [
+      "Met",
+      "Hashes are only retrieved over HTTPS from the same GitHub release, never over plain HTTP."
+    ],
+    "vulnerabilities_fixed_60_days": [
+      "Met",
+      "No unpatched vulnerability of medium or higher severity: 0 open Dependabot alerts; Dependabot watches NuGet, npm and GitHub Actions."
+    ],
+    "vulnerabilities_critical_fixed": [
+      "Met",
+      "No critical vulnerability has been reported."
+    ],
+    "no_leaked_credentials": [
+      "Met",
+      "The repository contains no credentials; signing uses OIDC (keyless Sigstore) and GitHub secrets, and GitHub secret scanning with push protection is enabled for the organization."
+    ],
+    "static_analysis": [
+      "Met",
+      "Roslyn .NET analyzers (latest-recommended, warnings as errors) on every build, and GitHub CodeQL code scanning: https://github.com/tsudev-org/tsuswico/security/code-scanning"
+    ],
+    "static_analysis_common_vulnerabilities": [
+      "Met",
+      "CodeQL security queries and the .NET security analyzers (CA2xxx/CA5xxx) look for common vulnerabilities."
+    ],
+    "static_analysis_fixed": [
+      "Met",
+      "No medium or higher severity code vulnerability found by static analysis remains open."
+    ],
+    "static_analysis_often": [
+      "Met",
+      "Static analysis runs on every build, push and pull request."
+    ],
+    "dynamic_analysis": [
+      "Unmet",
+      "No fuzzing or other dynamic analysis tool is run yet; the 188 unit tests exercise parsers and renderers with crafted malicious inputs (e.g. HTML injection tests)."
+    ],
+    "dynamic_analysis_unsafe": [
+      "N/A",
+      "The program is written in C#, a memory-safe language."
+    ],
+    "dynamic_analysis_enable_assertions": [
+      "Unmet",
+      "No dynamic analysis runs yet (see dynamic_analysis)."
+    ],
+    "dynamic_analysis_fixed": [
+      "N/A",
+      "No dynamic analysis has been run, so no issue was discovered by it."
+    ]
+  }
+}
