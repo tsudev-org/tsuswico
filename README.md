@@ -1,11 +1,11 @@
-<img src="assets/tsudev-logo-144.png" alt="tsudev" height="56">
+<img src="assets/tsudev-logo-144.png" alt="TsuDEV" height="56">
 
 # Tsu Swico
 
 Kiểm tra tình trạng bản quyền Windows/Office và thu thập cấu hình phần cứng -
 **một file `.exe` duy nhất**, không cần cài .NET Runtime.
 
-Một sản phẩm của [tsudev](https://tsudev.com).
+Một sản phẩm của [TsuDEV](https://tsudev.com).
 
 **Hạng sản phẩm: C - Ngoại tuyến** (theo `.standards/docs/AUTH_AND_ACCOUNT.md`
 mục 1): mọi chức năng quét chạy trọn vẹn không cần Internet và không cần tài
@@ -394,5 +394,5 @@ Kịch bản kiểm chứng đầy đủ: [`docs/WINDOWS-VERIFICATION.md`](docs/
 ## Giấy phép
 
 [Apache-2.0](LICENSE). Bạn được fork và phân phối bản sửa đổi, nhưng **không
-được dùng tên "tsudev" hay "Tsu Swico"** để phát hành bản của mình (mục 6 của
+được dùng tên "TsuDEV" hay "Tsu Swico"** để phát hành bản của mình (mục 6 của
 giấy phép). Xem [`NOTICE`](NOTICE).

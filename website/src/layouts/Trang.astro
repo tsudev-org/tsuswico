@@ -12,7 +12,7 @@ interface Props {
   duongDan: string;    // ví dụ "/tai-ve/"
 }
 const { tieuDe, moTa, duongDan } = Astro.props;
-const title = tieuDe ? `${tieuDe} - ${SAN_PHAM} | tsudev` : `${SAN_PHAM} | tsudev`;
+const title = tieuDe ? `${tieuDe} - ${SAN_PHAM} | TsuDEV` : `${SAN_PHAM} | TsuDEV`;
 const ogTitle = tieuDe ? `${tieuDe} - ${SAN_PHAM}` : SAN_PHAM;
 const url = `${SITE}${duongDan}`;
 const nam = new Date().getFullYear();
@@ -43,7 +43,7 @@ const dangO = (href: string) => duongDan.startsWith(href);
     <!-- Giao diện: chạy chặn, SAU meta theme-color và TRƯỚC stylesheet, để không nháy màu (public/theme.js; CSP script-src 'self') -->
     <script is:inline src="/theme.js"></script>
     <link rel="canonical" href={url}>
-    <meta property="og:site_name" content="tsudev">
+    <meta property="og:site_name" content="TsuDEV">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="vi_VN">
     <meta property="og:title" content={ogTitle}>
@@ -88,20 +88,20 @@ const dangO = (href: string) => duongDan.startsWith(href);
           <div class="chan-trang__cot">
             <a class="thuong-hieu thuong-hieu--nho" href="https://tsudev.com" target="_blank" rel="noopener noreferrer">
               <picture><source type="image/avif" srcset="/brand/logo-tsudev-48.avif 1x, /brand/logo-tsudev-96.avif 2x, /brand/logo-tsudev-144.avif 3x"><source type="image/webp" srcset="/brand/logo-tsudev-48.webp 1x, /brand/logo-tsudev-96.webp 2x, /brand/logo-tsudev-144.webp 3x"><img src="/brand/logo-tsudev-96.webp" alt="" width="28" height="28"></picture>
-              <span>tsudev</span>
+              <span>TsuDEV</span>
             </a>
             <p>Tsu Swico là phần mềm mã nguồn mở, phát hành theo
               <a href="/ban-quyen/">giấy phép Apache 2.0</a>. Báo cáo là dữ liệu kỹ thuật để tham khảo, không phải kết
               luận pháp lý.</p>
-            <p><strong>tsudev</strong> là hệ sinh thái sản phẩm và công cụ phần mềm tại
+            <p><strong>TsuDEV</strong> là hệ sinh thái sản phẩm và công cụ phần mềm tại
               <a href="https://tsudev.com" target="_blank" rel="noopener noreferrer">tsudev.com</a>.</p>
           </div>
-          <nav aria-label="Hệ sinh thái tsudev">
+          <nav aria-label="Hệ sinh thái TsuDEV">
             <ul class="chan-trang__lien-ket">
               <li><a href="https://tsudev.com/terms" target="_blank" rel="noopener noreferrer">Điều khoản sử dụng</a></li>
               <li><a href="https://tsudev.com/privacy" target="_blank" rel="noopener noreferrer">Chính sách riêng tư</a></li>
               <li><a href="https://tsudev.com/projects" target="_blank" rel="noopener noreferrer">Sản phẩm khác</a></li>
-              <li><a href={UNG_HO_URL} target="_blank" rel="noopener noreferrer">Ủng hộ tsudev</a></li>
+              <li><a href={UNG_HO_URL} target="_blank" rel="noopener noreferrer">Ủng hộ TsuDEV</a></li>
             </ul>
           </nav>
           <nav aria-label="Dự án">
@@ -115,7 +115,7 @@ const dangO = (href: string) => duongDan.startsWith(href);
           </nav>
         </div>
         <div class="chan-trang__cuoi">
-          <p>© {nam} tsudev</p>
+          <p>© {nam} TsuDEV</p>
           <div class="giao-dien" id="giao-dien" role="radiogroup" aria-label="Giao diện" hidden>
             {cheDo.map((c) => (
               <button type="button" role="radio" aria-checked={c.ma === 'dark' ? 'true' : 'false'} tabindex={c.ma === 'dark' ? '0' : '-1'}

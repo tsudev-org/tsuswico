@@ -34,7 +34,7 @@ public class BrandingTests
         Assert.True(brandIdx > 0 && Html.LastIndexOf("https://tsudev.com", brandIdx + 200, StringComparison.Ordinal) > 0,
             "logo nam trong lien ket toi tsudev.com");
         Assert.True(Html.Contains("role=\"img\"", StringComparison.Ordinal)
-                 && Html.Contains("aria-label=\"tsudev\"", StringComparison.Ordinal),
+                 && Html.Contains("aria-label=\"TsuDEV\"", StringComparison.Ordinal),
             "logo co van ban thay the cho trinh doc man hinh");
         Assert.True(Html.Contains("rel=\"noopener noreferrer\"", StringComparison.Ordinal),
             "lien ket ra ngoai co rel=noopener noreferrer");
