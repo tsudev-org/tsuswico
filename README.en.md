@@ -1,11 +1,11 @@
-<img src="assets/tsudev-logo-144.png" alt="tsudev" height="56">
+<img src="assets/tsudev-logo-144.png" alt="TsuDEV" height="56">
 
 # Tsu Swico
 
 [Tiếng Việt](README.md) · **English**
 
 Check Windows and Office licensing status and collect a hardware inventory with **a single `.exe`** - no .NET Runtime
-to install. A product of [tsudev](https://tsudev.com). Product page: [swico.tsudev.com](https://swico.tsudev.com)
+to install. A product of [TsuDEV](https://tsudev.com). Product page: [swico.tsudev.com](https://swico.tsudev.com)
 (downloads, guides, sample reports you can open in the browser). The user interface and reports are in Vietnamese.
 
 [![CI](https://github.com/tsudev-org/tsuswico/actions/workflows/ci.yml/badge.svg)](https://github.com/tsudev-org/tsuswico/actions/workflows/ci.yml)
@@ -103,6 +103,6 @@ as described in [`.well-known/security.txt`](website/public/.well-known/security
 
 ## License
 
-[Apache-2.0](LICENSE). You may fork and distribute modified versions, but you **may not use the names "tsudev" or
+[Apache-2.0](LICENSE). You may fork and distribute modified versions, but you **may not use the names "TsuDEV" or
 "Tsu Swico"** to publish them (section 6 of the license). See [NOTICE](NOTICE). Reports are technical data for
 reference, not a legal conclusion ([EULA.txt](EULA.txt) section 3).

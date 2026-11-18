@@ -11,7 +11,7 @@
 > | `.github/workflows/ci.yml` | Kiểm `VersionPrefix` ở **mỗi PR** |
 >
 > **Nguồn quy ước:** [`.standards/docs/DESIGN_SYSTEM.md`](../.standards/docs/DESIGN_SYSTEM.md) mục 6 - áp dụng
-> cho toàn hệ sinh thái tsudev. Tài liệu này là bản diễn giải cho repo Tsu Swico,
+> cho toàn hệ sinh thái TsuDEV. Tài liệu này là bản diễn giải cho repo Tsu Swico,
 > kèm những gì bị cấm và **vì sao**.
 
 ---

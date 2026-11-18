@@ -14,7 +14,7 @@
 #endif
 
 #define AppName        "Tsu Swico"
-#define AppPublisher   "tsudev"
+#define AppPublisher   "TsuDEV"
 #define AppUrl         "https://github.com/tsudev-org/tsuswico"
 #define AppExeName     "swico.exe"
 #define SourceExe      "..\..\publish\" + AppExeName

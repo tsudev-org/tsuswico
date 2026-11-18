@@ -16,7 +16,7 @@ namespace Tsudev.Audit.Core.Rendering;
 public sealed class HtmlReportRenderer
 {
     public const string BrandUrl = "https://tsudev.com";
-    public const string BrandName = "tsudev";
+    public const string BrandName = "TsuDEV";
 
     /// <summary>Ten san pham day du, hien o chan trang va the &lt;meta generator&gt;.</summary>
     public const string ProductName = "Tsu Swico";

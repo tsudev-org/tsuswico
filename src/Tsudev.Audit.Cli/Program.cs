@@ -253,7 +253,7 @@ public static class Program
         var level3 = FileNaming.Level3(level2, computerName, scanTime);
         Directory.CreateDirectory(level3);
 
-        Info($"=== tsudev System Audit ===");
+        Info($"=== TsuDEV System Audit ===");
         Info($"Máy: {computerName}   |   Thời gian: {DateDisplay.DateTimeText(scanTime)}");
         Info($"Thư mục kết quả: {level3}");
 
