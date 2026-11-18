@@ -1,7 +1,7 @@
 # Website swico.tsudev.com
 
 Trang sản phẩm của Tsu Swico: [Astro](https://astro.build) dựng trang tĩnh; JavaScript phía trình duyệt chỉ có
-`public/theme.js` (bộ chọn giao diện Sáng/Tối/Hệ thống ở chân trang, mặc định Tối, khóa `tsudev-theme` như tsudev.com;
+`public/theme.js` (bộ chọn giao diện Sáng/Tối/Hệ thống ở chân trang, mặc định Hệ thống, khóa `tsudev-theme` như tsudev.com;
 nạp chặn trong `<head>`, CSP `script-src 'self'`), host bằng Cloudflare Workers Static Assets (Worker `tsuswico`, chỉ phục vụ tệp tĩnh, không chạy mã; tên
 miền con `swico.tsudev.com` của hệ tsudev.com, cấu hình ở `wrangler.jsonc`). Khung dùng chung với `files.tsudev.com`.
 
