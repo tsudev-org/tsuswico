@@ -38,7 +38,7 @@ function kiemTra(tep, html) {
   const viTriScript = html.indexOf('<script src="/theme.js">');
   const viTriCss = html.search(/<link[^>]*rel="stylesheet"/);
   if (viTriScript < 0 || viTriScript > html.indexOf('</head>') || (viTriCss >= 0 && viTriScript > viTriCss)) loi.push(`${ten}: theme.js phải nằm trong <head>, trước stylesheet`);
-  // Bộ chọn giao diện (phiếu 20261110-05): đúng ba lựa chọn, radiogroup, nằm ở chân trang; mặc định Tối.
+  // Bộ chọn giao diện (phiếu 20261110-05): đúng ba lựa chọn, radiogroup, nằm ở chân trang; mặc định Hệ thống (PRODUCT_POLICY 1.2).
   const luaChon = [...html.matchAll(/data-chon-giao-dien="([a-z]+)"/g)].map((m) => m[1]).join(',');
   if (luaChon !== 'light,dark,system') loi.push(`${ten}: bộ chọn giao diện cần đúng light,dark,system: ${luaChon}`);
   // Mỗi id chỉ một lần (neo #... và aria-labelledby phải trỏ đúng một phần tử) - phiếu 20261113-07.
