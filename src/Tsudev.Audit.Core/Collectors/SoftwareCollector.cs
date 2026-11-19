@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Abstractions;
 using Tsudev.Audit.Core.Models;
 using Tsudev.Audit.Core.Reports;
@@ -95,31 +96,46 @@ public static class SoftwareCollector
         return raw;
     }
 
+    /// <summary>Ten nhom bang tieng Anh, tra theo ten tieng Viet trong <c>CategoryRules</c>.</summary>
+    private static readonly Dictionary<string, string> CategoryEn = new(StringComparer.Ordinal)
+    {
+        ["Công cụ lập trình"] = "Development tools",
+        ["Văn phòng"] = "Office",
+        ["Họp trực tuyến"] = "Online meetings",
+        ["Trình duyệt"] = "Browsers",
+        ["Nén/giải nén"] = "Compression",
+        ["Đồ họa"] = "Graphics",
+        ["Bảo mật"] = "Security",
+        ["Mạng/VPN"] = "Network/VPN",
+        ["Driver/Hệ thống"] = "Drivers/System"
+    };
+
     public static string Classify(string name)
     {
         foreach (var (kw, cat) in CategoryRules)
-            if (name.Contains(kw, StringComparison.OrdinalIgnoreCase)) return cat;
-        return "Chưa phân loại";
+            if (name.Contains(kw, StringComparison.OrdinalIgnoreCase))
+                return Loc.IsEnglish && CategoryEn.TryGetValue(cat, out var en) ? en : cat;
+        return Loc.T("Chưa phân loại", "Uncategorized");
     }
 
     public static DataTable ToTable(IReadOnlyList<InstalledSoftware> items)
     {
-        var t = DataTable.Create("", "Tên phần mềm", "Phiên bản", "Nhà phát hành",
-            "Ngày cài đặt", "Thư mục cài đặt", "Phân loại", "Mã sản phẩm (GUID)");
+        var t = DataTable.Create("", Loc.T("Tên phần mềm", "Program name"), Loc.T("Phiên bản", "Version"), Loc.T("Nhà phát hành", "Publisher"),
+            Loc.T("Ngày cài đặt", "Install date"), Loc.T("Thư mục cài đặt", "Install folder"), Loc.T("Phân loại", "Category"), Loc.T("Mã sản phẩm (GUID)", "Product code (GUID)"));
         t.Searchable = true;
         foreach (var s in items)
             t.AddRow(s.Name, s.Version, s.Publisher, s.InstallDate, s.InstallLocation, s.Category, s.ProductGuid);
-        t.AddEmptyNotice("Không đọc được phần mềm nào từ registry");
+        t.AddEmptyNotice(Loc.T("Không đọc được phần mềm nào từ registry", "No software could be read from the registry"));
         return t;
     }
 
     public static DataTable ToManualReviewTable(IReadOnlyList<InstalledSoftware> items)
     {
-        var t = DataTable.Create("", "Tên phần mềm", "Phiên bản", "Nhà phát hành", "Thư mục cài đặt", "Mã sản phẩm (GUID)");
+        var t = DataTable.Create("", Loc.T("Tên phần mềm", "Program name"), Loc.T("Phiên bản", "Version"), Loc.T("Nhà phát hành", "Publisher"), Loc.T("Thư mục cài đặt", "Install folder"), Loc.T("Mã sản phẩm (GUID)", "Product code (GUID)"));
         t.Searchable = true;
         foreach (var s in items.Where(x => x.NeedsManualReview))
             t.AddRow(s.Name, s.Version, s.Publisher, s.InstallLocation, s.ProductGuid);
-        t.AddEmptyNotice("Không có phần mềm nào thiếu thông tin - tốt");
+        t.AddEmptyNotice(Loc.T("Không có phần mềm nào thiếu thông tin - tốt", "No software is missing information - good"));
         return t;
     }
 }

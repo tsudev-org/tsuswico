@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Abstractions;
 using Tsudev.Audit.Core.Models;
 using Tsudev.Audit.Core.Reports;
@@ -28,6 +29,6 @@ public sealed record OfficeLicenseSummary(
 
     public string Describe()
         => Total == 0
-            ? "Không phát hiện Office trên máy"
-            : $"{Total} sản phẩm: {Ok} hợp lệ, {Problem} có vấn đề, {Grace} đang dùng thử, {Unknown} không xác định";
+            ? Loc.T("Không phát hiện Office trên máy", "Office not detected on this machine")
+            : Loc.T($"{Total} sản phẩm: {Ok} hợp lệ, {Problem} có vấn đề, {Grace} đang dùng thử, {Unknown} không xác định", $"{Total} products: {Ok} valid, {Problem} with problems, {Grace} in trial, {Unknown} unknown");
 }

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text;
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Models;
 using Tsudev.Audit.Core.Reports;
 
@@ -225,7 +226,7 @@ public sealed class HtmlReportRenderer
         ArgumentNullException.ThrowIfNull(report);
 
         var sb = new StringBuilder(64 * 1024);
-        sb.Append("<!DOCTYPE html>\n<html lang=\"vi\">\n<head>\n");
+        sb.Append("<!DOCTYPE html>\n<html lang=\"").Append(Loc.HtmlLang).Append("\">\n<head>\n");
         sb.Append("<meta charset=\"utf-8\">\n");
         sb.Append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n");
         sb.Append("<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"")
@@ -261,15 +262,15 @@ public sealed class HtmlReportRenderer
         sb.Append("<div class=\"hero-top\">\n");
         AppendBrand(sb, "brand");
         if (!string.IsNullOrWhiteSpace(dashboardLink))
-            sb.Append("<a class=\"back\" href=\"").Append(E(dashboardLink)).Append("\">&larr; Trang tổng hợp</a>\n");
+            sb.Append("<a class=\"back\" href=\"").Append(E(dashboardLink)).Append("\">&larr; ").Append(Loc.T("Trang tổng hợp", "Summary page")).Append("</a>\n");
         sb.Append("</div>\n");
 
         sb.Append("<h1>").Append(E(report.Title)).Append("</h1>\n");
         sb.Append("<dl class=\"meta\">");
-        AppendMeta(sb, "Máy", report.ComputerName);
-        AppendMeta(sb, "Thời điểm quét",
+        AppendMeta(sb, Loc.T("Máy", "Computer"), report.ComputerName);
+        AppendMeta(sb, Loc.T("Thời điểm quét", "Scan time"),
             DateDisplay.DateTimeText(report.ScanTime));
-        AppendMeta(sb, "Phiên bản dữ liệu", report.SchemaVersion);
+        AppendMeta(sb, Loc.T("Phiên bản dữ liệu", "Data schema"), report.SchemaVersion);
         sb.Append("</dl>\n</div>\n</header>\n");
     }
 
@@ -317,9 +318,13 @@ public sealed class HtmlReportRenderer
     {
         if (report.Warnings.Count == 0) return;
 
-        sb.Append("<section class=\"card warn-box\">\n<h2>Mục thiếu dữ liệu</h2>\n");
-        sb.Append("<p class=\"muted\">Các mục dưới đây không thu thập được. Báo cáo vẫn đầy đủ ở phần còn lại; ")
-          .Append("liệt kê ra đây để người đọc biết chỗ nào là khoảng trống chứ không phải kết luận \"sạch\".</p>\n<ul>\n");
+        sb.Append("<section class=\"card warn-box\">\n<h2>").Append(Loc.T("Mục thiếu dữ liệu", "Items missing data")).Append("</h2>\n");
+        sb.Append("<p class=\"muted\">").Append(Loc.T(
+            "Các mục dưới đây không thu thập được. Báo cáo vẫn đầy đủ ở phần còn lại; " +
+            "liệt kê ra đây để người đọc biết chỗ nào là khoảng trống chứ không phải kết luận \"sạch\".",
+            "The items below could not be collected. The rest of the report is complete; " +
+            "they are listed so readers know these are gaps, not a \"clean\" verdict."))
+          .Append("</p>\n<ul>\n");
         foreach (var w in report.Warnings) sb.Append("<li>").Append(E(w)).Append("</li>\n");
         sb.Append("</ul>\n</section>\n");
     }
@@ -367,7 +372,7 @@ public sealed class HtmlReportRenderer
             sb.Append("<pre class=\"raw\">").Append(E(section.PreformattedText)).Append("</pre>\n");
 
         if (!string.IsNullOrWhiteSpace(section.MethodNote))
-            sb.Append("<details class=\"method\"><summary>Về phương pháp và giới hạn</summary><p>")
+            sb.Append("<details class=\"method\"><summary>").Append(Loc.T("Về phương pháp và giới hạn", "Method and limits")).Append("</summary><p>")
               .Append(Prose(section.MethodNote)).Append("</p></details>\n");
 
         sb.Append("</section>\n");
@@ -391,13 +396,16 @@ public sealed class HtmlReportRenderer
         // O tim kiem dung JS thuan, khong phu thuoc thu vien ngoai: bao cao phai
         // mo duoc tren may khong co internet.
         if (table.Searchable && table.Rows.Count > 0)
-            sb.Append("<input class=\"filter\" type=\"search\" placeholder=\"Lọc trong bảng...\" ")
-              .Append("oninput=\"tsudevFilter(this)\" aria-label=\"Lọc trong bảng\">\n");
+        {
+            var filterLabel = Loc.T("Lọc trong bảng", "Filter table");
+            sb.Append("<input class=\"filter\" type=\"search\" placeholder=\"").Append(filterLabel).Append("...\" ")
+              .Append("oninput=\"tsudevFilter(this)\" aria-label=\"").Append(filterLabel).Append("\">\n");
+        }
 
         // Bang rong thi cuon ngang: vung cuon phai nhan focus de cuon duoc bang ban
         // phim (WCAG 2.1.1; axe scrollable-region-focusable).
         sb.Append("<div class=\"table-scroll\" tabindex=\"0\" role=\"region\" aria-label=\"")
-          .Append(E(string.IsNullOrWhiteSpace(table.Title) ? "Bảng dữ liệu" : table.Title)).Append("\"><table>\n<thead><tr>");
+          .Append(E(string.IsNullOrWhiteSpace(table.Title) ? Loc.T("Bảng dữ liệu", "Data table") : table.Title)).Append("\"><table>\n<thead><tr>");
         for (int i = 0; i < table.Columns.Count; i++)
             sb.Append(table.NumericColumns.Contains(i) ? "<th class=\"num\">" : "<th>").Append(E(table.Columns[i])).Append("</th>");
         sb.Append("</tr></thead>\n<tbody>\n");
@@ -418,11 +426,13 @@ public sealed class HtmlReportRenderer
         if (paged)
         {
             // Chan vung ban ghi chia ba (DATA_TABLE muc 3): bo chon trai - tom tat giua - phan trang phai.
-            sb.Append("<div class=\"table-foot\"><label class=\"page-size\">Số dòng mỗi trang <select data-page-size>");
+            sb.Append("<div class=\"table-foot\"><label class=\"page-size\">").Append(Loc.T("Số dòng mỗi trang", "Rows per page"))
+              .Append(" <select data-page-size>");
             foreach (var n in PageSizes)
                 sb.Append("<option value=\"").Append(n).Append(n == PageSizes[0] ? "\" selected>" : "\">").Append(n).Append("</option>");
             sb.Append("</select></label><p class=\"table-sum\" aria-live=\"polite\">")
-              .Append(table.Rows.Count).Append(" dòng</p><nav class=\"pager\" aria-label=\"Phân trang\"></nav></div>\n");
+              .Append(table.Rows.Count).Append(Loc.T(" dòng", " rows")).Append("</p><nav class=\"pager\" aria-label=\"")
+              .Append(Loc.T("Phân trang", "Pagination")).Append("\"></nav></div>\n");
         }
 
         sb.Append("</div>\n");
@@ -433,12 +443,16 @@ public sealed class HtmlReportRenderer
         sb.Append("<footer class=\"foot\"><div class=\"wrap\">\n");
         sb.Append("<div class=\"foot-brand\">");
         AppendBrand(sb, "brand brand-sm");
-        sb.Append("<p>Báo cáo sinh tự động bởi <a href=\"").Append(BrandUrl)
+        sb.Append("<p>").Append(Loc.T("Báo cáo sinh tự động bởi", "Report generated by")).Append(" <a href=\"").Append(BrandUrl)
           .Append("\" target=\"_blank\" rel=\"noopener noreferrer\">").Append(E(ProductName))
-          .Append("</a> &middot; lược đồ dữ liệu ").Append(E(report.SchemaVersion)).Append("</p>");
+          .Append("</a> &middot; ").Append(Loc.T("lược đồ dữ liệu", "data schema")).Append(' ')
+          .Append(E(report.SchemaVersion)).Append("</p>");
         sb.Append("</div>\n");
-        sb.Append("<p class=\"muted\">Số liệu phản ánh trạng thái máy tại thời điểm quét. ")
-          .Append("Đây là dữ liệu kỹ thuật để tham khảo, không phải kết luận pháp lý.</p>\n");
+        sb.Append("<p class=\"muted\">").Append(Loc.T(
+            "Số liệu phản ánh trạng thái máy tại thời điểm quét. " +
+            "Đây là dữ liệu kỹ thuật để tham khảo, không phải kết luận pháp lý.",
+            "Figures reflect the machine's state at scan time. " +
+            "This is technical data for reference, not a legal conclusion.")).Append("</p>\n");
         sb.Append("</div></footer>\n");
         sb.Append("<script>\n").Append(FilterScript).Append("</script>\n");
     }
@@ -494,6 +508,9 @@ public sealed class HtmlReportRenderer
     private const string FilterScript = """
         (function () {
           var SIZES = [10, 20, 50, 100, 200];
+          var EN = document.documentElement.lang === 'en';
+          var T = EN ? { none: 'No matching rows', from: ' (filtered from ', prev: 'Previous page', next: 'Next page', page: 'Page ' }
+                     : { none: 'Không có dòng nào khớp', from: ' (lọc từ ', prev: 'Trang trước', next: 'Trang sau', page: 'Trang ' };
           function key(b) { var h = b.querySelector('h3'); return 'swico-page-size:' + (h ? h.textContent : ''); }
           function readSize(b) {
             try { var v = parseInt(localStorage.getItem(key(b)), 10); if (SIZES.indexOf(v) >= 0) return v; } catch (e) { }
@@ -509,8 +526,8 @@ public sealed class HtmlReportRenderer
             var from = st.page * st.size, to = Math.min(match.length, from + st.size);
             for (i = 0; i < match.length; i++) match[i].style.display = i >= from && i < to ? '' : 'none';
             var sum = b.querySelector('.table-sum');
-            sum.textContent = match.length === 0 ? 'Không có dòng nào khớp' :
-              (from + 1) + '-' + to + ' / ' + match.length + (match.length < rows.length ? ' (lọc từ ' + rows.length + ')' : '');
+            sum.textContent = match.length === 0 ? T.none :
+              (from + 1) + '-' + to + ' / ' + match.length + (match.length < rows.length ? T.from + rows.length + ')' : '');
             var nav = b.querySelector('.pager'); nav.textContent = '';
             if (pages < 2) return;
             function btn(label, p, cur, aria) {
@@ -521,15 +538,15 @@ public sealed class HtmlReportRenderer
               x.addEventListener('click', function () { st.page = p; render(b); });
               nav.appendChild(x);
             }
-            btn('<', st.page - 1, false, 'Trang trước');
+            btn('<', st.page - 1, false, T.prev);
             var shown = {}, list = [0, st.page - 1, st.page, st.page + 1, pages - 1], last = -1;
             list.sort(function (a, c) { return a - c; });
             for (i = 0; i < list.length; i++) {
               var p = list[i]; if (p < 0 || p >= pages || shown[p]) continue; shown[p] = 1;
               if (last >= 0 && p > last + 1) { var g = document.createElement('span'); g.textContent = '...'; nav.appendChild(g); }
-              btn(String(p + 1), p, p === st.page, 'Trang ' + (p + 1)); last = p;
+              btn(String(p + 1), p, p === st.page, T.page + (p + 1)); last = p;
             }
-            btn('>', st.page + 1, false, 'Trang sau');
+            btn('>', st.page + 1, false, T.next);
           }
           function init() {
             var blocks = document.querySelectorAll('.table-block[data-paged]');

@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Tsudev.Audit.Core.Updates;
@@ -82,19 +83,24 @@ public static class UpdatePrompt
         ArgumentNullException.ThrowIfNull(result);
         var latest = result.Latest;
 
-        var title = "Tsu Swico - Đã có phiên bản mới";
-        var heading = $"Phiên bản {latest?.Version} đã sẵn sàng";
-        var body =
+        var title = Loc.T("Tsu Swico - Đã có phiên bản mới", "Tsu Swico - A new version is available");
+        var heading = Loc.T($"Phiên bản {latest?.Version} đã sẵn sàng", $"Version {latest?.Version} is ready");
+        var body = Loc.T(
             $"Bạn đang dùng phiên bản {result.Current}.\n\n" +
             "Công cụ cần được cập nhật trước khi tiếp tục rà quét, để kết quả " +
             "kiểm tra dựa trên bộ luật phát hiện mới nhất.\n\n" +
             "Bấm “Cập nhật” để tải và cài phiên bản mới. File tải về sẽ được " +
-            "đối chiếu mã băm SHA-256 trước khi chạy.";
-        var footer = latest is null ? "" : $"Chi tiết bản phát hành: {latest.PageUrl}";
+            "đối chiếu mã băm SHA-256 trước khi chạy.",
+            $"You are using version {result.Current}.\n\n" +
+            "The tool must be updated before scanning, so that the results " +
+            "use the latest detection rules.\n\n" +
+            "Click “Update” to download and install the new version. The download " +
+            "is checked against its SHA-256 hash before it runs.");
+        var footer = latest is null ? "" : Loc.T("Chi tiết bản phát hành: ", "Release details: ") + latest.PageUrl;
 
         try
         {
-            var buttons = new[] { new TaskDialogButton { ButtonId = ButtonUpdateId, ButtonText = "Cập nhật" } };
+            var buttons = new[] { new TaskDialogButton { ButtonId = ButtonUpdateId, ButtonText = Loc.T("Cập nhật", "Update") } };
             var handle = GCHandle.Alloc(buttons, GCHandleType.Pinned);
             try
             {
@@ -129,7 +135,7 @@ public static class UpdatePrompt
         // Du phong: MessageBox khong doi duoc ten nut nen chi con OK/Cancel.
         const uint MB_OKCANCEL = 0x00000001, MB_ICONWARNING = 0x00000030;
         return MessageBoxW(IntPtr.Zero,
-            $"{heading}\n\n{body}\n\nBấm OK để cập nhật.",
+            $"{heading}\n\n{body}\n\n" + Loc.T("Bấm OK để cập nhật.", "Click OK to update."),
             title, MB_OKCANCEL | MB_ICONWARNING) == 1;
     }
 }

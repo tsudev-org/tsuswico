@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Abstractions;
 using Tsudev.Audit.Core.Models;
 using Tsudev.Audit.Core.Reports;
@@ -10,14 +11,14 @@ public static class WindowsLicenseCollector
     /// <summary>Ma trang thai license cua Windows -> mo ta tieng Viet.</summary>
     public static string DescribeStatus(long? code) => code switch
     {
-        0 => "Unlicensed (Chưa kích hoạt)",
-        1 => "Licensed (Đã kích hoạt)",
-        2 => "OOB Grace (Đang trong thời gian dùng thử)",
-        3 => "OOT Grace (Hết hạn dùng thử)",
-        4 => "Non-Genuine Grace (Nghi ngờ không hợp lệ)",
-        5 => "Notification (Chưa kích hoạt - đã hết hạn thông báo)",
-        6 => "Extended Grace (Gia hạn mở rộng)",
-        _ => "Không xác định"
+        0 => Loc.T("Unlicensed (Chưa kích hoạt)", "Unlicensed (Not activated)"),
+        1 => Loc.T("Licensed (Đã kích hoạt)", "Licensed (Activated)"),
+        2 => Loc.T("OOB Grace (Đang trong thời gian dùng thử)", "OOB Grace (In trial period)"),
+        3 => Loc.T("OOT Grace (Hết hạn dùng thử)", "OOT Grace (Trial expired)"),
+        4 => Loc.T("Non-Genuine Grace (Nghi ngờ không hợp lệ)", "Non-Genuine Grace (Suspected non-genuine)"),
+        5 => Loc.T("Notification (Chưa kích hoạt - đã hết hạn thông báo)", "Notification (Not activated - notification period expired)"),
+        6 => Loc.T("Extended Grace (Gia hạn mở rộng)", "Extended Grace (Extended grace period)"),
+        _ => Loc.T("Không xác định", "Unknown")
     };
 
     /// <summary>
@@ -39,8 +40,8 @@ public static class WindowsLicenseCollector
 
     public static (DataTable Table, WindowsLicenseSummary Summary) Collect(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Sản phẩm", "Mô tả", "Trạng thái",
-            "Product Key (5 ký tự cuối)", "Kênh license");
+        var t = DataTable.Create("", Loc.T("Sản phẩm", "Product"), Loc.T("Mô tả", "Description"), Loc.T("Trạng thái", "Status"),
+            Loc.T("Product Key (5 ký tự cuối)", "Product Key (last 5 characters)"), Loc.T("Kênh license", "License channel"));
 
         // Chi lay san pham co PartialProductKey (tuc la co license thuc su gan
         // vao may), tranh liet ke hang chuc SKU rong ma Windows luon khai bao.
@@ -48,7 +49,7 @@ public static class WindowsLicenseCollector
             "PartialProductKey IS NOT NULL AND ApplicationID='55c92734-d682-4d71-983e-d6ec3f16059f'");
 
         if (rows.Count == 0)
-            ctx.Warn("Không đọc được SoftwareLicensingProduct (cần quyền Administrator để thấy đầy đủ).");
+            ctx.Warn(Loc.T("Không đọc được SoftwareLicensingProduct (cần quyền Administrator để thấy đầy đủ).", "Could not read SoftwareLicensingProduct (Administrator rights are needed for full data)."));
 
         int ok = 0, problem = 0, grace = 0, unknown = 0;
         foreach (var r in rows)
@@ -70,7 +71,7 @@ public static class WindowsLicenseCollector
                 r.Str("ProductKeyChannel"));
         }
 
-        t.AddEmptyNotice("Không tìm thấy sản phẩm Windows nào có license gắn vào máy");
+        t.AddEmptyNotice(Loc.T("Không tìm thấy sản phẩm Windows nào có license gắn vào máy", "No Windows product with a license attached to this machine was found"));
         return (t, new WindowsLicenseSummary(rows.Count, ok, problem, grace, unknown));
     }
 }

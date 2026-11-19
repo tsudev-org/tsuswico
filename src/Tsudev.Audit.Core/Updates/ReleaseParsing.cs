@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Globalization;
 using System.Text.Json;
 
@@ -64,7 +65,7 @@ public static class GitHubReleaseParser
         failureReason = null;
         if (string.IsNullOrWhiteSpace(json))
         {
-            failureReason = "Dữ liệu bản phát hành rỗng.";
+            failureReason = Loc.T("Dữ liệu bản phát hành rỗng.", "The release data is empty.");
             return null;
         }
 
@@ -74,7 +75,7 @@ public static class GitHubReleaseParser
             var root = doc.RootElement;
             if (root.ValueKind != JsonValueKind.Object)
             {
-                failureReason = "Dữ liệu bản phát hành không đúng định dạng.";
+                failureReason = Loc.T("Dữ liệu bản phát hành không đúng định dạng.", "The release data has the wrong format.");
                 return null;
             }
 
@@ -115,7 +116,7 @@ public static class GitHubReleaseParser
         }
         catch (JsonException ex)
         {
-            failureReason = $"Không đọc được dữ liệu bản phát hành: {ex.Message}";
+            failureReason = Loc.T($"Không đọc được dữ liệu bản phát hành: {ex.Message}", $"Could not read the release data: {ex.Message}");
             return null;
         }
     }

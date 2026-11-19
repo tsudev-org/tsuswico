@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Abstractions;
 
 namespace Tsudev.Audit.Core.Updates;
@@ -35,7 +36,7 @@ public sealed class UpdateChecker
         {
             // Khong doc duoc phien ban cua CHINH minh thi khong co co so so sanh.
             return new UpdateCheckResult(UpdateStatus.CheckFailed, VersionNumber.None,
-                Message: $"Không đọc được phiên bản hiện tại ('{currentVersionText}'). Bỏ qua kiểm tra cập nhật.");
+                Message: Loc.T($"Không đọc được phiên bản hiện tại ('{currentVersionText}'). Bỏ qua kiểm tra cập nhật.", $"Could not read the current version ('{currentVersionText}'). Skipping the update check."));
         }
 
         ReleaseInfo? latest;
@@ -47,25 +48,25 @@ public sealed class UpdateChecker
         catch (Exception ex)   // cong cu KHONG duoc sap vi mot loi mang
         {
             return new UpdateCheckResult(UpdateStatus.CheckFailed, current,
-                Message: $"Không kiểm tra được bản cập nhật: {ex.Message}");
+                Message: Loc.T($"Không kiểm tra được bản cập nhật: {ex.Message}", $"Could not check for updates: {ex.Message}"));
         }
 
         if (latest is null)
         {
             return new UpdateCheckResult(UpdateStatus.CheckFailed, current,
-                Message: error ?? "Không lấy được thông tin bản phát hành mới nhất.");
+                Message: error ?? Loc.T("Không lấy được thông tin bản phát hành mới nhất.", "Could not get information about the latest release."));
         }
 
         if (!latest.Version.IsValid)
         {
             return new UpdateCheckResult(UpdateStatus.CheckFailed, current, latest,
-                $"Không đọc được số hiệu phiên bản từ bản phát hành '{latest.TagName}'.");
+                Loc.T($"Không đọc được số hiệu phiên bản từ bản phát hành '{latest.TagName}'.", $"Could not read a version number from release '{latest.TagName}'."));
         }
 
         if (latest.Version <= current)
         {
             return new UpdateCheckResult(UpdateStatus.UpToDate, current, latest,
-                $"Đang dùng bản mới nhất ({current}).");
+                Loc.T($"Đang dùng bản mới nhất ({current}).", $"You are using the latest version ({current})."));
         }
 
         // BAN PORTABLE: van chan, nhung KHONG tu cai.
@@ -78,9 +79,12 @@ public sealed class UpdateChecker
         {
             var where = string.IsNullOrWhiteSpace(latest.PortableUrl) ? latest.PageUrl : latest.PortableUrl;
             return new UpdateCheckResult(UpdateStatus.UpdateRequired, current, latest,
-                $"Đã có phiên bản mới {latest.Version} (bạn đang dùng {current}). " +
-                $"Đây là bản portable nên phải tự thay thế: tải {where}, " +
-                "giải nén rồi ghi đè lên thư mục đang chạy.",
+                Loc.T($"Đã có phiên bản mới {latest.Version} (bạn đang dùng {current}). " +
+                      $"Đây là bản portable nên phải tự thay thế: tải {where}, " +
+                      "giải nén rồi ghi đè lên thư mục đang chạy.",
+                      $"Version {latest.Version} is available (you are using {current}). " +
+                      $"This is the portable edition, so replace it yourself: download {where}, " +
+                      "then extract it over the folder it runs from."),
                 CanSelfInstall: false);
         }
 
@@ -89,12 +93,15 @@ public sealed class UpdateChecker
         if (string.IsNullOrWhiteSpace(latest.InstallerUrl))
         {
             return new UpdateCheckResult(UpdateStatus.CheckFailed, current, latest,
-                $"Có bản mới {latest.Version} nhưng bản phát hành đó không kèm file cài đặt. " +
-                $"Vui lòng cập nhật thủ công tại {latest.PageUrl}");
+                Loc.T($"Có bản mới {latest.Version} nhưng bản phát hành đó không kèm file cài đặt. " +
+                      $"Vui lòng cập nhật thủ công tại {latest.PageUrl}",
+                      $"Version {latest.Version} is available but that release has no installer. " +
+                      $"Please update manually from {latest.PageUrl}"));
         }
 
         return new UpdateCheckResult(UpdateStatus.UpdateRequired, current, latest,
-            $"Đã có phiên bản mới {latest.Version} (bạn đang dùng {current}).",
+            Loc.T($"Đã có phiên bản mới {latest.Version} (bạn đang dùng {current}).",
+                  $"Version {latest.Version} is available (you are using {current})."),
             CanSelfInstall: true);
     }
 }

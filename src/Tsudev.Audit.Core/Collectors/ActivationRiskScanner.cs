@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Abstractions;
 using Tsudev.Audit.Core.Models;
 using Tsudev.Audit.Core.Rules;
@@ -55,10 +56,10 @@ public static class ActivationRiskScanner
                 {
                     findings.Add(new RiskFinding
                     {
-                        Category = "Tên file/thư mục nghi vấn",
+                        Category = Loc.T("Tên file/thư mục nghi vấn", "Suspicious file/folder names"),
                         Detection = dir,
                         Level = RiskLevel.High,
-                        Explanation = $"Tên trùng khớp với công cụ kích hoạt trái phép phổ biến ({hit})."
+                        Explanation = Loc.T($"Tên trùng khớp với công cụ kích hoạt trái phép phổ biến ({hit}).", $"Name matches a common unauthorized activation tool ({hit}).")
                     });
                 }
             }
@@ -82,10 +83,10 @@ public static class ActivationRiskScanner
             {
                 findings.Add(new RiskFinding
                 {
-                    Category = "Scheduled Task nghi vấn",
+                    Category = Loc.T("Scheduled Task nghi vấn", "Suspicious scheduled tasks"),
                     Detection = name,
                     Level = RiskLevel.High,
-                    Explanation = $"Scheduled Task mang tên đặc trưng của công cụ kích hoạt trái phép ({hit})."
+                    Explanation = Loc.T($"Scheduled Task mang tên đặc trưng của công cụ kích hoạt trái phép ({hit}).", $"Scheduled task named like an unauthorized activation tool ({hit}).")
                 });
             }
         }
@@ -104,10 +105,10 @@ public static class ActivationRiskScanner
             {
                 findings.Add(new RiskFinding
                 {
-                    Category = "Windows Service nghi vấn",
+                    Category = Loc.T("Windows Service nghi vấn", "Suspicious Windows services"),
                     Detection = string.IsNullOrWhiteSpace(display) ? name : $"{name} ({display})",
                     Level = RiskLevel.High,
-                    Explanation = $"Windows Service mang tên đặc trưng của công cụ kích hoạt trái phép ({hit})."
+                    Explanation = Loc.T($"Windows Service mang tên đặc trưng của công cụ kích hoạt trái phép ({hit}).", $"Windows service named like an unauthorized activation tool ({hit}).")
                 });
             }
         }
@@ -130,10 +131,10 @@ public static class ActivationRiskScanner
             {
                 findings.Add(new RiskFinding
                 {
-                    Category = "Hosts file bị chỉnh sửa",
+                    Category = Loc.T("Hosts file bị chỉnh sửa", "Modified hosts file"),
                     Detection = trimmed,
                     Level = RiskLevel.Medium,
-                    Explanation = $"Dòng hosts trỏ tới máy chủ KMS công cộng đã biết ({hit})."
+                    Explanation = Loc.T($"Dòng hosts trỏ tới máy chủ KMS công cộng đã biết ({hit}).", $"A hosts entry points to a known public KMS server ({hit}).")
                 });
             }
             else if (rules.HostsInterferenceKeywords.Any(k =>
@@ -141,10 +142,10 @@ public static class ActivationRiskScanner
             {
                 findings.Add(new RiskFinding
                 {
-                    Category = "Hosts file bị chỉnh sửa",
+                    Category = Loc.T("Hosts file bị chỉnh sửa", "Modified hosts file"),
                     Detection = trimmed,
                     Level = RiskLevel.Medium,
-                    Explanation = "Dòng hosts có thể đang chặn máy chủ xác thực bản quyền của Microsoft."
+                    Explanation = Loc.T("Dòng hosts có thể đang chặn máy chủ xác thực bản quyền của Microsoft.", "A hosts entry may be blocking Microsoft's license validation servers.")
                 });
             }
         }
@@ -162,10 +163,10 @@ public static class ActivationRiskScanner
                 {
                     findings.Add(new RiskFinding
                     {
-                        Category = "File hook hệ thống bản quyền",
+                        Category = Loc.T("File hook hệ thống bản quyền", "Licensing system hook files"),
                         Detection = full,
                         Level = RiskLevel.Critical,
-                        Explanation = "File hook thay thế trực tiếp thành phần lõi bảo vệ bản quyền của Windows - dấu hiệu rất mạnh của kích hoạt trái phép."
+                        Explanation = Loc.T("File hook thay thế trực tiếp thành phần lõi bảo vệ bản quyền của Windows - dấu hiệu rất mạnh của kích hoạt trái phép.", "A hook file directly replaces a core Windows license-protection component - a very strong sign of unauthorized activation.")
                     });
                 }
             }
@@ -180,10 +181,10 @@ public static class ActivationRiskScanner
         {
             findings.Add(new RiskFinding
             {
-                Category = "KMS server tùy chỉnh trong registry",
+                Category = Loc.T("KMS server tùy chỉnh trong registry", "Custom KMS server in the registry"),
                 Detection = $"KeyManagementServiceName = {kms}",
                 Level = RiskLevel.High,
-                Explanation = "Máy được cấu hình trỏ tới một máy chủ KMS tùy chỉnh. Hợp lệ nếu tổ chức có KMS riêng; bất thường nếu không."
+                Explanation = Loc.T("Máy được cấu hình trỏ tới một máy chủ KMS tùy chỉnh. Hợp lệ nếu tổ chức có KMS riêng; bất thường nếu không.", "The machine is configured to use a custom KMS server. Legitimate if the organization runs its own KMS; abnormal otherwise.")
             });
         }
     }
@@ -201,17 +202,17 @@ public static class ActivationRiskScanner
         ArgumentNullException.ThrowIfNull(rules);
 
         var legit = rules.LegitimateTaskNames.Count > 0
-            ? $" (trừ task hệ thống hợp lệ {string.Join(", ", rules.LegitimateTaskNames)})"
+            ? Loc.T($" (trừ task hệ thống hợp lệ {string.Join(", ", rules.LegitimateTaskNames)})", $" (except legitimate system tasks {string.Join(", ", rules.LegitimateTaskNames)})")
             : "";
 
         (string Cat, string Src, RiskLevel Lvl)[] defs =
         {
-            ("Tên file/thư mục nghi vấn", string.Join(", ", rules.ScanRoots), RiskLevel.High),
-            ("Scheduled Task nghi vấn", $"Task Scheduler{legit}", RiskLevel.High),
-            ("Windows Service nghi vấn", "Danh sách toàn bộ Windows Service (Win32_Service)", RiskLevel.High),
-            ("Hosts file bị chỉnh sửa", @"%SystemRoot%\System32\drivers\etc\hosts", RiskLevel.Medium),
-            ("File hook hệ thống bản quyền", $"{string.Join(" / ", rules.HookDirectories)} ({string.Join(", ", rules.HookFiles)})", RiskLevel.Critical),
-            ("KMS server tùy chỉnh trong registry", @"HKLM\...\SoftwareProtectionPlatform", RiskLevel.High),
+            (Loc.T("Tên file/thư mục nghi vấn", "Suspicious file/folder names"), string.Join(", ", rules.ScanRoots), RiskLevel.High),
+            (Loc.T("Scheduled Task nghi vấn", "Suspicious scheduled tasks"), $"Task Scheduler{legit}", RiskLevel.High),
+            (Loc.T("Windows Service nghi vấn", "Suspicious Windows services"), Loc.T("Danh sách toàn bộ Windows Service (Win32_Service)", "All Windows services (Win32_Service)"), RiskLevel.High),
+            (Loc.T("Hosts file bị chỉnh sửa", "Modified hosts file"), @"%SystemRoot%\System32\drivers\etc\hosts", RiskLevel.Medium),
+            (Loc.T("File hook hệ thống bản quyền", "Licensing system hook files"), $"{string.Join(" / ", rules.HookDirectories)} ({string.Join(", ", rules.HookFiles)})", RiskLevel.Critical),
+            (Loc.T("KMS server tùy chỉnh trong registry", "Custom KMS server in the registry"), @"HKLM\...\SoftwareProtectionPlatform", RiskLevel.High),
         };
 
         return defs.Select(d => new DetectionScope
@@ -254,10 +255,10 @@ public static class RiskScoring
 
         var (band, label) = score switch
         {
-            >= 70 => (RiskLevel.Critical, "Nghiêm trọng"),
-            >= 40 => (RiskLevel.High, "Cao"),
-            >= 15 => (RiskLevel.Medium, "Trung bình"),
-            _ => (RiskLevel.Low, "Thấp")
+            >= 70 => (RiskLevel.Critical, Loc.T("Nghiêm trọng", "Critical")),
+            >= 40 => (RiskLevel.High, Loc.T("Cao", "High")),
+            >= 15 => (RiskLevel.Medium, Loc.T("Trung bình", "Medium")),
+            _ => (RiskLevel.Low, Loc.T("Thấp", "Low"))
         };
 
         return new RiskScore { Value = score, Band = band, Label = label };
@@ -296,9 +297,11 @@ public static class RiskScoring
             return new Verdict
             {
                 Level = VerdictLevel.Bad,
-                Title = "❌ CÓ DẤU HIỆU RÕ RÀNG CỦA KÍCH HOẠT TRÁI PHÉP",
-                Detail = "Windows API và/hoặc dấu hiệu artifact cho thấy khả năng cao máy đang dùng license không hợp pháp. " +
-                         "Cần kiểm tra thủ công ngay và đối chiếu với hồ sơ mua bản quyền của tổ chức."
+                Title = Loc.T("❌ CÓ DẤU HIỆU RÕ RÀNG CỦA KÍCH HOẠT TRÁI PHÉP", "❌ CLEAR SIGNS OF UNAUTHORIZED ACTIVATION"),
+                Detail = Loc.T("Windows API và/hoặc dấu hiệu artifact cho thấy khả năng cao máy đang dùng license không hợp pháp. " +
+                         "Cần kiểm tra thủ công ngay và đối chiếu với hồ sơ mua bản quyền của tổ chức.",
+                         "The Windows API and/or artifacts strongly suggest this machine uses an unlawful license. " +
+                         "Check it manually now and compare with the organization's license purchase records.")
             };
         }
 
@@ -307,10 +310,13 @@ public static class RiskScoring
             return new Verdict
             {
                 Level = VerdictLevel.Warning,
-                Title = "⚠️ WINDOWS HỢP LỆ NHƯNG OFFICE CHƯA ĐƯỢC KÍCH HOẠT",
-                Detail = "Bản quyền Windows không có vấn đề, nhưng ít nhất một sản phẩm Office đang ở trạng thái " +
+                Title = Loc.T("⚠️ WINDOWS HỢP LỆ NHƯNG OFFICE CHƯA ĐƯỢC KÍCH HOẠT", "⚠️ WINDOWS IS VALID BUT OFFICE IS NOT ACTIVATED"),
+                Detail = Loc.T("Bản quyền Windows không có vấn đề, nhưng ít nhất một sản phẩm Office đang ở trạng thái " +
                          "chưa kích hoạt. Đây là vấn đề tuân thủ bản quyền cần xử lý, dù không phải dấu hiệu " +
-                         "của công cụ kích hoạt trái phép. Xem mục bản quyền Office bên dưới."
+                         "của công cụ kích hoạt trái phép. Xem mục bản quyền Office bên dưới.",
+                         "Windows licensing has no problem, but at least one Office product is not activated. " +
+                         "This is a license compliance issue to fix, although it is not a sign of an unauthorized " +
+                         "activation tool. See the Office licensing section below.")
             };
         }
 
@@ -319,9 +325,11 @@ public static class RiskScoring
             return new Verdict
             {
                 Level = VerdictLevel.Warning,
-                Title = "⚠️ ĐANG TRONG THỜI GIAN DÙNG THỬ / GIA HẠN",
-                Detail = "Máy chưa ở trạng thái kích hoạt vĩnh viễn. Đây chưa phải vi phạm, nhưng license sẽ hết hiệu lực " +
-                         "khi hết thời gian gia hạn. Cần kích hoạt bằng license hợp pháp trước thời điểm đó."
+                Title = Loc.T("⚠️ ĐANG TRONG THỜI GIAN DÙNG THỬ / GIA HẠN", "⚠️ IN TRIAL / GRACE PERIOD"),
+                Detail = Loc.T("Máy chưa ở trạng thái kích hoạt vĩnh viễn. Đây chưa phải vi phạm, nhưng license sẽ hết hiệu lực " +
+                         "khi hết thời gian gia hạn. Cần kích hoạt bằng license hợp pháp trước thời điểm đó.",
+                         "The machine is not permanently activated. This is not a violation yet, but the license " +
+                         "stops working when the grace period ends. Activate it with a lawful license before then.")
             };
         }
 
@@ -330,33 +338,39 @@ public static class RiskScoring
             return new Verdict
             {
                 Level = VerdictLevel.Warning,
-                Title = "⚠️ CÓ DẤU HIỆU CẦN XEM XÉT THÊM",
-                Detail = "Phát hiện một số dấu hiệu mức độ thấp/trung bình. Có thể là trùng lặp ngẫu nhiên, " +
-                         "nhưng nên xác minh thủ công để loại trừ khả năng kích hoạt trái phép."
+                Title = Loc.T("⚠️ CÓ DẤU HIỆU CẦN XEM XÉT THÊM", "⚠️ SIGNS NEED FURTHER REVIEW"),
+                Detail = Loc.T("Phát hiện một số dấu hiệu mức độ thấp/trung bình. Có thể là trùng lặp ngẫu nhiên, " +
+                         "nhưng nên xác minh thủ công để loại trừ khả năng kích hoạt trái phép.",
+                         "Some low/medium signs were found. They may be coincidences, " +
+                         "but verify them manually to rule out unauthorized activation.")
             };
         }
 
         if (windows == LicenseHealth.Ok)
         {
             var officeNote = office == LicenseHealth.Ok
-                ? "Bản quyền Windows và Office đều hợp lệ"
-                : "Bản quyền Windows hợp lệ; không phát hiện Office trên máy";
+                ? Loc.T("Bản quyền Windows và Office đều hợp lệ", "Windows and Office licenses are both valid")
+                : Loc.T("Bản quyền Windows hợp lệ; không phát hiện Office trên máy", "Windows license is valid; Office not detected on this machine");
 
             return new Verdict
             {
                 Level = VerdictLevel.Ok,
-                Title = "✅ KHÔNG PHÁT HIỆN DẤU HIỆU KÍCH HOẠT TRÁI PHÉP",
-                Detail = $"{officeNote}, và không tìm thấy artifact của công cụ crack đã biết. " +
-                         "Lưu ý: đây là kết quả quét theo dấu hiệu đã biết, không phải bảo chứng tuyệt đối."
+                Title = Loc.T("✅ KHÔNG PHÁT HIỆN DẤU HIỆU KÍCH HOẠT TRÁI PHÉP", "✅ NO SIGNS OF UNAUTHORIZED ACTIVATION FOUND"),
+                Detail = Loc.T($"{officeNote}, và không tìm thấy artifact của công cụ crack đã biết. " +
+                         "Lưu ý: đây là kết quả quét theo dấu hiệu đã biết, không phải bảo chứng tuyệt đối.",
+                         $"{officeNote}, and no artifacts of known cracking tools were found. " +
+                         "Note: this scan looks for known signs and is not an absolute guarantee.")
             };
         }
 
         return new Verdict
         {
             Level = VerdictLevel.Unknown,
-            Title = "❔ CHƯA ĐỦ CƠ SỞ KẾT LUẬN",
-            Detail = "Không tìm thấy dấu hiệu kích hoạt trái phép, nhưng cũng không xác minh được trạng thái Genuine qua API Windows. " +
-                     "Nên kiểm tra thủ công tại Settings → Activation."
+            Title = Loc.T("❔ CHƯA ĐỦ CƠ SỞ KẾT LUẬN", "❔ NOT ENOUGH EVIDENCE FOR A VERDICT"),
+            Detail = Loc.T("Không tìm thấy dấu hiệu kích hoạt trái phép, nhưng cũng không xác minh được trạng thái Genuine qua API Windows. " +
+                     "Nên kiểm tra thủ công tại Settings → Activation.",
+                     "No signs of unauthorized activation were found, but the Genuine status could not be verified through the Windows API. " +
+                     "Check manually under Settings → Activation.")
         };
     }
 }

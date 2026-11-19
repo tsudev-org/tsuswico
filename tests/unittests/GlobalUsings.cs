@@ -3,6 +3,7 @@
 global using Tsudev.Audit.Core.Abstractions;
 global using Tsudev.Audit.Core.Cli;
 global using Tsudev.Audit.Core.Collectors;
+global using Tsudev.Audit.Core.Localization;
 global using Tsudev.Audit.Core.Models;
 global using Tsudev.Audit.Core.Progress;
 global using Tsudev.Audit.Core.Reports;

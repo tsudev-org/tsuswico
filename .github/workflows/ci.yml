@@ -192,6 +192,37 @@ jobs:
           # khong coi ca buoc la that bai.
           exit 0
 
+      # PRODUCT_POLICY muc 1 (phieu T3) + STATE 3.5-4: chay that tren Windows.
+      #  - Runner la Windows tieng Anh => khong --lang thi giao dien PHAI la tieng Anh;
+      #    --lang vi / TSUSWICO_LANG=vi thi PHAI la tieng Viet (lua chon thang he thong).
+      #  - --json-only: stdout CHI la mot tai lieu JSON hop le, khong ghi tep nao.
+      - name: Ngon ngu theo he thong va --json-only
+        shell: pwsh
+        run: |
+          $help = (./publish/swico.exe --help) -join "`n"
+          if ($help -notmatch 'USAGE:') { throw 'Windows tieng Anh nhung tro giup khong phai tieng Anh' }
+          $vi = (./publish/swico.exe --help --lang vi) -join "`n"
+          if ($vi -notmatch 'THAM S') { throw '--lang vi khong doi tro giup sang tieng Viet' }
+          $env:TSUSWICO_LANG = 'vi'
+          $envVi = (./publish/swico.exe --help) -join "`n"
+          Remove-Item Env:TSUSWICO_LANG
+          if ($envVi -notmatch 'THAM S') { throw 'TSUSWICO_LANG=vi khong co tac dung' }
+
+          $before = @(Get-ChildItem -Recurse -File . -Filter *.html).Count
+          ./publish/swico.exe --scope hardware --json-only --no-update-check --no-dism 1> json-only.json 2> json-only.log
+          $exit = $LASTEXITCODE
+          Get-Content json-only.log | ForEach-Object { Write-Host $_ }
+          if ($exit -ge 2) { throw "--json-only thoat voi ma $exit" }
+          $doc = Get-Content json-only.json -Raw | ConvertFrom-Json
+          if ($doc.tool -ne 'Tsu Swico') { throw 'JSON thieu truong tool' }
+          if ($doc.language -ne 'en') { throw "Ngon ngu bao cao '$($doc.language)', mong doi 'en'" }
+          if ($doc.reports.Count -ne 1) { throw "Mong doi 1 bao cao, co $($doc.reports.Count)" }
+          if (-not $doc.reports[0].computerName) { throw 'Bao cao JSON thieu computerName' }
+          $after = @(Get-ChildItem -Recurse -File . -Filter *.html).Count
+          if ($after -ne $before) { throw '--json-only van ghi tep HTML' }
+          Write-Host "--json-only: JSON hop le, $($doc.reports[0].sections.Count) muc, khong ghi tep"
+          exit 0
+
       - name: Luu ket qua quet de doi chieu khi can
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

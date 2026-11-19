@@ -121,14 +121,14 @@ internal sealed class ConsoleProgressReporter : IProgressSink, IDisposable
             _spinner = null;
             _clock.Stop();
 
-            var elapsed = string.Create(CultureInfo.InvariantCulture,
-                $"{_clock.Elapsed.TotalSeconds:0.0} s");
+            var elapsed = ProgressText.Elapsed(_clock.Elapsed);
 
             if (_interactive) EraseLine();
 
+            // Nhan dem ve be rong co dinh de cot thoi gian thang hang (STATE 3.5-4b).
             WriteColored($"    {mark} ", color);
-            Console.Write(_label);
-            WriteColored($"   {elapsed}", ConsoleColor.DarkGray);
+            Console.Write(ProgressText.PadLabel(_label));
+            WriteColored($" {elapsed}", ConsoleColor.DarkGray);
             if (reason is not null) WriteColored($"   {reason}", color);
             Console.WriteLine();
             Console.Out.Flush();

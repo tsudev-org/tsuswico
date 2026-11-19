@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Globalization;
 using System.IO.Compression;
 using System.Text;
@@ -39,13 +40,14 @@ public sealed class XlsxWriter
 
         var list = tables.ToList();
         if (list.Count == 0)
-            list.Add(DataTable.Create("Không có dữ liệu", "Thông báo").AddRow("Báo cáo không có bảng nào."));
+            list.Add(DataTable.Create(Loc.T("Không có dữ liệu", "No data"), Loc.T("Thông báo", "Notice"))
+                .AddRow(Loc.T("Báo cáo không có bảng nào.", "The report has no tables.")));
 
         var usedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var sheets = list.Select((t, i) => (
             Table: t,
             Index: i + 1,
-            Name: MakeSafeSheetName(string.IsNullOrWhiteSpace(t.Title) ? $"Bảng {i + 1}" : t.Title, usedNames)
+            Name: MakeSafeSheetName(string.IsNullOrWhiteSpace(t.Title) ? Loc.T($"Bảng {i + 1}", $"Table {i + 1}") : t.Title, usedNames)
         )).ToList();
 
         var dir = Path.GetDirectoryName(path);
@@ -296,11 +298,11 @@ public sealed class XlsxWriter
         ArgumentNullException.ThrowIfNull(usedNames);
 
         var cleaned = new string((title ?? "").Where(ch => !InvalidSheetChars.Contains(ch)).ToArray()).Trim();
-        if (cleaned.Length == 0) cleaned = "Bảng";
+        if (cleaned.Length == 0) cleaned = Loc.T("Bảng", "Table");
 
         // Excel cam dau nhay don o dau va cuoi ten sheet.
         cleaned = cleaned.Trim('\'');
-        if (cleaned.Length == 0) cleaned = "Bảng";
+        if (cleaned.Length == 0) cleaned = Loc.T("Bảng", "Table");
 
         var candidate = Truncate(cleaned, MaxSheetNameLength);
 

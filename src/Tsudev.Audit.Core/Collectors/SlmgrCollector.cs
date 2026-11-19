@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Abstractions;
 using Tsudev.Audit.Core.Models;
 using Tsudev.Audit.Core.Reports;
@@ -11,13 +12,13 @@ public static class SlmgrCollector
     {
         var slmgr = ctx.Files.ExpandEnvironment(@"%SystemRoot%\System32\slmgr.vbs");
         if (!ctx.Files.FileExists(slmgr))
-            return "Không tìm thấy slmgr.vbs trên máy này.";
+            return Loc.T("Không tìm thấy slmgr.vbs trên máy này.", "slmgr.vbs was not found on this machine.");
 
         var result = ctx.Process.Run("cscript.exe", $"//Nologo \"{slmgr}\" /dli",
             timeoutSeconds: 90, cancellation: ctx.Cancellation);
         var text = result.CombinedOutput.Trim();
         return string.IsNullOrWhiteSpace(text)
-            ? "Không lấy được kết quả từ slmgr.vbs /dli (có thể cần quyền Administrator)."
+            ? Loc.T("Không lấy được kết quả từ slmgr.vbs /dli (có thể cần quyền Administrator).", "Could not get output from slmgr.vbs /dli (Administrator rights may be needed).")
             : text;
     }
 }
