@@ -135,9 +135,18 @@ swico.exe --silent --sfc           Quét sâu, không mở trình duyệt (GPO/R
 swico.exe -o D:\BaoCao --silent    Lưu vào thư mục chỉ định
 swico.exe --rules .\luat-moi.json  Quét bằng bộ luật cập nhật
 swico.exe --no-verdict-exit        Kết luận không ảnh hưởng mã thoát
+swico.exe --json-only > ketqua.json  Chỉ in JSON ra stdout (không ghi tệp)
+swico.exe --lang en                Giao diện tiếng Anh (auto|vi|en)
 swico.exe --version                Xem phiên bản
 swico.exe --help                   Xem toàn bộ tham số
 ```
+
+**Ngôn ngữ** theo thứ tự ưu tiên: `--lang` ▸ biến môi trường `TSUSWICO_LANG` ▸ ngôn ngữ Windows (tiếng Việt ⇒
+`vi`, mọi ngôn ngữ khác ⇒ `en`). Áp cho CLI, hộp thoại cập nhật, báo cáo HTML/XLSX và trang tổng hợp. Khóa JSON
+không dịch - hợp đồng tích hợp giữ nguyên ở cả hai ngôn ngữ.
+
+**`--json-only`** (ngầm bật `--silent`): stdout chỉ có MỘT tài liệu JSON gói mọi báo cáo đã quét; dòng tiến trình
+và thông báo chuyển sang stderr; không ghi tệp, không mở trình duyệt. Dùng cho RMM/script đọc qua ống dẫn.
 
 Công cụ yêu cầu quyền Administrator để đọc trạng thái bản quyền, Defender và
 chạy DISM/SFC. Windows sẽ tự hiện hộp thoại UAC.
