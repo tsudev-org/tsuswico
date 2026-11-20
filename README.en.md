@@ -37,7 +37,7 @@ scoop install tsudev/tsuswico                # portable
 ```
 
 Or download from [Releases](https://github.com/tsudev-org/tsuswico/releases): the installer
-(`tsuswico_<version>_x64-setup.exe`), the portable zip, or the bare `swico.exe`. All three contain the same program.
+(`tsuswico_<version>_windows-x64-setup.exe`), the portable zip, or the bare `swico.exe`. All three contain the same program.
 The winget id `tsudev.SWICO` is kept after the rename to Tsu Swico so existing installs keep receiving updates.
 
 ### Verify downloads
@@ -50,7 +50,7 @@ cosign verify-blob SHA256SUMS.txt --bundle SHA256SUMS.txt.sigstore.json \
   --certificate-identity-regexp '^https://github.com/tsudev-org/tsuswico/\.github/workflows/release\.yml@' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 sha256sum -c SHA256SUMS.txt --ignore-missing
-gh attestation verify tsuswico_<version>_x64-setup.exe -R tsudev-org/tsuswico
+gh attestation verify tsuswico_<version>_windows-x64-setup.exe -R tsudev-org/tsuswico
 ```
 
 Authenticode signing of the `.exe` is pending approval by SignPath Foundation ([docs/SIGNING.md](docs/SIGNING.md)).

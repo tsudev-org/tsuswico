@@ -94,11 +94,11 @@ public class ReleaseNameTests
     [Fact]
     public void Dung_ten_file_cai_dat_va_ban_portable()
     {
-        Assert.True(ReleaseName.InstallerFileName(new VersionNumber(26, 8, 19)) == "tsuswico_26.8.1901_x64-setup.exe",
+        Assert.True(ReleaseName.InstallerFileName(new VersionNumber(26, 8, 19)) == "tsuswico_26.8.1901_windows-x64-setup.exe",
             "ten file cai dat dung dinh dang cua DESIGN_SYSTEM muc 6");
-        Assert.True(ReleaseName.PortableFileName(new VersionNumber(26, 8, 19, 2)) == "tsuswico_26.8.1902_x64-portable.zip",
+        Assert.True(ReleaseName.PortableFileName(new VersionNumber(26, 8, 19, 2)) == "tsuswico_26.8.1902_windows-x64-portable.zip",
             "ten ban portable dung dinh dang");
-        Assert.True(ReleaseName.InstallerFileName(new VersionNumber(26, 9, 9)) == "tsuswico_26.9.0901_x64-setup.exe",
+        Assert.True(ReleaseName.InstallerFileName(new VersionNumber(26, 9, 9)) == "tsuswico_26.9.0901_windows-x64-setup.exe",
             "ngay mot chu so van ra ten file du hai chu so");
     }
 

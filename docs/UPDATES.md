@@ -62,7 +62,7 @@ Tải một file `.exe` từ mạng rồi chạy nó với quyền Administrator
 tra gì là **đúng mô tả của một cuộc tấn công**. Quy trình cập nhật vì thế:
 
 1. Đọc bản phát hành mới nhất từ GitHub API
-2. Tải file cài đặt (`tsuswico_<phiên-bản>_x64-setup.exe`)
+2. Tải file cài đặt (`tsuswico_<phiên-bản>_windows-x64-setup.exe`)
 3. Tải `SHA256SUMS.txt` từ **cùng bản phát hành đó**
 4. **Đối chiếu SHA-256.** Không khớp → xoá file, dừng lại, báo lỗi
 5. Chỉ khi khớp mới chạy file cài đặt

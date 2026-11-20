@@ -161,8 +161,8 @@ export interface BanPhatHanh { tag: string; phienBan: string; ngay: string; url:
  * quy ước mới (`tsuswico_26.9.0901_x64-setup.exe`, docs/VERSIONING.md). Thứ tự = thứ tự hiển thị.
  */
 export const LOAI_GOI: { ma: string; tieuDe: string; moTa: string; mau: RegExp }[] = [
-  { ma: 'setup', tieuDe: 'Bộ cài đặt', moTa: 'Cài cố định, có mục gỡ cài đặt, hỗ trợ /VERYSILENT để triển khai hàng loạt.', mau: /^(swico-setup-.+\.exe|tsuswico_.+_x64-setup\.exe)$/ },
-  { ma: 'portable', tieuDe: 'Bản di động (ZIP)', moTa: 'Cắm USB đi từng máy: giải nén chạy thẳng, không đụng registry.', mau: /^(swico-portable-.+\.zip|tsuswico_.+_x64-portable\.zip)$/ },
+  { ma: 'setup', tieuDe: 'Bộ cài đặt', moTa: 'Cài cố định, có mục gỡ cài đặt, hỗ trợ /VERYSILENT để triển khai hàng loạt.', mau: /^(swico-setup-.+\.exe|tsuswico_.+_(windows-)?x64-setup\.exe)$/ },
+  { ma: 'portable', tieuDe: 'Bản di động (ZIP)', moTa: 'Cắm USB đi từng máy: giải nén chạy thẳng, không đụng registry.', mau: /^(swico-portable-.+\.zip|tsuswico_.+_(windows-)?x64-portable\.zip)$/ },
   { ma: 'exe', tieuDe: 'Chỉ tệp chạy', moTa: 'Một tệp swico.exe để nhúng vào script, GPO hoặc hệ thống RMM.', mau: /^swico\.exe$/ },
 ];
 const PHU: { tieuDe: string; moTa: string; mau: RegExp }[] = [

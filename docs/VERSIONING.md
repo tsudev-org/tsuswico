@@ -19,9 +19,9 @@
 ## 1. Dạng chuẩn
 
 ```
-{ten-app}_{YY}.{M}.{DD}{NN}_{arch}-setup.{ext}
+{ten-app}_{YY}.{M}.{DD}{NN}_{os}-{arch}-setup.{ext}
 
-tsuswico_26.8.1901_x64-setup.exe
+tsuswico_26.8.1901_windows-x64-setup.exe
 ```
 
 | Thành phần | Nghĩa | Ví dụ |
@@ -30,6 +30,7 @@ tsuswico_26.8.1901_x64-setup.exe
 | `M` | Tháng, **không** đệm số 0 | `8` = tháng 8 |
 | `DD` | Ngày, **đệm đủ hai chữ số** | `19`, `09` |
 | `NN` | **Thứ tự bản phát hành trong ngày**, đệm đủ hai chữ số, bắt đầu `01` | `01`, `02` |
+| `os` | `windows` (tsudev-standards VERSIONING 2.2, từ `26.11.2001`) | dự án chỉ phát hành cho Windows |
 | `arch` | `x64` \| `x86` \| `arm64` | dự án hiện chỉ phát hành `x64` |
 
 Chuỗi phiên bản trong mã nguồn và manifest là `26.8.1901` - **đồng bộ với tên file**.
@@ -38,9 +39,9 @@ Ví dụ đầy đủ cho ngày 19/08/2026:
 
 | Bản phát hành trong ngày | Chuỗi phiên bản | Tên file cài đặt |
 |---|---|---|
-| Thứ nhất | `26.8.1901` | `tsuswico_26.8.1901_x64-setup.exe` |
-| Thứ hai | `26.8.1902` | `tsuswico_26.8.1902_x64-setup.exe` |
-| Thứ ba | `26.8.1903` | `tsuswico_26.8.1903_x64-setup.exe` |
+| Thứ nhất | `26.8.1901` | `tsuswico_26.8.1901_windows-x64-setup.exe` |
+| Thứ hai | `26.8.1902` | `tsuswico_26.8.1902_windows-x64-setup.exe` |
+| Thứ ba | `26.8.1903` | `tsuswico_26.8.1903_windows-x64-setup.exe` |
 
 Sang ngày hôm sau, số đếm **bắt đầu lại từ `01`**:
 
@@ -129,11 +130,12 @@ mọi nơi khác lấy theo:
 |---|---|---|
 | `Directory.Build.props` → `VersionPrefix` | số hiệu trần | `26.8.1901` |
 | Tag git *(kích hoạt `release.yml`)* | `v` + số hiệu | `v26.8.1901` |
-| **Tên GitHub Release** | tên đầy đủ | `tsuswico_26.8.1901` |
-| File cài đặt | | `tsuswico_26.8.1901_x64-setup.exe` |
-| Bản portable | | `tsuswico_26.8.1901_x64-portable.zip` |
+| **Tên GitHub Release** | `{Tên sản phẩm} {phiên bản}` | `Tsu Swico 26.8.1901` |
+| File cài đặt | | `tsuswico_26.8.1901_windows-x64-setup.exe` |
+| Bản portable | | `tsuswico_26.8.1901_windows-x64-portable.zip` |
 | `swico.exe --version` | số hiệu trần | `26.8.1901` |
 | Inno Setup `AppVersion` | số hiệu trần | `26.8.1901` |
+| Inno Setup `VersionInfoVersion` / FileVersion | 4 phần, thêm `.0` | `26.8.1901.0` |
 | Thư mục manifest winget | số hiệu trần | `manifests/t/tsudev/SWICO/26.8.1901/` |
 
 Tag dùng dạng ngắn `v26.8.1901` chứ không phải tên đầy đủ, vì `release.yml` kích
@@ -172,11 +174,18 @@ chỉ có tối đa 2 chữ số, còn `DDNN` luôn từ 3 chữ số trở lên
 | Dạng | File cài đặt | Bản portable |
 |---|---|---|
 | Cũ | `swico-setup-*.exe` | `swico-portable-*.zip` |
-| Mới | `tsuswico_*_x64-setup.exe` | `tsuswico_*_x64-portable.zip` |
+| Mới | `tsuswico_*_windows-x64-setup.exe` | `tsuswico_*_windows-x64-portable.zip` |
 
 Bỏ dạng cũ đi thì một bản phát hành cũ sẽ bị coi là "không có file cài đặt", và
 người dùng nhận được thông báo *phải tự cập nhật* thay vì **được** cập nhật. Đó
 là kiểu hỏng **im lặng** - không ai báo lỗi.
+
+### 5.1. Chiều ngược lại: bản đã cài KHÔNG đọc được dạng mới - chấp nhận, không làm cầu nối
+
+`26.8.18` / `26.8.18.2` đã cài đọc thẻ `v26.11.2001` thành ngày `2001` ⇒ `CheckFailed` (vẫn quét, ghi chú "không
+kiểm tra được bản cập nhật"), và chỉ tìm tệp `swico-setup-*.exe`. Chủ dự án chọn **khuôn mới luôn, bỏ bản cầu nối**
+(20/11/2026) - lý do và cách người dùng cũ cập nhật: `docs/adr/0003-khuon-phat-hanh-v1-khong-cau-noi.md`.
+Thẻ `v26.8.18`, `v26.8.18.2` giữ nguyên, không đổi tên, không xoá.
 
 ### ⛔ Giới hạn KHÔNG sửa được bằng mã: hai bản đã phát hành
 

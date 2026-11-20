@@ -31,7 +31,7 @@ public static class GitHubReleaseParser
     ///
     /// <code>
     ///   swico-setup-26.8.19.exe                 dang CU
-    ///   tsuswico_26.8.1901_x64-setup.exe    dang MOI (docs/DESIGN_SYSTEM.md muc 6)
+    ///   tsuswico_26.8.1901_windows-x64-setup.exe    dang MOI (docs/DESIGN_SYSTEM.md muc 6)
     /// </code>
     ///
     /// VI SAO PHAI NHAN CA HAI. Chuc nang tu cap nhat tim file cai dat THEO TEN.
@@ -51,7 +51,7 @@ public static class GitHubReleaseParser
     ///
     /// <code>
     ///   swico-portable-26.8.19.zip                 dang CU
-    ///   tsuswico_26.8.1901_x64-portable.zip    dang MOI
+    ///   tsuswico_26.8.1901_windows-x64-portable.zip    dang MOI
     /// </code>
     /// </summary>
     public static bool IsPortableAsset(string name)
