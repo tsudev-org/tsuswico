@@ -3,7 +3,7 @@
 - **Mã phiếu**: 20261119-PRO1 (phiếu con)
 - **Từ**: agent-qulythuchi (phiên `qulythuchi-b2`), 19/11/2026, theo yêu cầu trực tiếp của chủ dự án
 - **Đến**: phiên kế tiếp của repo `tsuswico`
-- **Trạng thái**: MỞ - chưa viết mã trước khi tsudev-standards v3.9.0 (PRO-A) phát hành; phần nào cần máy chủ quyền lợi
+- **Trạng thái**: MỞ - P1 (kiểm kê + ADR-0002 + v3.9.1) XONG 20/11/2026; trước đây: chưa viết mã trước khi tsudev-standards v3.9.0 (PRO-A) phát hành; phần nào cần máy chủ quyền lợi
   thì chờ PRO-B
 - **Phiếu gốc (ĐỌC TRƯỚC)**: `~/projects/logs/handover/20261119-PRO1_ke-hoach-luu-cuc-bo-pro-dong-bo-toan-he.md` - mục 1 (yêu cầu nguyên văn tóm tắt), 2 (nguyên tắc N1-N8), 3 (thông báo nhiều
   thiết bị, chu kỳ 30 ngày), 5 (khung việc mỗi repo), 7 (nghiệm thu), 8 (câu hỏi 👤). Phiếu này THAY hàng T7 của
@@ -28,7 +28,15 @@ Xem phiếu gốc mục 8 (giá Pro, ân hạn, nơi đặt dịch vụ đồng 
 
 ## 4. Kết quả xử lý (phiên nhận điền)
 
--
+- 20/11/2026 - tsuswico-68: **P1 xong** (PR `feat/pro1-kiem-ke-adr-0002`). Kiểm kê: KHÔNG có dữ liệu người dùng nào rời
+  máy; không lưu cài đặt/hồ sơ; kết nối mạng duy nhất là kiểm tra bản mới trên GitHub (tắt bằng `--no-update-check`)
+  ⇒ không có đường đồng bộ miễn phí nào phải tắt, không cần ân hạn. **ADR-0002**: Pro = đồng bộ + sao lưu **báo cáo**
+  qua TsuDEV Sync (không gian tên `tsuswico`, E2EE, báo cáo coi như D2 khi rời máy) - bản đám mây của tính năng gom
+  nhiều máy vốn miễn phí bằng tay; không thêm tính năng Pro nào khác ⇒ không cần 👤 duyệt riêng. Đăng nhập loopback
+  PKCE, token DPAPI, mã cài đặt chỉ sinh khi đăng nhập; thông báo nhiều thiết bị chỉ ở chế độ tương tác (không ở
+  `--silent`/`--json-only`). Sync tsudev-standards **v3.9.1**.
+  CÒN: P2 (`Entitlements` + `ProNotice` 5 test + `InstallationId`, làm được ngay với nguồn giả), P3 cần `client_id` Tsu
+  Swico ở tsudev.com, P4 cần PRO-D (`TsuSync` .NET), P5 PRIVACY/THREAT_MODEL trước khi phát hành P3.
 
 ## 5. Đã chốt (19/11/2026, bổ sung sau khi mở phiếu)
 

@@ -46,6 +46,9 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       ~~xUnit~~ ✅ xong ở S006 (`docs/STATE.md` mục 3.5-1). ~~tách file gộp~~ ✅ 16/11/2026 (phiên tsudev-27):
       `InventoryCollectors.cs` + `LicenseCollectors.cs` → 12 tệp, mỗi tệp MỘT kiểu (kể cả record). ~~`--json-only`~~ ✅ + ~~căn
       cột dòng tiến trình~~ ✅ (#37, 20/11/2026). Còn lại: logging có cấu trúc.
+- [ ] **PRO1** 🔶 P1 ✅ 20/11 (kiểm kê + `docs/adr/0002-luu-cuc-bo-pro-dong-bo.md` + v3.9.1). Tiếp: **P2** làm được ngay
+      (`Entitlements` .NET kiểm JWS ES256 bằng JWKS giả, `ProNotice` + 5 test 7.3, `InstallationId`, vi/en). P3 ⛔
+      `client_id` ở tsudev.com; P4 ⛔ PRO-D (`TsuSync` .NET). Phiếu `logs/handover/20261119-PRO1_*.md` mục 4.
 - [ ] **3.6** ⬜ Quyết định có phát hành `26.8.1901` không - **đọc mục 4.7 trước**
 - [x] **QU-6** ✅ S007 - tự giải theo bộ quy ước v3.2.0 (`BRAND_ASSETS.md`): wordmark lấy token, xem `docs/STATE.md` mục S007. Dòng cũ: ⛔ Quyết có đưa **4 sắc chữ ký thương hiệu** `tsudev` vào
       `tokens/design-tokens.json` không - hiện là bốn giá trị màu **duy nhất**
