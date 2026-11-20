@@ -21,6 +21,8 @@ env:
 
 jobs:
   release:
+    outputs:
+      tag: v${{ steps.ver.outputs.version }}
     permissions:
       contents: write
       id-token: write        # SignPath + ky keyless Sigstore (OIDC)
@@ -310,3 +312,18 @@ jobs:
 
             Báo cáo do công cụ tạo ra là **dữ liệu kỹ thuật để tham khảo**,
             không phải kết luận pháp lý. Xem `EULA.txt` mục 3.
+
+  # DISTRIBUTION_TRUST.md muc 3: moi tep cua Release nhap duoc gui len VirusTotal, link bao cao ghi vao Release notes;
+  # co engine gan co thi Release giu o nhap va job do. Release van cong bo bang tay - job nay chi cho nguoi bao tri
+  # biet minh sap cong bo gi. Chua co VT_API_KEY cua to chuc thi job xanh, bo qua. Phieu 20261120-TR1, TR1-b.
+  virustotal:
+    needs: release
+    permissions:
+      contents: write
+    # tsudev-org/.github @ 8a393eb (feat(ci): workflow dung chung quet VirusTotal, #4)
+    uses: tsudev-org/.github/.github/workflows/virustotal.yml@8a393ebd89349300637c8c57e89c12492b174e4d
+    with:
+      tag: ${{ needs.release.outputs.tag }}
+      patterns: "tsuswico_*.exe tsuswico_*.zip"
+    secrets:
+      VT_API_KEY: ${{ secrets.VT_API_KEY }}
