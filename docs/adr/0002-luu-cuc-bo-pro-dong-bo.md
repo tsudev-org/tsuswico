@@ -88,7 +88,8 @@ cần ADR riêng về hạn mức.
 Tsu Swico chỉ phát hành ngoài cửa hàng (GitHub Release, winget, Scoop) ⇒ Pro và Ủng hộ qua **tsudev.com**
 (`/pro?app=<client_id>`, `/ung-ho?app=<client_id>`). Không nhúng cổng thanh toán, không mã Play/App Store. Màn
 `swico.exe account` in điều khoản thuê bao nguyên văn 7.5 TRƯỚC liên kết mua. Ghi chú: VietQR trên web là trả trước
-một kỳ, không tự gia hạn - chờ câu chữ kênh web ở tsudev-standards v3.9.2 (bàn giao 20261120-01 mục 6) rồi mới in.
+một kỳ, không tự gia hạn - chờ câu chữ kênh web ở tsudev-standards v3.9.2 (phiếu đề xuất `tsudev-standards/logs/handover/20261120-02_*`, câu vi
+chép từ `webTerms` đang chạy trên tsudev.com/pro) rồi mới in.
 
 ### 2.6. Huy hiệu (PRO-C)
 
