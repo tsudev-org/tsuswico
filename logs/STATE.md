@@ -26,7 +26,7 @@
 
 Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái.
 
-> **Việc làm được ngay, không cần ai** (thứ tự: phiếu `20261110-01` mục 1c): ~~`QU-7`~~ ✅, ~~`QU-STD-TABLE`~~ ✅, `3.5` (còn logging, `--json-only`, căn cột tiến trình), `QU-STD-BRAND`. Mọi việc
+> **Việc làm được ngay, không cần ai** (thứ tự: phiếu `20261110-01` mục 1c): ~~`QU-7`~~ ✅, ~~`QU-STD-TABLE`~~ ✅, `3.5` (còn logging), `QU-STD-BRAND`. Mọi việc
 > còn lại đều chặn ở người dùng hoặc bên ngoài - xem cột lý do.
 
 - [ ] **QU-2** ⛔ Nhờ người dùng kiểm **Inno Setup** biên dịch được với
@@ -44,8 +44,8 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - [ ] **3.4** ⛔ Cấu hình SignPath sau khi được duyệt - chờ bên ngoài
 - [ ] **3.5** ⬜ Việc kỹ thuật - **làm được ngay, không cần người dùng**.
       ~~xUnit~~ ✅ xong ở S006 (`docs/STATE.md` mục 3.5-1). ~~tách file gộp~~ ✅ 16/11/2026 (phiên tsudev-27):
-      `InventoryCollectors.cs` + `LicenseCollectors.cs` → 12 tệp, mỗi tệp MỘT kiểu (kể cả record). Còn lại, theo
-      thứ tự giá trị: logging có cấu trúc ▸ `--json-only` ▸ căn cột dòng tiến trình.
+      `InventoryCollectors.cs` + `LicenseCollectors.cs` → 12 tệp, mỗi tệp MỘT kiểu (kể cả record). ~~`--json-only`~~ ✅ + ~~căn
+      cột dòng tiến trình~~ ✅ (#37, 20/11/2026). Còn lại: logging có cấu trúc.
 - [ ] **3.6** ⬜ Quyết định có phát hành `26.8.1901` không - **đọc mục 4.7 trước**
 - [x] **QU-6** ✅ S007 - tự giải theo bộ quy ước v3.2.0 (`BRAND_ASSETS.md`): wordmark lấy token, xem `docs/STATE.md` mục S007. Dòng cũ: ⛔ Quyết có đưa **4 sắc chữ ký thương hiệu** `tsudev` vào
       `tokens/design-tokens.json` không - hiện là bốn giá trị màu **duy nhất**
@@ -72,6 +72,9 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 | (không có) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 20/11/2026 - **tsuswico-68:** #37 gộp (`2bf3b49`) - **T3** song ngữ vi/en theo hệ thống (`--lang`, `TSUSWICO_LANG`),
+  `--json-only`, căn cột tiến trình; website deploy `54039846`; README vi/en + CHANGELOG. Phiếu T3 toàn hệ ghi dòng.
 
 - 16/11/2026 - **S008 (tiếp):** tắt JavaScript Detections của zone `tsudev.com` (xem Quyết định); 7 site trả 200,
   không còn `challenge-platform`; quét trình duyệt swico + files sạch console (trừ trang 404 cố ý). Đổi thư mục

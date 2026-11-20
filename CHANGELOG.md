@@ -14,6 +14,12 @@
 
 ### Thêm
 
+- **Song ngữ Việt/Anh theo hệ thống** (T3, PRODUCT_POLICY 1.2): `--lang auto|vi|en` ▸ `TSUSWICO_LANG` ▸ ngôn ngữ
+  Windows (vi ⇒ vi, khác ⇒ en). Dịch CLI, hộp thoại cập nhật, báo cáo HTML/XLSX, trang tổng hợp; khóa JSON giữ
+  nguyên (#37).
+- **`--json-only`**: stdout chỉ một tài liệu JSON gói mọi báo cáo, tiến trình sang stderr, không ghi tệp (#37).
+- Website: khách mới theo giao diện Sáng/Tối của hệ thống (#36).
+
 - Liên kết **Ủng hộ tsudev** ở chân trang website và `.github/FUNDING.yml`, đều mở trang trung tâm
   `https://tsudev.com/ung-ho/` (không chép số tài khoản/QR vào repo này).
 
@@ -24,6 +30,7 @@
 
 ### Sửa
 
+- **Dòng tiến trình căn cột**: cột thời gian thẳng hàng dù tên bước dài ngắn khác nhau, ở cả hai ngôn ngữ (#37).
 - **Báo cáo in nguyên văn thẻ HTML.** Mô tả của nhiều mục hiện
   `<b>hợp lệ</b>`, `<code>ospp.vbs</code>`, `<br>` ra màn hình vì renderer mã hóa
   cả thẻ trình bày. Nay mã hóa toàn bộ rồi chỉ mở lại đúng năm chuỗi `<b>`,

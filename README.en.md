@@ -65,8 +65,18 @@ swico.exe --silent --sfc           Deep scan, no browser (GPO/RMM)
 swico.exe -o D:\Reports --silent   Write output to a folder
 swico.exe --rules .\new-rules.json Scan with an updated rule set
 swico.exe --no-verdict-exit        Verdict does not affect the exit code
+swico.exe --json-only > result.json  JSON to stdout only (no files written)
+swico.exe --lang vi                Vietnamese interface (auto|vi|en)
 swico.exe --help                   All options
 ```
+
+**Language**, in order of precedence: `--lang` ▸ the `TSUSWICO_LANG` environment variable ▸ the Windows display
+language (Vietnamese ⇒ `vi`, anything else ⇒ `en`). It covers the CLI, the update dialog, the HTML/XLSX reports and
+the summary page. JSON keys are never translated, so integrations work the same in both languages.
+
+**`--json-only`** (implies `--silent`): stdout carries exactly ONE JSON document wrapping every report produced;
+progress lines and messages go to stderr; no files are written and no browser opens. Meant for RMM tools and scripts
+reading from a pipe.
 
 The tool asks for Administrator rights because reading licensing data requires them.
 

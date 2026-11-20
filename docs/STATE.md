@@ -4,7 +4,8 @@
 > Phiên mới đọc `AGENTS.md` (quy ước bắt buộc) rồi tới **file này** - trước cả README.
 > Thứ tự đọc đầy đủ: `docs/CONTINUITY.md` mục 0.
 
-- **Cập nhật lần cuối:** 2026-08-20 (phiên S006)
+- **Cập nhật lần cuối:** 2026-11-20 (phiên tsuswico-68) - chỉ mục 3.5. ⚠️ Khối "Giai đoạn"/"VIỆC
+  ĐẦU TIÊN" dưới đây còn từ S006 - trạng thái 11/2026 đọc `logs/STATE.md` + bàn giao mới nhất trong `logs/handover/`.
 - **Phiên gần nhất:** S006 - `docs/journal/S006-2026-08-20.md`
 - **Quy ước bắt buộc:** `AGENTS.md` - **đọc trước cả file này**
 - **Giai đoạn:** đã phát hành `v26.8.18.2`; PR winget đang chờ gỡ một nhãn lỗi;
@@ -197,13 +198,14 @@ Chi tiết: `docs/SIGNING.md`.
 Xếp theo giá trị giảm dần:
 
 1. ✅ **XONG (S006) - chuyển bộ test sang xUnit.** Xem mục **3.5-1** ngay dưới.
-2. **Tách file gộp nhiều class thành file riêng** (`InventoryCollectors.cs` 4 class,
+2. ✅ **XONG (16/11/2026, phiên tsudev-27) - tách file gộp nhiều class thành file riêng** (`InventoryCollectors.cs` 4 class,
    `LicenseCollectors.cs` 5 class). Đã hoãn từ Phase 1 vì lúc đó chưa có test;
    nay có bộ test xUnit làm lưới an toàn.
 3. **Logging có cấu trúc** thay `Console.WriteLine` rải rác, kèm tuỳ chọn ghi log
    ra file cho tình huống hỗ trợ từ xa.
-4. **`--json-only`** cho tích hợp máy-đọc-máy.
-4b. **Căn cột cho dòng tiến trình** (nhỏ, tuỳ chọn). Hiện nhãn và thời gian
+4. ✅ **XONG (#37, 20/11/2026) - `--json-only`** cho tích hợp máy-đọc-máy: stdout một tài liệu
+   `{tool, version, language, reports[]}`, tiến trình sang stderr, không ghi tệp.
+4b. ✅ **XONG (#37) - căn cột cho dòng tiến trình.** Ghi chú cũ: Hiện nhãn và thời gian
    không thẳng cột: `✓ CPU   1.0 s` cạnh `✓ Tổng quan thiết bị   1.3 s`. Đệm
    nhãn về một bề rộng cố định trong `ConsoleProgressReporter.Finish()` là xong.
    README đang chép đúng đầu ra thật nên **không sai lệch**; đây thuần tuý là
