@@ -1,9 +1,27 @@
+using Tsudev.Audit.Core.Rendering;
+
 namespace Tsudev.Audit.Tests;
 
-/// <summary>Muc 9c cua bo test cu: thuong hieu trong bao cao HTML.</summary>
+/// <summary>
+/// Muc 9c cua bo test cu: thuong hieu trong bao cao HTML. Tu 20/11/2026 bao cao dung CUNG
+/// anh voi website swico.tsudev.com (assets/brand/report/, sinh boi brand-assets.mjs):
+/// favicon san pham, dau trang = logo san pham, chan trang = logo nha lam tsudev.
+/// </summary>
 public class BrandingTests
 {
     private static string Html => Infected.Html;
+
+    private static readonly string RepoRoot = FindRepoRoot();
+
+    private static string FindRepoRoot()
+    {
+        var d = new DirectoryInfo(AppContext.BaseDirectory);
+        while (d != null && !File.Exists(Path.Combine(d.FullName, "assets", "brand", "brand.json"))) d = d.Parent;
+        return d?.FullName ?? throw new InvalidOperationException("khong tim thay goc repo");
+    }
+
+    private static string DataUriOf(params string[] rel)
+        => "data:image/png;base64," + Convert.ToBase64String(File.ReadAllBytes(Path.Combine([RepoRoot, .. rel])));
 
     [Fact]
     public void Logo_va_favicon_duoc_nhung_thang_vao_trang()
@@ -18,37 +36,46 @@ public class BrandingTests
     }
 
     [Fact]
-    public void Chu_ky_thuong_hieu_la_van_ban_that()
+    public void Favicon_trung_favicon_website()
     {
-        Assert.True(Html.Contains("bw-tsu", StringComparison.Ordinal) && Html.Contains("bw-dev", StringComparison.Ordinal),
-            "chu ky thuong hieu tach 'tsu' va 'dev' thanh hai the rieng de to hai mau");
-        Assert.True(Html.Contains(">tsu<", StringComparison.Ordinal) && Html.Contains(">dev<", StringComparison.Ordinal),
-            "chu ky la VAN BAN that (sac net khi in, doc duoc bang trinh doc man hinh)");
+        var uri = DataUriOf("website", "public", "favicon-32x32.png");
+        Assert.Equal(uri, HtmlReportRenderer.FaviconDataUri);
+        Assert.Contains("<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"" + uri + "\">", Html, StringComparison.Ordinal);
     }
 
     [Fact]
-    public void Logo_la_lien_ket_bam_duoc_toi_tsudev_com()
+    public void Anh_nhung_khop_tep_cua_day_chuyen_thuong_hieu()
     {
-        var brandIdx = Html.IndexOf("class=\"brand\"", StringComparison.Ordinal);
+        Assert.Equal(DataUriOf("assets", "brand", "report", "logo-swico-72.png"), HtmlReportRenderer.ProductLogoDataUri);
+        Assert.Equal(DataUriOf("assets", "brand", "report", "logo-tsudev-56.png"), HtmlReportRenderer.MakerLogoDataUri);
+    }
 
-        Assert.True(brandIdx > 0 && Html.LastIndexOf("https://tsudev.com", brandIdx + 200, StringComparison.Ordinal) > 0,
-            "logo nam trong lien ket toi tsudev.com");
-        Assert.True(Html.Contains("role=\"img\"", StringComparison.Ordinal)
-                 && Html.Contains("aria-label=\"TsuDEV\"", StringComparison.Ordinal),
-            "logo co van ban thay the cho trinh doc man hinh");
+    [Fact]
+    public void Dau_trang_la_logo_san_pham_lien_ket_trang_san_pham()
+    {
+        var hero = Html[Html.IndexOf("<header class=\"hero\">", StringComparison.Ordinal)..Html.IndexOf("</header>", StringComparison.Ordinal)];
+        Assert.Contains("href=\"https://swico.tsudev.com\"", hero, StringComparison.Ordinal);
+        Assert.Contains("<span class=\"brand-logo logo-sp\" aria-hidden=\"true\">", hero, StringComparison.Ordinal);
+        Assert.Contains(".logo-sp{background-image:url(\"" + HtmlReportRenderer.ProductLogoDataUri + "\")}", Html, StringComparison.Ordinal);
+        Assert.Contains(">Tsu <span class=\"brand-sp\">Swico</span>", hero, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Chan_trang_giu_khoi_nha_lam_tsudev()
+    {
+        var foot = Html[Html.IndexOf("<footer class=\"foot\">", StringComparison.Ordinal)..];
+        Assert.Contains("href=\"https://tsudev.com\"", foot, StringComparison.Ordinal);
+        Assert.Contains("<span class=\"brand-logo logo-tsu\" aria-hidden=\"true\">", foot, StringComparison.Ordinal);
+        Assert.Contains(".logo-tsu{background-image:url(\"" + HtmlReportRenderer.MakerLogoDataUri + "\")}", Html, StringComparison.Ordinal);
+        Assert.Contains("<span class=\"brand-name\">TsuDEV</span>", foot, StringComparison.Ordinal);
         Assert.True(Html.Contains("rel=\"noopener noreferrer\"", StringComparison.Ordinal),
             "lien ket ra ngoai co rel=noopener noreferrer");
     }
 
-    /// <summary>
-    /// Logo hien o nhieu cho nhung du lieu base64 chi duoc nhung MOT lan (nam trong
-    /// CSS). Nhung lap se cong them ~13 KB cho moi lan xuat hien. Dung 2: mot cho
-    /// favicon, mot cho logo.
-    /// </summary>
+    /// <summary>Moi anh chi nhung MOT lan: favicon + logo san pham + logo nha lam.</summary>
     [Fact]
     public void Anh_nhung_khong_bi_lap()
-        => Assert.True(Html.Split("data:image/png;base64,").Length - 1 == 2,
-            "chi co dung 2 anh nhung: favicon + logo (logo khong bi nhung lap)");
+        => Assert.Equal(3, Html.Split("data:image/png;base64,").Length - 1);
 
     [Fact]
     public void Thuong_hieu_hien_o_ca_dau_trang_va_chan_trang()
