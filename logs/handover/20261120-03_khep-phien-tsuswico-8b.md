@@ -38,6 +38,16 @@
 5. Bản phát hành kế tiếp mang `--log-file`, nền Pro (chưa bật), icon/ảnh bộ cài mới: kiểm bằng mắt trình thuật sĩ ở
    125-200% (việc người dùng, cùng nhóm 3.3) và zip winget có thư mục `tsudev/SWICO/`.
 
+## 3b. Cập nhật sau khi khép phiên (20/11/2026, tsudev-f6 trả lời phiếu SW1)
+
+- `client_id` chốt: **`tsuswico`** (JWS quyền lợi `aud` = `tsuswico`).
+- tsudev#339 (`70b7596`) đã gộp: KHÔNG có cột `applicationType`; client tự thành native khi MỌI redirect là
+  `http://127.0.0.1/...` hoặc `http://[::1]/...` không ghi cổng ⇒ nhận cổng bất kỳ; `localhost`/path khác ⇒ 400.
+- Đăng ký: `http://127.0.0.1/callback` VÀ `http://[::1]/callback`. P3 dùng `127.0.0.1` (ADR-0002 2.3); `[::1]` là
+  đường lui nếu máy chỉ có IPv6 loopback.
+- **Còn 👤 OWNER**: chạy INSERT ở phiếu SW1 mục 5 (máy agent không có chuỗi Neon). Đo lúc ghi: IdP vẫn 400.
+  Mã P3 viết và test được với IdP giả trước; kiểm thật (303) chỉ sau INSERT.
+
 ## 4. Câu lệnh khởi động phiên kế tiếp
 
 ```
@@ -45,8 +55,8 @@ Bạn là agent-tsuswico. Đọc ~/.claude/CLAUDE.md, AGENTS.md, logs/STATE.md v
 logs/handover/20261120-03_khep-phien-tsuswico-8b.md (mục 2-3). Khởi động: ListAgents, git pull. Việc: (1) kiểm PR
 microsoft/winget-pkgs#484563 (tsudev.SWICO 26.11.2001): gộp rồi thì đánh dấu WINGET-2 xong, có nhãn lỗi thì xử lý
 theo docs/WINGET.md (KHÔNG chạy lại release.yml); (2) đọc phiếu ~/projects/tsudev/logs/handover/20261120-SW1_*.md
-(hoặc hỏi phiên tsudev qua ListAgents → SendMessage): client OIDC native `tsuswico` đã lên production chưa (đo
-/oidc/auth với redirect 127.0.0.1 cổng bất kỳ ⇒ 303) - có thì làm PRO1 P3 theo docs/adr/0002-luu-cuc-bo-pro-dong-bo.md
-mục 2.3 (nối ProNoticePrompt + P5 PRIVACY/THREAT_MODEL trước khi phát hành), một PR, CI xanh thì gộp; chưa thì ghi
-nhận và dừng. Cuối phiên ghi bàn giao vào logs/handover/ và gợi ý prompt phiên kế.
+(hoặc hỏi phiên tsudev qua ListAgents → SendMessage): OWNER đã chạy INSERT client `tsuswico` chưa (đo
+/oidc/auth với redirect 127.0.0.1 cổng bất kỳ ⇒ 303; client_id đã chốt, mục 3b) - làm PRO1 P3 theo docs/adr/0002-luu-cuc-bo-pro-dong-bo.md
+mục 2.3 (nối ProNoticePrompt + P5 PRIVACY/THREAT_MODEL trước khi phát hành), một PR, CI xanh thì gộp (chưa INSERT thì vẫn
+viết + test với IdP giả, KHÔNG phát hành). Cuối phiên ghi bàn giao vào logs/handover/ và gợi ý prompt phiên kế.
 ```
