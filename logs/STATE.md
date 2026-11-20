@@ -49,7 +49,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       HẾT việc (NativeAOT chỉ là cân nhắc, `docs/STATE.md` mục 3.5 mục 5).
 - [ ] **PRO1** 🔶 P1 ✅ 20/11 (kiểm kê + `docs/adr/0002-luu-cuc-bo-pro-dong-bo.md` + v3.9.1). **P2** ✅ #44 20/11
       (`Core/Pro/`: Entitlements BCL, ProNotice + 5 test 7.3, InstallationId, vi/en - chưa nối CLI). P3 ⛔
-      `client_id` ở tsudev.com - phiếu `tsudev/logs/handover/20261120-SW1_*.md` (IdP cần thêm client NATIVE loopback, chèn bảng chưa đủ); P4 ⛔ PRO-D (`TsuSync` .NET). Phiếu `logs/handover/20261119-PRO1_*.md` mục 4.
+      `client_id` **`tsuswico`** CHỐT, cơ chế native loopback đã gộp tsudev#339 - còn 👤 OWNER chạy INSERT `OAuthClient` (phiếu `tsudev/logs/handover/20261120-SW1_*.md` mục 5); P4 ⛔ PRO-D (`TsuSync` .NET). Phiếu `logs/handover/20261119-PRO1_*.md` mục 4.
 - [x] **3.6** ✅ thay bằng `26.11.2001` (ADR-0003). Dòng cũ: Quyết định có phát hành `26.8.1901` không - **đọc mục 4.7 trước**
 - [x] **QU-6** ✅ S007 - tự giải theo bộ quy ước v3.2.0 (`BRAND_ASSETS.md`): wordmark lấy token, xem `docs/STATE.md` mục S007. Dòng cũ: ⛔ Quyết có đưa **4 sắc chữ ký thương hiệu** `tsudev` vào
       `tokens/design-tokens.json` không - hiện là bốn giá trị màu **duy nhất**
