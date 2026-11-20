@@ -24,6 +24,7 @@
  *     maskable riêng (nền đặc, vùng an toàn 80%), apple-touch-icon 180 nền đặc, og-image 1200x630.
  *   - assets/brand/app/: icon-{16..1024}.png + app.ico 7 lớp cho ứng dụng desktop (exe + bộ cài), và
  *     wizard-{large,small}-WxH.bmp cho trình thuật sĩ Inno Setup khi brand.json có `installer`.
+ *   - assets/brand/report/: favicon + logo sản phẩm + logo nhà làm tsudev NHÚNG vào báo cáo HTML.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -43,6 +44,7 @@ const outputs = new Map(); // đường dẫn tuyệt đối -> Buffer
 const emit = (abs, buf) => outputs.set(abs, buf);
 const pub = (rel) => path.join(WEB, 'public', rel);
 const app = (rel) => path.join(ROOT, 'assets/brand/app', rel);
+const rep = (rel) => path.join(ROOT, 'assets/brand/report', rel);
 const hex = (h) => ({
   r: parseInt(h.slice(1, 3), 16),
   g: parseInt(h.slice(3, 5), 16),
@@ -243,6 +245,21 @@ async function main() {
   // Cỡ theo `appSizes` (mặc định tới 512; Tauri cần thêm 1024 làm đầu vào `tauri icon`).
   for (const s of CFG.appSizes ?? [16, 24, 32, 48, 64, 128, 256, 512]) emit(app(`icon-${s}.png`), await at(s));
   emit(app('app.ico'), await ico(rounded));
+
+  // --- Ảnh NHÚNG vào báo cáo HTML của app (data URI, mở file:// không mạng) - cùng ảnh với website:
+  //     favicon-32 trùng byte với website/public/favicon-32x32.png; logo sản phẩm 72px = bản 2x cho ô 36px
+  //     ở đầu trang (như header website); logo nhà làm tsudev 56px = bản 2x cho ô 28px ở chân trang, lấy
+  //     từ bản đã sinh của dây chuyền tsudev (website/public/brand/logo-tsudev-144.webp) - CHỈ thu nhỏ.
+  //     PNG (không WebP) vì báo cáo có thể mở bằng trình duyệt cũ trên máy được quét.
+  emit(rep('favicon-32.png'), await png(32));
+  emit(rep(`logo-${CFG.id}-72.png`), await png(72));
+  emit(
+    rep('logo-tsudev-56.png'),
+    await sharp(fs.readFileSync(pub('brand/logo-tsudev-144.webp')))
+      .resize(56, 56, { fit: 'contain', background: CLEAR, kernel: 'lanczos3' })
+      .png({ palette: true, quality: 92, effort: 10, compressionLevel: 9 })
+      .toBuffer()
+  );
 
   // --- Ảnh trình thuật sĩ bộ cài Inno Setup (BRAND_ASSETS.md mục 12.1 "Ảnh mở đầu bản cài").
   // BMP 24-bit trộn sẵn trên nền trắng: mọi bản Inno 6.x đều đọc (PNG/alpha chỉ chắc ở bản mới).

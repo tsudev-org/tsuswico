@@ -1,4 +1,4 @@
-<img src="assets/tsudev-logo-144.png" alt="TsuDEV" height="56">
+<img src="assets/brand/app/icon-128.png" alt="Tsu Swico" height="56">
 
 # Tsu Swico
 
@@ -315,10 +315,9 @@ src/
     Testing/                                   Adapter giả lập cho unit test
   Tsudev.Audit.Windows/     net8.0-windows  ← Adapter mỏng: WMI, Registry, Process
   Tsudev.Audit.Cli/         net8.0-windows  ← 1 file exe
-assets/                     Logo nhà làm tsudev (nhúng báo cáo HTML)
-  brand/                    Logo sản phẩm: MỘT ảnh gốc → icon exe/bộ cài, ảnh trình thuật sĩ (xem brand/README.md)
-packaging/
-  tools/make-assets.py      Sinh logo nhà làm tsudev-logo-{72,144} cho báo cáo
+assets/
+  brand/                    Logo sản phẩm: MỘT ảnh gốc → icon exe/bộ cài, ảnh trình thuật sĩ, ảnh nhúng báo cáo
+                            HTML (favicon + logo sản phẩm + logo nhà làm tsudev) - xem brand/README.md
 tests/
   unittests/                net8.0          ← xUnit, 179 ca kiểm tra, chạy được trên mọi nền tảng
 ```

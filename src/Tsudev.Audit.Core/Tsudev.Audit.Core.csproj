@@ -21,5 +21,11 @@
          la bao cao doi theo, khong phai sua trong ma. QU-STD-1, 09/11/2026. -->
     <EmbeddedResource Include="../../.standards/tokens/design-tokens.json"
                       LogicalName="Tsudev.Audit.Core.Rendering.design-tokens.json" />
+
+    <!-- Anh thuong hieu cua bao cao HTML (favicon, logo san pham, logo nha lam tsudev):
+         CUNG anh voi website, sinh boi website/scripts/brand-assets.mjs (CI chay che do check).
+         Nhung vao assembly roi chen data URI - bao cao mo file:// khong mang van co logo. -->
+    <EmbeddedResource Include="../../assets/brand/report/*.png"
+                      LogicalName="Tsudev.Audit.Core.Rendering.brand.%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>

@@ -32,21 +32,23 @@ Cấu hình: `brand.json` (`mode: tile`, `installer` = dãy cỡ ảnh trình th
 | `app/wizard-large-WxH.bmp` (5 cỡ) | `WizardImageFile` - trang chào/kết thúc của bộ cài |
 | `app/wizard-small-NxN.bmp` (4 cỡ) | `WizardSmallImageFile` - góc trên các trang bộ cài |
 | `website/public/` (favicon, PWA, apple-touch, og-image, logo `<picture>`) | swico.tsudev.com |
+| `report/favicon-32.png` (trùng byte `website/public/favicon-32x32.png`), `report/logo-swico-72.png`, `report/logo-tsudev-56.png` | Nhúng vào assembly (`Tsudev.Audit.Core.csproj`) ⇒ data URI trong báo cáo HTML: favicon tab, logo đầu trang (ô 36px), logo nhà làm ở chân trang (ô 28px) - giống header/footer website |
 
 Ảnh trình thuật sĩ là BMP 24-bit trộn sẵn nền trắng (mọi bản Inno 6.x đọc được); dãy cỡ phủ bảng cỡ của Inno trước
 6.6.0 lẫn từ 6.6.0, Setup tự chọn ảnh khớp vùng ảnh nhất. CI (job Smoke test Windows) biên dịch thử bộ cài ở mỗi PR.
 
 ## Không thuộc dây chuyền này
 
-`assets/tsudev-logo{,-72,-144}.png` là logo **nhà làm** tsudev nhúng vào báo cáo HTML (mục 15.5 giữ logo tsudev ở
-khối "nhà làm"), sinh bằng `packaging/tools/make-assets.py`.
+`website/public/brand/logo-tsudev-*.{avif,webp}` là logo **nhà làm** tsudev (mục 15.5 giữ logo tsudev ở khối "nhà
+làm") - bản đã sinh của dây chuyền repo `tsudev` (`packages/brand/`), chép nguyên. Dây chuyền ở đây chỉ THU NHỎ bản
+144 thành `report/logo-tsudev-56.png` cho báo cáo; tsudev đổi logo ⇒ chép lại bản mới rồi chạy lệnh trên.
 
 ## Mục 12.1 cho sản phẩm desktop này
 
 | Tài sản | Trạng thái |
 | --- | --- |
 | Icon ứng dụng theo nền tảng | `.ico` - chỉ phát hành Windows, không cần `.icns`/PNG Linux |
-| Dấu hiệu thu gọn trong giao diện | Ứng dụng dòng lệnh; báo cáo HTML mang logo nhà làm |
+| Dấu hiệu thu gọn trong giao diện | Ứng dụng dòng lệnh; báo cáo HTML mang logo sản phẩm (đầu trang) + logo nhà làm (chân trang), favicon sản phẩm |
 | Bản cho nền tối | Logo là ô nền đặc, đọc được trên cả nền Sáng và Tối |
 | Icon khay hệ thống | Không có khay - không áp dụng |
 | Ảnh mở đầu bản cài | `app/wizard-*.bmp` |

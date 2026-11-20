@@ -6,6 +6,14 @@
 
 ## [Chưa phát hành]
 
+### Thay đổi
+
+- **Báo cáo HTML mang logo và favicon của Tsu Swico, giống website swico.tsudev.com.** Tab trình duyệt hiện favicon
+  sản phẩm (trùng byte với favicon website). Đầu trang hiện logo Tsu Swico + "Tsu Swico", dẫn về trang sản phẩm.
+  Chân trang giữ khối nhà làm: logo tsudev hiện hành + "TsuDEV", dẫn về tsudev.com, thay logo cú cũ. Ảnh sinh bằng
+  `brand-assets.mjs` vào `assets/brand/report/` (CI `--check`) và nhúng vào assembly, nên báo cáo mở offline hoặc
+  copy sang máy khác vẫn có logo. Gỡ `packaging/tools/make-assets.py` và logo cú cũ `assets/tsudev-logo*.png`.
+
 ### Thêm
 
 - **TsuDEV Pro kỳ 1 năm: nhắc gia hạn và báo hết kỳ** (bộ quy ước v4.0.0, PRODUCT_POLICY 7.5-7.6, phiếu `20261120-PRO2`).

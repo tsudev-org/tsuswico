@@ -458,9 +458,11 @@ vẫn thấy được registry ghi gì, `ParseExact` thì ném.
   16:41 mang hash của bản build 16:33, còn asset bị lần chạy 16:39 ghi đè lúc
   16:43. Quy tắc: **nộp manifest SAU KHI asset trên release đã ở trạng thái cuối
   cùng**, và trước khi nộp luôn tải file từ chính `InstallerUrl` rồi tính lại hash.
-- **Logo sản phẩm** (icon exe + bộ cài, ảnh trình thuật sĩ Inno, favicon website) sinh bằng
-  `node website/scripts/brand-assets.mjs` từ `assets/brand/source/` - `assets/brand/README.md`. Logo NHÀ LÀM
-  `assets/tsudev-logo-{72,144}.png` (báo cáo HTML) sinh bằng `packaging/tools/make-assets.py`.
+- **Logo sản phẩm** (icon exe + bộ cài, ảnh trình thuật sĩ Inno, favicon website, ảnh nhúng báo cáo HTML) sinh bằng
+  `node website/scripts/brand-assets.mjs` từ `assets/brand/source/` - `assets/brand/README.md`. Báo cáo HTML dùng
+  CÙNG ảnh với website (`assets/brand/report/`, nhúng vào assembly): favicon sản phẩm, đầu trang logo Tsu Swico,
+  chân trang logo nhà làm tsudev (thu nhỏ từ `website/public/brand/logo-tsudev-144.webp` - bản đã sinh của dây
+  chuyền tsudev). `packaging/tools/make-assets.py` + logo cú cũ `assets/tsudev-logo*.png` đã gỡ (20/11/2026).
 
 ### 4.5 Về tính trung thực của tài liệu
 

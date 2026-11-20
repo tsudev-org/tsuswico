@@ -1,4 +1,4 @@
-<img src="assets/tsudev-logo-144.png" alt="TsuDEV" height="56">
+<img src="assets/brand/app/icon-128.png" alt="Tsu Swico" height="56">
 
 # Tsu Swico
 
