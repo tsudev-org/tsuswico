@@ -69,7 +69,7 @@ Only after signing in, in `%LOCALAPPDATA%\tsudev\tsuswico\` of the Windows accou
 `refresh-token.dpapi` (refresh token, **encrypted with Windows DPAPI** - only this Windows account on this computer can
 decrypt it), `account.json` (TsuDEV account ID `sub` and sign-in time - no e-mail, no name), `entitlement.jws` and
 `jwks.json` (signed entitlement valid for at most 7 days, and the public keys to check it offline), `installation-id`,
-and `state.json` (when the "multiple devices without Pro" notice was last shown). No password is stored. Nothing is
+and `state.json` (when the "multiple devices without Pro" notice was last shown, plus the Pro end date this computer last saw and the one already reported as expired, so the renewal reminder and the expiry notice show correctly). No password is stored. Nothing is
 written to the registry.
 
 ### Deleting it

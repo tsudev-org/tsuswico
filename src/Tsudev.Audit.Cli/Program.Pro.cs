@@ -179,7 +179,8 @@ public static partial class Program
             return;
         }
         var now = DateTimeOffset.UtcNow;
-        Info(ent.IsProAt(now)
+        var isPro = ent.IsProAt(now);
+        Info(isPro
             ? Loc.T("Gói: TsuDEV Pro - còn hạn đến ", "Plan: TsuDEV Pro - valid until ")
               + DateDisplay.Date(DateTimeOffset.FromUnixTimeSeconds(ent.ProUntil).ToLocalTime())
             : Loc.T("Gói: Miễn phí", "Plan: Free"));
@@ -188,6 +189,18 @@ public static partial class Program
              + ent.Devices30d.ToString(System.Globalization.CultureInfo.InvariantCulture));
         Info(Loc.T("Thông tin quyền lợi lưu trên máy đến: ", "Entitlement copy on this computer valid until: ")
              + DateDisplay.DateTimeText(ent.ExpiresAt.ToLocalTime()));
+        if (!isPro) PrintPurchase(Console.Out);
+    }
+
+    /// <summary>
+    /// ADR-0002 muc 2.5: dieu khoan NGUYEN VAN PRODUCT_POLICY 7.5 dung TRUOC lien ket mua (kenh tsudev.com - ban phat
+    /// hanh ngoai cua hang). Chi in khi chua co Pro. Khong qua Info: khong ghi dieu khoan vao --log-file.
+    /// </summary>
+    private static void PrintPurchase(TextWriter output)
+    {
+        output.WriteLine();
+        output.WriteLine(ProRenewal.PurchaseTerms);
+        output.WriteLine(Loc.T("Mua TsuDEV Pro: ", "Get TsuDEV Pro: ") + ProContract.ProUrl(ProContract.ClientId));
     }
 
     /// <summary>ADR-0002 muc 2.6: nhan chu theo <c>badge</c> cua JWS; khong tu ve huy hieu.</summary>
@@ -213,6 +226,12 @@ public static partial class Program
             if (!account.IsSignedIn) return;   // hang C: khong mang, khong tep
             var source = account.ForRunAsync(interactive: true, CancellationToken.None).GetAwaiter().GetResult();
             var dir = ProContract.DefaultStateDirectory();
+            // Muc 7.6 truoc: nhac gia han / bao het ky. Da hien thi thoi thong bao 7.3 o lan chay nay - mot hop thoai la du.
+            var renewal = new ProRenewalPrompt(source, new LocalStateStore(dir), ProContract.ClientId, Console.Out,
+                                               Console.ReadLine, url => SystemBrowser.Open(new Uri(url)))
+                .Run(DateTimeOffset.UtcNow, interactive: true);
+            Log.Info("pro.renewal", null, ("choice", renewal));
+            if (renewal != ProRenewalChoice.NotShown) return;
             var choice = new ProNoticePrompt(source, new LocalStateStore(dir), ProContract.ClientId, Console.Out,
                                              Console.ReadLine, url => SystemBrowser.Open(new Uri(url)))
                 .Run(DateTimeOffset.UtcNow, interactive: true, opts.OutputRoot ?? AppContext.BaseDirectory);

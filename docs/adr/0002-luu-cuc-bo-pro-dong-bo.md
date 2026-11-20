@@ -87,9 +87,21 @@ cần ADR riêng về hạn mức.
 
 Tsu Swico chỉ phát hành ngoài cửa hàng (GitHub Release, winget, Scoop) ⇒ Pro và Ủng hộ qua **tsudev.com**
 (`/pro?app=<client_id>`, `/ung-ho?app=<client_id>`). Không nhúng cổng thanh toán, không mã Play/App Store. Màn
-`swico.exe account` in điều khoản thuê bao nguyên văn 7.5 TRƯỚC liên kết mua. Ghi chú: VietQR trên web là trả trước
-một kỳ, không tự gia hạn - chờ câu chữ kênh web ở tsudev-standards v3.9.2 (phiếu đề xuất `tsudev-standards/logs/handover/20261120-02_*`, câu vi
-chép từ `webTerms` đang chạy trên tsudev.com/pro) rồi mới in.
+`swico.exe account` in điều khoản nguyên văn 7.5 TRƯỚC liên kết mua, chỉ khi chưa có Pro. Từ bộ quy ước v4.0.0
+(PRODUCT_POLICY v1.2.0, phiếu `20261120-PRO2`) Pro là **490.000 ₫ / 1 năm, không tự gia hạn** ở mọi kênh, nên câu 7.5
+đúng cho kênh web (thay đề xuất v3.9.2). Test so câu trong mã với `.standards/docs/PRODUCT_POLICY.md`.
+
+### 2.5a. Nhắc gia hạn và báo hết kỳ (PRODUCT_POLICY 7.6, v4.0.0)
+
+- `ProRenewal` / `ProRenewalPrompt` (`src/Tsudev.Audit.Core/Pro/ProRenewal.cs`), hiện ở đầu lần quét tương tác, TRƯỚC
+  thông báo 7.3; đã hiện thì lần chạy đó bỏ 7.3 (một hộp thoại là đủ). Không hiện ở `--silent`/`--json-only`.
+- "Mỗi lần mở app" = mỗi lần chạy `swico.exe` tương tác (CLI không có trạng thái nền; tham số `resumedAfter` giữ
+  điều kiện 30 phút cho đủ chuẩn).
+- "JWS trước đó của thiết bị từng có Pro" = khoá riêng `tsu.pro.seen_until` (pro_until gần nhất máy này thấy CÒN
+  hạn) - đăng nhập máy mới bằng tài khoản Pro đã hết từ lâu thì KHÔNG báo hết kỳ. Khoá chuẩn
+  `tsu.pro_expired.notified_until` ghi trước khi chờ phím.
+- Chưa có đồng bộ đám mây (P4) ⇒ bỏ câu cuối của thông báo hết kỳ như chuẩn cho phép; câu nhắc gia hạn và câu 7.5
+  giữ nguyên văn (chuẩn không cho bỏ).
 
 ### 2.6. Huy hiệu (PRO-C)
 
@@ -101,7 +113,7 @@ trọng `prefers-reduced-motion`. Không tự thiết kế huy hiệu.
 
 | Bước | Việc | Chặn bởi |
 | --- | --- | --- |
-| P1 | ADR này + kiểm kê + sync v3.9.1 | - (XONG cùng PR) |
+| P1 | ADR này + kiểm kê + sync v3.9.1 (v4.0.0 từ PRO2) | - (XONG cùng PR) |
 | P2 | `Entitlements` (.NET, kiểm JWS bằng JWKS giả trong test), `ProNotice` + 5 test, `InstallationId`, chuỗi vi/en | - (XONG 20/11/2026, `src/Tsudev.Audit.Core/Pro/`; nối vào CLI ở P3) |
 | P3 | `login`/`logout`/`account` loopback PKCE | - (XONG 20/11/2026, client `tsuswico` - tsudev#339; chạy thật trên Windows: `docs/WINDOWS-VERIFICATION.md` mục P) |
 | P4 | Đồng bộ báo cáo qua `TsuSync` + tổng hợp đa máy | PRO-D1..D3 (`tsudev-org/tsusync`, thư viện .NET) |

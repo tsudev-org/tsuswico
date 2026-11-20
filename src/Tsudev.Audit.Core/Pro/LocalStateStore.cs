@@ -29,9 +29,18 @@ public sealed class LocalStateStore(string directory)
 
     /// <summary>Ghi moc UTC dang <c>yyyy-MM-ddTHH:mm:ssZ</c>; ghi qua tep tam roi doi ten.</summary>
     public void SetTimestamp(string key, DateTimeOffset value)
+        => Write(key, value.UtcDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture));
+
+    /// <summary>Doc so nguyen (vd. giay Unix); thieu hoac sai kieu ⇒ null.</summary>
+    public long? GetLong(string key)
+        => Load()[key] is JsonValue v && v.TryGetValue<long>(out var n) ? n : null;
+
+    public void SetLong(string key, long value) => Write(key, value);
+
+    private void Write(string key, JsonNode value)
     {
         var root = Load();
-        root[key] = value.UtcDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture);
+        root[key] = value;
         Directory.CreateDirectory(directory);
         var tmp = FilePath + ".tmp";
         File.WriteAllText(tmp, root.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));

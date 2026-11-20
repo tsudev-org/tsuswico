@@ -1,6 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp:** đọc `logs/handover/20261120-06_khep-phien-tsuswico-96.md` mục 2-4 (P7/P10 chờ người dùng, chờ tsudev-standards phát hành v4.0.0 - câu 7.5 + mục 7.6 mới, WINGET-2 chờ moderator).
+> **Phiên kế tiếp:** đọc `logs/handover/20261120-06_khep-phien-tsuswico-96.md` mục 2-4 (P7/P10/P12/P13 chờ người dùng; PRO2 7.5+7.6 đã làm theo v4.0.0; WINGET-2 chờ moderator).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
@@ -47,6 +47,9 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       `InventoryCollectors.cs` + `LicenseCollectors.cs` → 12 tệp, mỗi tệp MỘT kiểu (kể cả record). ~~`--json-only`~~ ✅ + ~~căn
       cột dòng tiến trình~~ ✅ (#37, 20/11/2026). ~~logging có cấu trúc~~ ✅ #45 (`--log-file` JSON Lines).
       HẾT việc (NativeAOT chỉ là cân nhắc, `docs/STATE.md` mục 3.5 mục 5).
+- [ ] **PRO2** 🔶 20/11/2026 (phiên 96): sync bộ quy ước **v4.0.0**; 7.5 trong `swico account` + 7.6 nhắc gia hạn/báo
+      hết kỳ (`ProRenewal`), 347 PASS. Còn: P12/P13 Windows thật; mục 2.2 (đồng bộ) ⛔ PRO-D3. Phiếu
+      `logs/handover/20261120-PRO2_*`.
 - [ ] **PRO1** 🔶 P1 ✅ P2 ✅ (#44). **P3 + P5** ✅ #51 `a7cbf1d` 20/11/2026: `swico login|logout|account`, DPAPI,
       quyền lợi + `X-Tsu-Installation`, ProNoticePrompt nối `MainCore`, PRIVACY vi/en + `docs/THREAT_MODEL.md`; 334 PASS.
       Mục P chạy thật Win 11 + tsudev.com production ✅ (trừ P7/P10) - tìm + sửa lỗi mở trình duyệt khi nâng quyền; câu chữ 7.5 (v3.9.2) cho liên
@@ -79,7 +82,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 ## Đã hoàn thành (mới nhất trên cùng)
 
 - 20/11/2026 - **tsuswico-96:** chỉ kiểm: P7/P10 chưa có kết quả; chuẩn vẫn v3.9.1, v4.0.0 đang soạn ở tsudev-standards
-  (thay đề xuất v3.9.2, kéo theo việc 7.5 + 7.6 cho swico); WINGET-2 vẫn chờ. Bàn giao: `logs/handover/20261120-06_khep-phien-tsuswico-96.md`.
+  (thay đề xuất v3.9.2); v4.0.0 phát hành giữa phiên ⇒ PRO2: sync + 7.5 + 7.6, 347 PASS; WINGET-2 vẫn chờ. Bàn giao: `logs/handover/20261120-06_khep-phien-tsuswico-96.md`.
 
 - 20/11/2026 - **tsuswico-43:** kiểm WINGET-2 (chờ moderator), v3.9.2 chưa có ⇒ phiếu đề xuất câu chữ kênh web sang
   tsudev-standards; thêm cách làm P7 (proxy chết, không ngắt mạng) + P10 vào `docs/WINDOWS-VERIFICATION.md`.
