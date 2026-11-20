@@ -8,6 +8,11 @@
 
 ### Thêm
 
+- **Ảnh trình thuật sĩ bộ cài cho màn hình HiDPI** (QU-STD-BRAND, `BRAND_ASSETS.md` mục 12/14): 5 cỡ ảnh lớn + 4 cỡ ảnh
+  nhỏ, Inno Setup tự chọn cỡ khớp - hết mờ ở mức phóng 125-200%. Icon exe và icon bộ cài nay là CÙNG một tệp
+  `assets/brand/app/app.ico` sinh từ ảnh gốc (trước là bản đổi cỡ tự viết, khác byte); thiếu tệp ⇒ dừng biên dịch
+  thay vì âm thầm ra bộ cài icon mặc định. CI biên dịch thử bộ cài ở mỗi PR.
+
 - **Nền tảng TsuDEV Pro, phần chạy ngoại tuyến** (PRO1 P2, `docs/adr/0002-luu-cuc-bo-pro-dong-bo.md`): kiểm JWS quyền
   lợi ES256 bằng `ECDsa` của .NET (chỉ `ES256`, `typ` `tsu-ent+jwt`, `iss`, `aud`, `exp`, sống ≤ 7 ngày, chọn khoá
   theo `kid`); thông báo "nhiều thiết bị chưa có Pro" vi/en nguyên văn PRODUCT_POLICY 7.3 (không hiện ở

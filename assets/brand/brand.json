@@ -12,5 +12,36 @@
   "ogLines": [
     "Kiểm tra bản quyền Windows, Office",
     "và cấu hình phần cứng"
-  ]
+  ],
+  "installer": {
+    "_ghi_chu": "Ảnh trình thuật sĩ Inno Setup (assets/brand/app/wizard-*.bmp), khai trong packaging/innosetup/swico.iss.",
+    "large": [
+      [
+        164,
+        314
+      ],
+      [
+        202,
+        386
+      ],
+      [
+        269,
+        515
+      ],
+      [
+        336,
+        643
+      ],
+      [
+        430,
+        824
+      ]
+    ],
+    "small": [
+      58,
+      77,
+      97,
+      124
+    ]
+  }
 }

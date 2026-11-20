@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Sinh cac bien the cua logo tu file goc assets/tsudev-logo.png.
+Sinh logo NHA LAM (tsudev) nhung vao bao cao HTML tu assets/tsudev-logo.png.
+
+Icon ung dung / bo cai / favicon: website/scripts/brand-assets.mjs (khong phai script nay).
 
 Chay tay khi logo goc thay doi:
     python3 packaging/tools/make-assets.py
@@ -111,41 +113,6 @@ def encode_png(w, h, px):
             + chunk(b"IEND", b""))
 
 
-def encode_bmp(w, h, px, bg=(255, 255, 255)):
-    """BMP 24-bit - dinh dang DUY NHAT ma Inno Setup nhan cho anh trinh thuat si.
-
-    Khong co kenh alpha, nen phai tron san voi nen truoc.
-    """
-    row_pad = (-w * 3) % 4
-    body = bytearray()
-    for y in range(h - 1, -1, -1):              # BMP luu tu duoi len
-        for x in range(w):
-            o = (y*w + x) * 4
-            al = px[o+3] / 255
-            r = round(px[o]   * al + bg[0] * (1-al))
-            g = round(px[o+1] * al + bg[1] * (1-al))
-            b = round(px[o+2] * al + bg[2] * (1-al))
-            body += bytes((b, g, r))            # BMP dung thu tu BGR
-        body += b"\x00" * row_pad
-    size = 54 + len(body)
-    return (b"BM" + struct.pack("<IHHI", size, 0, 0, 54)
-            + struct.pack("<IiiHHIIiiII", 40, w, h, 1, 24, 0, len(body), 2835, 2835, 0, 0)
-            + bytes(body))
-
-
-def paste(dst_w, dst_h, logo_w, logo_h, logo, at_x, at_y):
-    canvas = bytearray(dst_w * dst_h * 4)
-    for y in range(logo_h):
-        ty = at_y + y
-        if not (0 <= ty < dst_h): continue
-        for x in range(logo_w):
-            tx = at_x + x
-            if not (0 <= tx < dst_w): continue
-            s, t = (y*logo_w + x) * 4, (ty*dst_w + tx) * 4
-            canvas[t:t+4] = logo[s:s+4]
-    return canvas
-
-
 if __name__ == "__main__":
     src = "assets/tsudev-logo.png"
     if not os.path.exists(src):
@@ -164,77 +131,6 @@ if __name__ == "__main__":
         open(out, "wb").write(data)
         print(f"  {out}: {nw}x{px_h}, {len(data)} byte")
 
-    # Tu day tro xuong (anh trinh thuat si, swico.ico, favicon) dung LOGO SAN PHAM Tsu Swico
-    # (chu du an giao 13/11/2026), khong phai logo tsudev: nguon la ban vuong trong suot do
-    # website/scripts/brand-assets.mjs sinh tu assets/brand/source/logo-swico.png. Logo
-    # tsudev-logo-{72,144} o tren giu nguyen vi bao cao HTML ghi ten NHA LAM (tsudev).
-    app_src = "assets/brand/app/icon-512.png"
-    if not os.path.exists(app_src):
-        raise SystemExit(f"Khong tim thay {app_src} - chay: node website/scripts/brand-assets.mjs")
-    w, h, px = decode_png(app_src)
-    print(f"nguon logo san pham: {app_src} {w}x{h}")
-
-    # Anh cho trinh thuat si cua Inno Setup - bat buoc la BMP.
-    lw = round(w * 120 / h)
-    small = resize(w, h, px, lw, 120)
-    large = encode_bmp(164, 314, paste(164, 314, lw, 120, small, (164-lw)//2, 96))
-    open("assets/wizard-large.bmp", "wb").write(large)
-    print(f"  assets/wizard-large.bmp: 164x314, {len(large)} byte")
-
-    # Icon cua ung dung va trinh cai dat, sinh TU CHINH LOGO.
-    # Icon vuong nen logo (222x280, cao hon rong) duoc dat giua tren nen trong.
-    ico_sizes = [16, 24, 32, 48, 64, 128, 256]
-    images = []
-    for sz in ico_sizes:
-        lw = max(1, round(w * sz / h))
-        scaled = resize(w, h, px, lw, sz)
-        images.append(encode_png(sz, sz, paste(sz, sz, lw, sz, scaled, (sz - lw)//2, 0)))
-
-    ico = bytearray(struct.pack("<HHH", 0, 1, len(ico_sizes)))
-    offset = 6 + 16*len(ico_sizes)
-    for sz, data in zip(ico_sizes, images):
-        ico += struct.pack("<BBBBHHII", sz if sz < 256 else 0, sz if sz < 256 else 0,
-                           0, 0, 1, 32, len(data), offset)
-        offset += len(data)
-    for data in images:
-        ico += data
-    open("assets/swico.ico", "wb").write(bytes(ico))
-    print(f"  assets/swico.ico: {len(ico_sizes)} kich thuoc, {len(ico)} byte")
-
-    # ---- Favicon -----------------------------------------------------------
-    # Bo favicon day du cho moi noi logo co the xuat hien: trinh duyet co,
-    # trinh duyet moi, man hinh Retina, va bieu tuong khi ghim trang tren
-    # dien thoai. Logo cao hon rong nen duoc dat GIUA tren khung vuong trong
-    # suot - cat vuong se lam mat phan tren hoac duoi cua con cu.
-    os.makedirs("assets/favicon", exist_ok=True)
-
-    def square(size):
-        lw = max(1, round(w * size / h))
-        return paste(size, size, lw, size, resize(w, h, px, lw, size), (size - lw)//2, 0)
-
-    # favicon.ico - dinh dang duy nhat moi trinh duyet deu hieu, ke ca ban cu.
-    ico_px = [16, 32, 48]
-    imgs = [encode_png(s2, s2, square(s2)) for s2 in ico_px]
-    ico = bytearray(struct.pack("<HHH", 0, 1, len(ico_px)))
-    off = 6 + 16*len(ico_px)
-    for s2, data in zip(ico_px, imgs):
-        ico += struct.pack("<BBBBHHII", s2, s2, 0, 0, 1, 32, len(data), off)
-        off += len(data)
-    for data in imgs:
-        ico += data
-    open("assets/favicon/favicon.ico", "wb").write(bytes(ico))
-    print(f"  assets/favicon/favicon.ico: {ico_px}, {len(ico)} byte")
-
-    for size, name in [(16, "favicon-16x16.png"), (32, "favicon-32x32.png"),
-                       (180, "apple-touch-icon.png"),
-                       (192, "android-chrome-192x192.png"),
-                       (512, "android-chrome-512x512.png")]:
-        data = encode_png(size, size, square(size))
-        open(f"assets/favicon/{name}", "wb").write(data)
-        print(f"  assets/favicon/{name}: {size}x{size}, {len(data)} byte")
-
-    lw2 = round(w * 50 / h)
-    tiny = resize(w, h, px, lw2, 50)
-    smallbmp = encode_bmp(55, 58, paste(55, 58, lw2, 50, tiny, (55-lw2)//2, 4))
-    open("assets/wizard-small.bmp", "wb").write(smallbmp)
-    print(f"  assets/wizard-small.bmp: 55x58, {len(smallbmp)} byte")
+    # Icon ung dung, icon bo cai, anh trinh thuat si Inno va favicon KHONG con sinh o day: tat ca
+    # di qua MOT day chuyen website/scripts/brand-assets.mjs tu assets/brand/source/ (CI --check).
+    # Script nay chi con sinh logo NHA LAM tsudev-logo-{72,144} nhung vao bao cao HTML.

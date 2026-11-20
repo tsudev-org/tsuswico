@@ -108,6 +108,24 @@ jobs:
       - name: Run --help
         run: ./publish/swico.exe --help
 
+      # Bien dich THU bo cai o moi PR: truoc day ISCC chi chay luc gan tag (release.yml), nen
+      # doi icon/anh trinh thuat si/.iss ma hong thi toi luc phat hanh moi lo. Kem cong
+      # BRAND_ASSETS.md muc 12.2 cho desktop: icon exe + bo cai PHAI lay tu day chuyen
+      # assets/brand/app/ (brand-assets.mjs --check o job website canh noi dung).
+      - name: Bien dich thu bo cai (Inno Setup) + cong tai san nhan dien
+        shell: pwsh
+        run: |
+          if (-not (Select-String -Path src/Tsudev.Audit.Cli/Tsudev.Audit.Cli.csproj -SimpleMatch '<ApplicationIcon>../../assets/brand/app/app.ico</ApplicationIcon>' -Quiet)) {
+            throw 'ApplicationIcon phai tro assets/brand/app/app.ico (BRAND_ASSETS.md muc 15)'
+          }
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { throw "Khong tim thay Inno Setup 6 tai $iscc" }
+          Write-Host "ISCC: $((Get-Item $iscc).VersionInfo.ProductVersion)"
+          $v = ([xml](Get-Content Directory.Build.props)).Project.PropertyGroup.VersionPrefix | Where-Object { $_ } | Select-Object -First 1
+          & $iscc "/DAppVersion=$v" packaging\innosetup\swico.iss
+          if ($LASTEXITCODE -ne 0) { throw 'Bien dich bo cai THAT BAI' }
+          Get-ChildItem packaging/output/tsuswico_*_windows-x64-setup.exe | ForEach-Object { Write-Host "$($_.Name) $($_.Length) byte" }
+
       # QUET THAT tren runner Windows va kiem tra DU LIEU CO THUC hay khong.
       #
       # Buoc nay ton tai vi mot loi that da tung xay ra: bat PublishTrimmed lam
