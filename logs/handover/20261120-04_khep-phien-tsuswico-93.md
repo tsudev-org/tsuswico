@@ -46,6 +46,8 @@
   không lùi về trình duyệt nâng quyền. Báo cáo HTML sau khi quét cũng mở theo đường này (trước: ShellExecute nâng
   quyền). Đo lại: Edge mở trang đăng nhập + báo cáo, mọi `msedge` Elevated = 0.
 - Chữ `?` trong cửa sổ kiểm thử là do đường ống PowerShell 5.1 (bảng mã 437) của kịch bản, không phải của swico.
+- WINGET-2: chủ dự án cho phép ⇒ đã đăng bình luận giải thích mã thoát lên #484563
+  (issuecomment-7030535588). Chỉ còn chờ moderator - KHÔNG đăng thêm.
 - Mục 3 việc 1 coi như xong trừ P7/P10; việc 3 (trước phát hành) còn câu chữ 7.5.
 
 ## 4. Câu lệnh khởi động phiên kế tiếp
@@ -55,7 +57,7 @@ Bạn là agent-tsuswico. Đọc ~/.claude/CLAUDE.md, AGENTS.md, logs/STATE.md v
 logs/handover/20261120-04_khep-phien-tsuswico-93.md (mục 2-3). Khởi động: ListAgents, git pull.
 Việc: (1) mục P đã chạy thật (mục 3b) - còn P7 (ngoại tuyến) và P10 (tài khoản Windows thứ hai) nếu tôi làm được; (2) kiểm
 microsoft/winget-pkgs#484563: gộp ⇒ WINGET-2 ✅; vẫn Validation-Executable-Error thì xử lý theo docs/WINGET.md
-(báo động nhầm mã 20, KHÔNG chạy lại release.yml, bình luận công khai chỉ khi tôi đồng ý); (3) kiểm tsudev-standards
+(báo động nhầm mã 20, KHÔNG chạy lại release.yml, bình luận giải thích ĐÃ đăng 20/11 - không đăng lại); (3) kiểm tsudev-standards
 đã có v3.9.2 (câu chữ thuê bao kênh web 7.5) chưa - có thì sync và in điều khoản trước liên kết mua trong swico account.
 KHÔNG phát hành bản mới khi mục P chưa đạt. Cuối phiên ghi bàn giao vào logs/handover/ và gợi ý prompt phiên kế.
 ```
