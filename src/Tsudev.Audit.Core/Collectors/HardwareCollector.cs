@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Globalization;
 using Tsudev.Audit.Core.Abstractions;
 using Tsudev.Audit.Core.Models;
@@ -20,9 +21,9 @@ public static class HardwareCollector
 
     public static (DataTable Table, string Summary) CollectOverview(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Tên máy", "Loại thiết bị", "Hãng sản xuất", "Model",
-            "Số Serial (Chassis)", "BIOS Version", "Mainboard - Model", "Tổng RAM")
-            .Numeric("Tổng RAM");
+        var t = DataTable.Create("", Loc.T("Tên máy", "Computer name"), Loc.T("Loại thiết bị", "Device type"), Loc.T("Hãng sản xuất", "Manufacturer"), "Model",
+            Loc.T("Số Serial (Chassis)", "Serial number (Chassis)"), "BIOS Version", Loc.T("Mainboard - Model", "Motherboard - Model"), Loc.T("Tổng RAM", "Total RAM"))
+            .Numeric(Loc.T("Tổng RAM", "Total RAM"));
 
         var cs = ctx.Wmi.Query("Win32_ComputerSystem").FirstRowOrNull();
         var bios = ctx.Wmi.Query("Win32_BIOS").FirstRowOrNull();
@@ -51,32 +52,32 @@ public static class HardwareCollector
         11 or 12 => "Handheld/Notebook",
         17 or 23 or 28 => "Server",
         30 or 31 or 32 => "Tablet",
-        _ => "Không xác định"
+        _ => Loc.T("Không xác định", "Unknown")
     };
 
     public static DataTable CollectCpu(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Tên CPU", "Hãng sản xuất", "Số nhân (Core)",
-            "Số luồng (Thread)", "Xung nhịp tối đa (MHz)", "Socket")
-            .Numeric("Số nhân (Core)", "Số luồng (Thread)", "Xung nhịp tối đa (MHz)");
+        var t = DataTable.Create("", Loc.T("Tên CPU", "CPU name"), Loc.T("Hãng sản xuất", "Manufacturer"), Loc.T("Số nhân (Core)", "Cores"),
+            Loc.T("Số luồng (Thread)", "Threads"), Loc.T("Xung nhịp tối đa (MHz)", "Max clock (MHz)"), "Socket")
+            .Numeric(Loc.T("Số nhân (Core)", "Cores"), Loc.T("Số luồng (Thread)", "Threads"), Loc.T("Xung nhịp tối đa (MHz)", "Max clock (MHz)"));
         foreach (var c in ctx.Wmi.Query("Win32_Processor"))
             t.AddRow(c.Str("Name"), c.Str("Manufacturer"), c.Num("NumberOfCores"),
                 c.Num("NumberOfLogicalProcessors"), c.Num("MaxClockSpeed"), c.Str("SocketDesignation"));
-        t.AddEmptyNotice("Không đọc được thông tin CPU");
+        t.AddEmptyNotice(Loc.T("Không đọc được thông tin CPU", "Could not read CPU information"));
         return t;
     }
 
     public static (DataTable Table, int Used, string Total) CollectRam(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Khe cắm (Slot)", "Dung lượng", "Tốc độ (MHz)",
-            "Loại RAM", "Hãng sản xuất", "Serial Number")
-            .Numeric("Dung lượng", "Tốc độ (MHz)");
+        var t = DataTable.Create("", Loc.T("Khe cắm (Slot)", "Slot"), Loc.T("Dung lượng", "Capacity"), Loc.T("Tốc độ (MHz)", "Speed (MHz)"),
+            Loc.T("Loại RAM", "RAM type"), Loc.T("Hãng sản xuất", "Manufacturer"), "Serial Number")
+            .Numeric(Loc.T("Dung lượng", "Capacity"), Loc.T("Tốc độ (MHz)", "Speed (MHz)"));
         var sticks = ctx.Wmi.Query("Win32_PhysicalMemory");
         foreach (var m in sticks)
             t.AddRow(m.Str("DeviceLocator"), FormatBytes(m.Num("Capacity")), m.Num("Speed"),
                 DescribeMemoryType(m.Num("SMBIOSMemoryType") ?? m.Num("MemoryType")),
                 m.Str("Manufacturer"), m.Str("SerialNumber"));
-        t.AddEmptyNotice("Không đọc được thông tin RAM");
+        t.AddEmptyNotice(Loc.T("Không đọc được thông tin RAM", "Could not read RAM information"));
 
         var array = ctx.Wmi.Query("Win32_PhysicalMemoryArray").FirstRowOrNull();
         var totalSlots = array?.Num("MemoryDevices")?.ToString(CultureInfo.InvariantCulture) ?? "-";
@@ -86,25 +87,25 @@ public static class HardwareCollector
     public static string DescribeMemoryType(long? code) => code switch
     {
         20 => "DDR", 21 => "DDR2", 24 => "DDR3", 26 => "DDR4", 34 => "DDR5",
-        _ => "Không xác định"
+        _ => Loc.T("Không xác định", "Unknown")
     };
 
     public static DataTable CollectDisks(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Tên / Model", "Chuẩn giao tiếp", "Dung lượng", "Serial Number", "Firmware")
-            .Numeric("Dung lượng");
+        var t = DataTable.Create("", Loc.T("Tên / Model", "Name / Model"), Loc.T("Chuẩn giao tiếp", "Interface"), Loc.T("Dung lượng", "Capacity"), "Serial Number", "Firmware")
+            .Numeric(Loc.T("Dung lượng", "Capacity"));
         foreach (var d in ctx.Wmi.Query("Win32_DiskDrive"))
             t.AddRow(d.Str("Model"), d.Str("InterfaceType"), FormatBytes(d.Num("Size")),
                 d.Str("SerialNumber"), d.Str("FirmwareRevision"));
-        t.AddEmptyNotice("Không đọc được thông tin ổ đĩa");
+        t.AddEmptyNotice(Loc.T("Không đọc được thông tin ổ đĩa", "Could not read disk information"));
         return t;
     }
 
     public static DataTable CollectVolumes(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Ổ đĩa", "Nhãn", "Hệ thống file",
-            "Tổng dung lượng", "Dung lượng trống", "Tỷ lệ còn trống (%)")
-            .Numeric("Tổng dung lượng", "Dung lượng trống", "Tỷ lệ còn trống (%)");
+        var t = DataTable.Create("", Loc.T("Ổ đĩa", "Drive"), Loc.T("Nhãn", "Label"), Loc.T("Hệ thống file", "File system"),
+            Loc.T("Tổng dung lượng", "Total size"), Loc.T("Dung lượng trống", "Free space"), Loc.T("Tỷ lệ còn trống (%)", "Free (%)"))
+            .Numeric(Loc.T("Tổng dung lượng", "Total size"), Loc.T("Dung lượng trống", "Free space"), Loc.T("Tỷ lệ còn trống (%)", "Free (%)"));
         t.Searchable = true;
         // DriveType=3 : o dia cuc bo (loai bo o mang/USB de tranh nhieu)
         foreach (var v in ctx.Wmi.Query("Win32_LogicalDisk", "DriveType=3"))
@@ -117,35 +118,35 @@ public static class HardwareCollector
             t.AddRow(v.Str("DeviceID"), v.Str("VolumeName"), v.Str("FileSystem"),
                 FormatBytes(size), FormatBytes(free), pct);
         }
-        t.AddEmptyNotice("Không đọc được phân vùng nào");
+        t.AddEmptyNotice(Loc.T("Không đọc được phân vùng nào", "No volumes could be read"));
         return t;
     }
 
     public static DataTable CollectGpu(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Tên GPU", "VRAM (ước tính)", "Độ phân giải hiện tại", "Phiên bản Driver")
-            .Numeric("VRAM (ước tính)");
+        var t = DataTable.Create("", Loc.T("Tên GPU", "GPU name"), Loc.T("VRAM (ước tính)", "VRAM (estimated)"), Loc.T("Độ phân giải hiện tại", "Current resolution"), Loc.T("Phiên bản Driver", "Driver version"))
+            .Numeric(Loc.T("VRAM (ước tính)", "VRAM (estimated)"));
         foreach (var g in ctx.Wmi.Query("Win32_VideoController"))
         {
             var res = g.Num("CurrentHorizontalResolution") is { } w && g.Num("CurrentVerticalResolution") is { } h
                 ? $"{w} x {h}" : "-";
             t.AddRow(g.Str("Name"), FormatBytes(g.Num("AdapterRAM")), res, g.Str("DriverVersion"));
         }
-        t.AddEmptyNotice("Không đọc được card đồ họa");
+        t.AddEmptyNotice(Loc.T("Không đọc được card đồ họa", "Could not read the graphics card"));
         return t;
     }
 
     public static DataTable CollectNetwork(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Tên adapter", "Địa chỉ MAC", "Địa chỉ IP", "Default Gateway", "DHCP");
+        var t = DataTable.Create("", Loc.T("Tên adapter", "Adapter name"), Loc.T("Địa chỉ MAC", "MAC address"), Loc.T("Địa chỉ IP", "IP address"), "Default Gateway", "DHCP");
         t.Searchable = true;
         foreach (var n in ctx.Wmi.Query("Win32_NetworkAdapterConfiguration", "IPEnabled=TRUE"))
         {
             t.AddRow(n.Str("Description"), n.Str("MACAddress"),
                 JoinArray(n, "IPAddress"), JoinArray(n, "DefaultIPGateway"),
-                n.Bool("DHCPEnabled") == true ? "Có" : "Không");
+                n.Bool("DHCPEnabled") == true ? Loc.T("Có", "Yes") : Loc.T("Không", "No"));
         }
-        t.AddEmptyNotice("Không có card mạng nào đang hoạt động");
+        t.AddEmptyNotice(Loc.T("Không có card mạng nào đang hoạt động", "No active network adapters"));
         return t;
     }
 
@@ -161,32 +162,32 @@ public static class HardwareCollector
     /// <summary>Driver loi trong Device Manager (ConfigManagerErrorCode != 0).</summary>
     public static DataTable CollectDriverErrors(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Tên thiết bị", "Mã lỗi", "Ý nghĩa", "Nhà sản xuất")
-            .Numeric("Mã lỗi");
+        var t = DataTable.Create("", Loc.T("Tên thiết bị", "Device name"), Loc.T("Mã lỗi", "Error code"), Loc.T("Ý nghĩa", "Meaning"), Loc.T("Nhà sản xuất", "Manufacturer"))
+            .Numeric(Loc.T("Mã lỗi", "Error code"));
         foreach (var d in ctx.Wmi.Query("Win32_PNPEntity", "ConfigManagerErrorCode <> 0"))
         {
             var code = d.Num("ConfigManagerErrorCode");
             t.AddRow(d.Str("Name"), code, DescribeDeviceError(code), d.Str("Manufacturer"));
         }
-        t.AddEmptyNotice("Không phát hiện thiết bị nào bị lỗi driver");
+        t.AddEmptyNotice(Loc.T("Không phát hiện thiết bị nào bị lỗi driver", "No devices with driver errors found"));
         return t;
     }
 
     public static string DescribeDeviceError(long? code) => code switch
     {
-        1 => "Thiết bị chưa được cấu hình đúng",
-        3 => "Driver bị lỗi hoặc thiếu tài nguyên",
-        10 => "Thiết bị không khởi động được",
-        18 => "Cần cài lại driver",
-        19 => "Registry bị lỗi",
-        22 => "Thiết bị đã bị vô hiệu hóa (Disabled)",
-        24 => "Thiết bị không hiện diện/lỗi/thiếu driver",
-        28 => "Chưa cài driver cho thiết bị này",
-        31 => "Windows không thể tải driver",
-        37 => "Windows không thể khởi tạo driver",
-        39 => "Driver bị hỏng hoặc thiếu",
-        43 => "Windows đã dừng thiết bị do lỗi",
-        45 => "Thiết bị hiện không kết nối",
-        _ => "Mã lỗi khác - xem Device Manager"
+        1 => Loc.T("Thiết bị chưa được cấu hình đúng", "Device is not configured correctly"),
+        3 => Loc.T("Driver bị lỗi hoặc thiếu tài nguyên", "Driver error or insufficient resources"),
+        10 => Loc.T("Thiết bị không khởi động được", "Device cannot start"),
+        18 => Loc.T("Cần cài lại driver", "Driver needs reinstalling"),
+        19 => Loc.T("Registry bị lỗi", "Registry error"),
+        22 => Loc.T("Thiết bị đã bị vô hiệu hóa (Disabled)", "Device is disabled"),
+        24 => Loc.T("Thiết bị không hiện diện/lỗi/thiếu driver", "Device not present, failing or missing a driver"),
+        28 => Loc.T("Chưa cài driver cho thiết bị này", "No driver installed for this device"),
+        31 => Loc.T("Windows không thể tải driver", "Windows cannot load the driver"),
+        37 => Loc.T("Windows không thể khởi tạo driver", "Windows cannot initialize the driver"),
+        39 => Loc.T("Driver bị hỏng hoặc thiếu", "Driver is corrupt or missing"),
+        43 => Loc.T("Windows đã dừng thiết bị do lỗi", "Windows stopped the device because of a problem"),
+        45 => Loc.T("Thiết bị hiện không kết nối", "Device is not currently connected"),
+        _ => Loc.T("Mã lỗi khác - xem Device Manager", "Other error code - see Device Manager")
     };
 }

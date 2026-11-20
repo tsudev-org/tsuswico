@@ -422,6 +422,9 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
 <script>
 (function () {
   var SIZES = [10, 20, 50, 100, 200];
+  var EN = document.documentElement.lang === 'en';
+  var T = EN ? { none: 'No matching rows', from: ' (filtered from ', prev: 'Previous page', next: 'Next page', page: 'Page ' }
+             : { none: 'Không có dòng nào khớp', from: ' (lọc từ ', prev: 'Trang trước', next: 'Trang sau', page: 'Trang ' };
   function key(b) { var h = b.querySelector('h3'); return 'swico-page-size:' + (h ? h.textContent : ''); }
   function readSize(b) {
     try { var v = parseInt(localStorage.getItem(key(b)), 10); if (SIZES.indexOf(v) >= 0) return v; } catch (e) { }
@@ -437,8 +440,8 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
     var from = st.page * st.size, to = Math.min(match.length, from + st.size);
     for (i = 0; i < match.length; i++) match[i].style.display = i >= from && i < to ? '' : 'none';
     var sum = b.querySelector('.table-sum');
-    sum.textContent = match.length === 0 ? 'Không có dòng nào khớp' :
-      (from + 1) + '-' + to + ' / ' + match.length + (match.length < rows.length ? ' (lọc từ ' + rows.length + ')' : '');
+    sum.textContent = match.length === 0 ? T.none :
+      (from + 1) + '-' + to + ' / ' + match.length + (match.length < rows.length ? T.from + rows.length + ')' : '');
     var nav = b.querySelector('.pager'); nav.textContent = '';
     if (pages < 2) return;
     function btn(label, p, cur, aria) {
@@ -449,15 +452,15 @@ details.method summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(-
       x.addEventListener('click', function () { st.page = p; render(b); });
       nav.appendChild(x);
     }
-    btn('<', st.page - 1, false, 'Trang trước');
+    btn('<', st.page - 1, false, T.prev);
     var shown = {}, list = [0, st.page - 1, st.page, st.page + 1, pages - 1], last = -1;
     list.sort(function (a, c) { return a - c; });
     for (i = 0; i < list.length; i++) {
       var p = list[i]; if (p < 0 || p >= pages || shown[p]) continue; shown[p] = 1;
       if (last >= 0 && p > last + 1) { var g = document.createElement('span'); g.textContent = '...'; nav.appendChild(g); }
-      btn(String(p + 1), p, p === st.page, 'Trang ' + (p + 1)); last = p;
+      btn(String(p + 1), p, p === st.page, T.page + (p + 1)); last = p;
     }
-    btn('>', st.page + 1, false, 'Trang sau');
+    btn('>', st.page + 1, false, T.next);
   }
   function init() {
     var blocks = document.querySelectorAll('.table-block[data-paged]');

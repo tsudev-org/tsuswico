@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Abstractions;
 
 namespace Tsudev.Audit.Core.Progress;
@@ -33,7 +34,7 @@ public static class ScanStep
         catch (OperationCanceledException)
         {
             // Huy KHONG phai loi cua buoc - dung bao no thanh that bai.
-            ctx.Progress.FailStep("đã huỷ");
+            ctx.Progress.FailStep(Loc.T("đã huỷ", "cancelled"));
             throw;
         }
         catch (Exception ex)

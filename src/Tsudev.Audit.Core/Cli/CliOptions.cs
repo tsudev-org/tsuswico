@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Models;
 
 namespace Tsudev.Audit.Core.Cli;
@@ -67,15 +68,15 @@ public static class ExitCodes
 
     public static string Describe(int code) => code switch
     {
-        Ok => "không phát hiện vấn đề",
-        Partial => "hoàn tất nhưng thiếu dữ liệu ở một số mục",
-        Fatal => "lỗi nghiêm trọng, không tạo được báo cáo",
-        BadArgs => "tham số dòng lệnh không hợp lệ",
-        UpdateRequired => "cần cập nhật trước khi quét",
-        Cancelled => "người dùng đã huỷ (Ctrl+C)",
-        VerdictWarning => "kết luận mức CẢNH BÁO",
-        VerdictCritical => "kết luận mức NGHIÊM TRỌNG",
-        _ => "không xác định"
+        Ok => Loc.T("không phát hiện vấn đề", "no issues found"),
+        Partial => Loc.T("hoàn tất nhưng thiếu dữ liệu ở một số mục", "completed, but some items are missing data"),
+        Fatal => Loc.T("lỗi nghiêm trọng, không tạo được báo cáo", "fatal error, no report was produced"),
+        BadArgs => Loc.T("tham số dòng lệnh không hợp lệ", "invalid command-line arguments"),
+        UpdateRequired => Loc.T("cần cập nhật trước khi quét", "an update is required before scanning"),
+        Cancelled => Loc.T("người dùng đã huỷ (Ctrl+C)", "cancelled by the user (Ctrl+C)"),
+        VerdictWarning => Loc.T("kết luận mức CẢNH BÁO", "verdict: WARNING"),
+        VerdictCritical => Loc.T("kết luận mức NGHIÊM TRỌNG", "verdict: CRITICAL"),
+        _ => Loc.T("không xác định", "unknown")
     };
 }
 
@@ -111,6 +112,21 @@ public sealed class CliOptions
     /// <summary>Duong dan file bo luat phat hien ben ngoai (tuy chon).</summary>
     public string? RulesPath { get; private set; }
 
+    /// <summary>
+    /// Ngon ngu chon bang <c>--lang</c>; null = theo he thong (hoac bien moi
+    /// truong TSUSWICO_LANG). Program doc gia tri nay TRUOC khi phan tich day
+    /// du qua <see cref="LanguageResolver.FindCliValue"/>, de ca thong bao loi
+    /// tham so cung dung ngon ngu da chon.
+    /// </summary>
+    public AppLanguage? Language { get; private set; }
+
+    /// <summary>
+    /// Che do may-doc-may: stdout CHI chua mot tai lieu JSON (bao cao), moi
+    /// dong tien trinh/thong bao chuyen sang stderr; khong ghi tep, khong mo
+    /// trinh duyet. Danh cho RMM/script lay ket qua qua ong dan.
+    /// </summary>
+    public bool JsonOnly { get; private set; }
+
     public static CliOptions Parse(string[] args)
     {
         var o = new CliOptions();
@@ -128,30 +144,42 @@ public sealed class CliOptions
                 case "--no-dism": o.RunDism = false; break;
                 case "--no-csv": o.ExportCsv = false; break;
                 case "--verbose" or "-v": o.Verbose = true; break;
+                case "--json-only": o.JsonOnly = true; o.Silent = true; break;
+
+                case "--lang":
+                    if (++i >= args.Length)
+                        throw new ArgumentException(Loc.T($"--lang cần một giá trị ({LanguageResolver.Choices}).",
+                                                          $"--lang needs a value ({LanguageResolver.Choices})."));
+                    o.Language = LanguageResolver.ParseChoice(args[i]);
+                    break;
 
                 case "--scope":
-                    if (++i >= args.Length) throw new ArgumentException("--scope cần một giá trị (all|license|hardware).");
+                    if (++i >= args.Length) throw new ArgumentException(Loc.T("--scope cần một giá trị (all|license|hardware).", "--scope needs a value (all|license|hardware)."));
                     o.Scope = args[i].ToLowerInvariant() switch
                     {
                         "all" => AuditScope.All,
                         "license" => AuditScope.License,
                         "hardware" => AuditScope.Hardware,
-                        _ => throw new ArgumentException($"--scope không hợp lệ: '{args[i]}' (chỉ nhận all|license|hardware).")
+                        _ => throw new ArgumentException(Loc.T($"--scope không hợp lệ: '{args[i]}' (chỉ nhận all|license|hardware).", $"Invalid --scope: '{args[i]}' (accepted: all|license|hardware)."))
                     };
                     break;
 
                 case "--output" or "-o":
-                    if (++i >= args.Length) throw new ArgumentException("--output cần một đường dẫn thư mục.");
+                    if (++i >= args.Length) throw new ArgumentException(Loc.T("--output cần một đường dẫn thư mục.", "--output needs a folder path."));
                     o.OutputRoot = args[i];
                     break;
 
                 case "--rules":
-                    if (++i >= args.Length) throw new ArgumentException("--rules cần đường dẫn tới file .json bộ luật.");
+                    if (++i >= args.Length) throw new ArgumentException(Loc.T("--rules cần đường dẫn tới file .json bộ luật.", "--rules needs the path of a rules .json file."));
                     o.RulesPath = args[i];
                     break;
 
+                case var l when l.StartsWith("--lang=", StringComparison.Ordinal):
+                    o.Language = LanguageResolver.ParseChoice(args[i]["--lang=".Length..]);
+                    break;
+
                 default:
-                    throw new ArgumentException($"Không nhận ra tham số '{args[i]}'.");
+                    throw new ArgumentException(Loc.T($"Không nhận ra tham số '{args[i]}'.", $"Unknown argument '{args[i]}'."));
             }
         }
         return o;
@@ -160,7 +188,9 @@ public sealed class CliOptions
     public static void PrintUsage() => Console.WriteLine(UsageText);
 
     /// <summary>Toan van phan tro giup - tach ra de kiem thu duoc.</summary>
-    public static string UsageText => """
+    public static string UsageText => Loc.IsEnglish ? UsageTextEn : UsageTextVi;
+
+    private const string UsageTextVi = """
 Tsu Swico - Kiểm tra bản quyền Windows & cấu hình phần cứng
 
 CÁCH DÙNG:
@@ -176,6 +206,8 @@ THAM SỐ:
       --rules <file.json>         Dùng bộ luật phát hiện từ file ngoài
       --no-verdict-exit           Kết luận đánh giá KHÔNG ảnh hưởng mã thoát
       --no-update-check           Bỏ qua kiểm tra phiên bản mới
+      --json-only                 Chỉ in báo cáo JSON ra stdout (không ghi tệp, không mở trình duyệt)
+      --lang <auto|vi|en>         Ngôn ngữ (mặc định: auto - theo Windows; hoặc biến TSUSWICO_LANG)
   -v, --verbose                   Hiện chi tiết lỗi
       --version                   Hiện phiên bản rồi thoát
   -h, --help                      Hiện trợ giúp này
@@ -230,5 +262,81 @@ VÍ DỤ:
   swico.exe -o D:\BaoCao --silent       Lưu kết quả vào thư mục chỉ định
   swico.exe --rules .\luat-moi.json     Quét bằng bộ luật cập nhật
   swico.exe --silent --no-verdict-exit  Cho RMM coi mọi mã khác 0 là lỗi
+  swico.exe --json-only > ketqua.json   Lấy kết quả JSON qua ống dẫn
+""";
+
+    private const string UsageTextEn = """
+Tsu Swico - Windows license & hardware configuration audit
+
+USAGE:
+  swico.exe [options]
+
+OPTIONS:
+  --scope <all|license|hardware>  What to scan (default: all - both)
+  -o, --output <folder>           Root folder for results (default: next to the exe)
+  -s, --silent                    Do not open the browser (for GPO/RMM/Task Scheduler)
+      --sfc                       Also run sfc /verifyonly (SLOW, 5-15 minutes, off by default)
+      --no-dism                   Skip DISM CheckHealth
+      --no-csv                    Do not export .csv files
+      --rules <file.json>         Use detection rules from an external file
+      --no-verdict-exit           The verdict does NOT affect the exit code
+      --no-update-check           Skip the check for a newer version
+      --json-only                 Print only the JSON report to stdout (no files, no browser)
+      --lang <auto|vi|en>         Language (default: auto - follows Windows; or TSUSWICO_LANG)
+  -v, --verbose                   Show error details
+      --version                   Show the version and exit
+  -h, --help                      Show this help
+
+DETECTION RULES:
+  Signs of unauthorized activation live in a separate data file that can be
+  updated independently of the exe - no reinstall needed. Priority order:
+    1. The file given with --rules
+    2. detection-rules.json placed next to swico.exe
+    3. The rule set built into the exe
+  A broken or missing file falls back to the built-in rules with a warning;
+  it does NOT break the scan.
+
+UPDATE CHECK:
+  On start-up the tool asks GitHub whether a newer version exists. If so, it
+  must be updated before scanning - so results use the latest detection rules.
+
+  This is the ONLY time the tool connects to the Internet. No data about the
+  machine is sent. See PRIVACY.md.
+
+  If the check FAILS (offline, firewall), the tool still scans normally and
+  adds a note to the report. Blocking here would make the tool useless exactly
+  where it is needed most.
+
+  In --silent mode the tool shows NO dialog and exits with code 30.
+
+EXIT CODES: two groups, deliberately NOT merged
+
+  Tool health - did the tool run completely:
+    0   Completed, no issues found
+    1   Completed, but some items are missing data (main report still complete)
+    2   Fatal error, no report was produced
+    3   Invalid command-line arguments
+
+  Verdict - does the scanned machine have a problem:
+    10  Verdict WARNING (e.g. Office not activated)
+    20  Verdict CRITICAL (signs of unauthorized activation)
+    30  Update required before scanning (--silent mode only)
+   130  Cancelled by the user with Ctrl+C (POSIX convention 128+SIGINT)
+
+  Priority when several conditions apply: 2 > 3 > 130 > 20 > 10 > 1 > 0
+
+  Monitoring systems need to tell "the tool read incomplete data" apart from
+  "this machine has a licensing problem" - one shared code loses exactly the
+  most important information. If your RMM treats EVERY non-zero code as a
+  script failure, add --no-verdict-exit to use only the tool-health codes.
+
+EXAMPLES:
+  swico.exe                             Full scan, open the report when done
+  swico.exe --scope license             License check only
+  swico.exe --silent --sfc              Deep scan without opening a browser (mass deployment)
+  swico.exe -o D:\Reports --silent      Save results to a given folder
+  swico.exe --rules .\new-rules.json    Scan with updated rules
+  swico.exe --silent --no-verdict-exit  Let an RMM treat every non-zero code as failure
+  swico.exe --json-only > result.json   Get the JSON result through a pipe
 """;
 }

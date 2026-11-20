@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Globalization;
 using System.Net.Http;
 using System.Runtime.InteropServices;
@@ -49,16 +50,16 @@ public sealed class GitHubUpdateFeed : IUpdateFeed
             using var response = http.GetAsync(LatestReleaseApi).GetAwaiter().GetResult();
             if (!response.IsSuccessStatusCode)
             {
-                failureReason = $"GitHub trả về mã {(int)response.StatusCode}.";
+                failureReason = Loc.T($"GitHub trả về mã {(int)response.StatusCode}.", $"GitHub returned status {(int)response.StatusCode}.");
                 return null;
             }
 
             var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             return GitHubReleaseParser.Parse(json, out failureReason);
         }
-        catch (HttpRequestException ex) { failureReason = $"Không kết nối được tới GitHub: {ex.Message}"; }
-        catch (TaskCanceledException) { failureReason = $"Quá thời gian chờ ({_timeout.TotalSeconds:0} giây)."; }
-        catch (JsonException ex) { failureReason = $"Dữ liệu trả về không hợp lệ: {ex.Message}"; }
+        catch (HttpRequestException ex) { failureReason = Loc.T($"Không kết nối được tới GitHub: {ex.Message}", $"Could not connect to GitHub: {ex.Message}"); }
+        catch (TaskCanceledException) { failureReason = Loc.T($"Quá thời gian chờ ({_timeout.TotalSeconds:0} giây).", $"Timed out ({_timeout.TotalSeconds:0} seconds)."); }
+        catch (JsonException ex) { failureReason = Loc.T($"Dữ liệu trả về không hợp lệ: {ex.Message}", $"Invalid response data: {ex.Message}"); }
         return null;
     }
 
@@ -127,7 +128,7 @@ public static class UpdateInstaller
 
         if (string.IsNullOrWhiteSpace(release.InstallerUrl))
         {
-            failureReason = "Bản phát hành không kèm file cài đặt.";
+            failureReason = Loc.T("Bản phát hành không kèm file cài đặt.", "The release has no installer attached.");
             return null;
         }
 
@@ -140,23 +141,23 @@ public static class UpdateInstaller
             using var http = new HttpClient { Timeout = TimeSpan.FromMinutes(10) };
             http.DefaultRequestHeaders.Add("User-Agent", $"TsuSwico/{release.Version}");
 
-            report($"Đang tải {fileName}...");
+            report(Loc.T($"Đang tải {fileName}...", $"Downloading {fileName}..."));
             using (var stream = http.GetStreamAsync(release.InstallerUrl).GetAwaiter().GetResult())
             using (var file = File.Create(target))
                 stream.CopyTo(file);
 
             if (string.IsNullOrWhiteSpace(release.ChecksumsUrl))
             {
-                failureReason = "Bản phát hành không kèm SHA256SUMS.txt nên KHÔNG xác minh được file tải về.";
+                failureReason = Loc.T("Bản phát hành không kèm SHA256SUMS.txt nên KHÔNG xác minh được file tải về.", "The release has no SHA256SUMS.txt, so the download CANNOT be verified.");
                 return null;
             }
 
-            report("Đang đối chiếu mã băm SHA-256...");
+            report(Loc.T("Đang đối chiếu mã băm SHA-256...", "Checking the SHA-256 hash..."));
             var sums = http.GetStringAsync(release.ChecksumsUrl).GetAwaiter().GetResult();
             var expected = ChecksumFile.Find(sums, fileName);
             if (expected is null)
             {
-                failureReason = $"Không tìm thấy '{fileName}' trong SHA256SUMS.txt.";
+                failureReason = Loc.T($"Không tìm thấy '{fileName}' trong SHA256SUMS.txt.", $"'{fileName}' is not listed in SHA256SUMS.txt.");
                 return null;
             }
 
@@ -164,19 +165,22 @@ public static class UpdateInstaller
             var actual = Convert.ToHexString(SHA256.HashData(fs)).ToLowerInvariant();
             if (!actual.Equals(expected, StringComparison.Ordinal))
             {
-                failureReason = $"Mã băm KHÔNG khớp. Mong đợi {expected[..16]}…, nhận được {actual[..16]}…. " +
-                                "File tải về đã bị hỏng hoặc bị can thiệp - KHÔNG chạy file này.";
+                failureReason = Loc.T(
+                    $"Mã băm KHÔNG khớp. Mong đợi {expected[..16]}…, nhận được {actual[..16]}…. " +
+                    "File tải về đã bị hỏng hoặc bị can thiệp - KHÔNG chạy file này.",
+                    $"Hash MISMATCH. Expected {expected[..16]}…, got {actual[..16]}…. " +
+                    "The download is corrupted or was tampered with - do NOT run it.");
                 TryDelete(target);
                 return null;
             }
 
-            report("Đã xác minh xong.");
+            report(Loc.T("Đã xác minh xong.", "Verified."));
             return target;
         }
-        catch (HttpRequestException ex) { failureReason = $"Lỗi tải về: {ex.Message}"; }
-        catch (TaskCanceledException) { failureReason = "Quá thời gian chờ khi tải file cài đặt."; }
-        catch (IOException ex) { failureReason = $"Lỗi ghi file: {ex.Message}"; }
-        catch (UnauthorizedAccessException ex) { failureReason = $"Không có quyền ghi: {ex.Message}"; }
+        catch (HttpRequestException ex) { failureReason = Loc.T($"Lỗi tải về: {ex.Message}", $"Download error: {ex.Message}"); }
+        catch (TaskCanceledException) { failureReason = Loc.T("Quá thời gian chờ khi tải file cài đặt.", "Timed out while downloading the installer."); }
+        catch (IOException ex) { failureReason = Loc.T($"Lỗi ghi file: {ex.Message}", $"File write error: {ex.Message}"); }
+        catch (UnauthorizedAccessException ex) { failureReason = Loc.T($"Không có quyền ghi: {ex.Message}", $"No permission to write: {ex.Message}"); }
 
         TryDelete(target);
         return null;
@@ -203,7 +207,7 @@ public static class UpdateInstaller
         }
         catch (System.ComponentModel.Win32Exception ex)
         {
-            failureReason = $"Không chạy được file cài đặt: {ex.Message}";
+            failureReason = Loc.T($"Không chạy được file cài đặt: {ex.Message}", $"Could not start the installer: {ex.Message}");
             return false;
         }
     }

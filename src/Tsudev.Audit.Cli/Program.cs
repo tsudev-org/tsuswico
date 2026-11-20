@@ -1,10 +1,12 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Tsudev.Audit.Core.Cli;
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Models;
 using Tsudev.Audit.Core.Rendering;
 using Tsudev.Audit.Core.Reports;
@@ -33,6 +35,13 @@ public static class Program
     {
         ConfigureConsole();
 
+        // Ngon ngu chot TRUOC moi dong in ra - ke ca thong bao loi tham so.
+        // PRODUCT_POLICY muc 1: --lang > TSUSWICO_LANG > ngon ngu giao dien Windows.
+        Loc.SetProcessLanguage(LanguageResolver.Resolve(
+            LanguageResolver.FindCliValue(args),
+            Environment.GetEnvironmentVariable(LanguageResolver.EnvVar),
+            CultureInfo.CurrentUICulture));
+
         CliOptions opts;
         try
         {
@@ -40,7 +49,7 @@ public static class Program
         }
         catch (ArgumentException ex)
         {
-            Console.Error.WriteLine($"Tham số không hợp lệ: {ex.Message}\n");
+            Console.Error.WriteLine(Loc.T($"Tham số không hợp lệ: {ex.Message}\n", $"Invalid arguments: {ex.Message}\n"));
             CliOptions.PrintUsage();
             return ExitBadArgs;
         }
@@ -51,8 +60,18 @@ public static class Program
 
         if (!OperatingSystem.IsWindows())
         {
-            Console.Error.WriteLine("Công cụ này chỉ chạy trên Windows.");
+            Console.Error.WriteLine(Loc.T("Công cụ này chỉ chạy trên Windows.", "This tool only runs on Windows."));
             return ExitFatal;
+        }
+
+        // --json-only: stdout danh rieng cho tai lieu JSON. Moi dong thong bao,
+        // tien trinh, canh bao di sang stderr - nho vay `swico --json-only > a.json`
+        // luon ra mot tep JSON hop le, con nguoi van thay tien trinh tren man hinh.
+        TextWriter? jsonOut = null;
+        if (opts.JsonOnly)
+        {
+            jsonOut = Console.Out;
+            Console.SetOut(Console.Error);
         }
 
         // Kiem tra cap nhat TRUOC khi quet. Dat o day, ngoai Run(), de ro rang
@@ -66,16 +85,18 @@ public static class Program
 
         try
         {
-            return Run(opts, progress, cancel.Token);
+            return Run(opts, progress, jsonOut, cancel.Token);
         }
         catch (OperationCanceledException)
         {
             // Huy KHONG phai loi. Phan da quet xong van con nguyen tren man
             // hinh - do la ca diem cua viec in tung buoc mot.
             progress.Dispose();
-            Warn("\nĐã huỷ theo yêu cầu. Những mục đã quét xong vẫn hiển thị ở trên;");
-            Warn("file báo cáo của lần quét này (nếu đã tạo) sẽ thiếu các mục còn lại.");
-            Info($"\nMã thoát: {ExitCodes.Cancelled} ({ExitCodes.Describe(ExitCodes.Cancelled)})");
+            Warn(Loc.T("\nĐã huỷ theo yêu cầu. Những mục đã quét xong vẫn hiển thị ở trên;",
+                       "\nCancelled on request. Items already scanned are still shown above;"));
+            Warn(Loc.T("file báo cáo của lần quét này (nếu đã tạo) sẽ thiếu các mục còn lại.",
+                       "the report files of this scan (if created) will lack the remaining items."));
+            Info(Loc.T("\nMã thoát: ", "\nExit code: ") + $"{ExitCodes.Cancelled} ({ExitCodes.Describe(ExitCodes.Cancelled)})");
             return ExitCodes.Cancelled;
         }
         catch (Exception ex)
@@ -83,7 +104,7 @@ public static class Program
             // Don dong con quay do dang TRUOC khi in loi, neu khong thong bao
             // loi se de len chinh dong dang quay va doc thanh mot dong lai cai.
             progress.Dispose();
-            Error($"\nLỖI NGHIÊM TRỌNG: {ex.Message}");
+            Error(Loc.T("\nLỖI NGHIÊM TRỌNG: ", "\nFATAL ERROR: ") + ex.Message);
             if (opts.Verbose) Error(ex.ToString());
             return ExitFatal;
         }
@@ -110,7 +131,8 @@ public static class Program
             e.Cancel = true;
             cancel.Cancel();
             progress.Dispose();
-            Warn("\nĐang huỷ, chờ dọn dẹp... (bấm Ctrl+C lần nữa để thoát ngay)");
+            Warn(Loc.T("\nĐang huỷ, chờ dọn dẹp... (bấm Ctrl+C lần nữa để thoát ngay)",
+                       "\nCancelling, cleaning up... (press Ctrl+C again to quit immediately)"));
         };
     }
 
@@ -137,12 +159,13 @@ public static class Program
     {
         if (opts.NoUpdateCheck)
         {
-            Info("Đã bỏ qua kiểm tra phiên bản mới (--no-update-check).");
+            Info(Loc.T("Đã bỏ qua kiểm tra phiên bản mới (--no-update-check).",
+                       "Skipped the check for a newer version (--no-update-check)."));
             return null;
         }
 
         var current = CurrentVersion();
-        Info("Đang kiểm tra phiên bản mới...");
+        Info(Loc.T("Đang kiểm tra phiên bản mới...", "Checking for a newer version..."));
 
         // Ban dang chay den tu dau quyet dinh cach cap nhat - xem tinh huong 3.
         var kind = InstallKindDetector.Detect();
@@ -155,8 +178,9 @@ public static class Program
                 return null;
 
             case UpdateStatus.CheckFailed:
-                Warn($"  Không kiểm tra được bản cập nhật: {result.Message}");
-                Warn("  Vẫn tiếp tục quét. Hãy tự đối chiếu phiên bản mới nhất khi có mạng.");
+                Warn(Loc.T("  Không kiểm tra được bản cập nhật: ", "  Could not check for updates: ") + result.Message);
+                Warn(Loc.T("  Vẫn tiếp tục quét. Hãy tự đối chiếu phiên bản mới nhất khi có mạng.",
+                           "  Scanning anyway. Please check for the latest version yourself when online."));
                 return null;
 
             case UpdateStatus.UpdateRequired:
@@ -176,8 +200,9 @@ public static class Program
         {
             // Khong bao gio hien hop thoai o che do tu dong: khong ai ngoi do
             // bam nut, va tien trinh trien khai se treo vo thoi han.
-            Warn($"Chế độ --silent: không hiện hộp thoại. Cập nhật rồi chạy lại.");
-            Warn($"Tải bản mới tại: {result.Latest?.PageUrl}");
+            Warn(Loc.T("Chế độ --silent: không hiện hộp thoại. Cập nhật rồi chạy lại.",
+                       "--silent mode: no dialog shown. Update, then run again."));
+            Warn(Loc.T("Tải bản mới tại: ", "Download the new version at: ") + result.Latest?.PageUrl);
             return UpdateBlocked();
         }
 
@@ -185,36 +210,41 @@ public static class Program
         // mot nut o day la noi doi voi nguoi dung - bam vao khong cai duoc gi.
         if (result.MustUpdateManually)
         {
-            Warn("Bản portable không tự cập nhật được. Hãy làm thủ công:");
-            Warn($"  1. Tải: {result.Latest?.PortableUrl ?? result.Latest?.PageUrl}");
-            Warn("  2. Giải nén rồi ghi đè lên thư mục đang chạy công cụ này.");
-            Warn($"  3. Đối chiếu SHA-256 với SHA256SUMS.txt của cùng bản phát hành đó.");
+            Warn(Loc.T("Bản portable không tự cập nhật được. Hãy làm thủ công:",
+                       "The portable edition cannot update itself. Please do it manually:"));
+            Warn(Loc.T("  1. Tải: ", "  1. Download: ") + (result.Latest?.PortableUrl ?? result.Latest?.PageUrl));
+            Warn(Loc.T("  2. Giải nén rồi ghi đè lên thư mục đang chạy công cụ này.",
+                       "  2. Extract it over the folder this tool runs from."));
+            Warn(Loc.T("  3. Đối chiếu SHA-256 với SHA256SUMS.txt của cùng bản phát hành đó.",
+                       "  3. Verify the SHA-256 against SHA256SUMS.txt of the same release."));
             return UpdateBlocked();
         }
 
         if (!UpdatePrompt.AskToUpdate(result))
         {
-            Warn("Bạn đã đóng hộp thoại mà không cập nhật. Không thể tiếp tục quét.");
-            Warn($"Tải bản mới tại: {result.Latest?.PageUrl}");
+            Warn(Loc.T("Bạn đã đóng hộp thoại mà không cập nhật. Không thể tiếp tục quét.",
+                       "You closed the dialog without updating. Scanning cannot continue."));
+            Warn(Loc.T("Tải bản mới tại: ", "Download the new version at: ") + result.Latest?.PageUrl);
             return UpdateBlocked();
         }
 
         var installer = UpdateInstaller.DownloadAndVerify(result.Latest!, Info, out var failure);
         if (installer is null)
         {
-            Warn($"Cập nhật KHÔNG thành công: {failure}");
-            Warn($"Vui lòng tải và cài thủ công tại: {result.Latest?.PageUrl}");
+            Warn(Loc.T("Cập nhật KHÔNG thành công: ", "Update FAILED: ") + failure);
+            Warn(Loc.T("Vui lòng tải và cài thủ công tại: ", "Please download and install manually from: ") + result.Latest?.PageUrl);
             return UpdateBlocked();
         }
 
         if (!UpdateInstaller.Launch(installer, out var launchError))
         {
-            Warn($"Không chạy được file cài đặt: {launchError}");
-            Warn($"File đã tải và đã xác minh nằm tại: {installer}");
+            Warn(Loc.T("Không chạy được file cài đặt: ", "Could not start the installer: ") + launchError);
+            Warn(Loc.T("File đã tải và đã xác minh nằm tại: ", "The downloaded, verified file is at: ") + installer);
             return UpdateBlocked();
         }
 
-        Info("\nĐã khởi động trình cài đặt. Sau khi cài xong, hãy chạy lại công cụ.");
+        Info(Loc.T("\nĐã khởi động trình cài đặt. Sau khi cài xong, hãy chạy lại công cụ.",
+                   "\nThe installer has started. Run the tool again once it finishes."));
         return UpdateBlocked();
     }
 
@@ -225,7 +255,7 @@ public static class Program
     /// </summary>
     private static int UpdateBlocked()
     {
-        Info($"\nMã thoát: {ExitCodes.UpdateRequired} ({ExitCodes.Describe(ExitCodes.UpdateRequired)})");
+        Info(Loc.T("\nMã thoát: ", "\nExit code: ") + $"{ExitCodes.UpdateRequired} ({ExitCodes.Describe(ExitCodes.UpdateRequired)})");
         return ExitCodes.UpdateRequired;
     }
 
@@ -240,7 +270,8 @@ public static class Program
     }
 
     [SupportedOSPlatform("windows")]
-    private static int Run(CliOptions opts, ConsoleProgressReporter progress, CancellationToken cancel)
+    private static int Run(CliOptions opts, ConsoleProgressReporter progress, TextWriter? jsonOut,
+        CancellationToken cancel)
     {
         var exitCode = ExitOk;
         var scanTime = DateTimeOffset.Now;
@@ -251,14 +282,17 @@ public static class Program
         // Cau truc 3 cap: <root>/tsudev-bao-cao-ra-quet-<May>-<Ngay>/tsudev-ket-qua-ra-quet-<May>-<Ngay>/
         var level2 = FileNaming.Level2(root, computerName, scanTime);
         var level3 = FileNaming.Level3(level2, computerName, scanTime);
-        Directory.CreateDirectory(level3);
+        var writeFiles = jsonOut is null;
+        if (writeFiles) Directory.CreateDirectory(level3);
 
         Info($"=== TsuDEV System Audit ===");
-        Info($"Máy: {computerName}   |   Thời gian: {DateDisplay.DateTimeText(scanTime)}");
-        Info($"Thư mục kết quả: {level3}");
+        Info(Loc.T("Máy: ", "Computer: ") + computerName + "   |   " + Loc.T("Thời gian: ", "Time: ")
+             + DateDisplay.DateTimeText(scanTime));
+        if (writeFiles) Info(Loc.T("Thư mục kết quả: ", "Results folder: ") + level3);
 
         if (!WindowsEnvironment.IsElevated())
-            Warn("CẢNH BÁO: đang chạy KHÔNG có quyền Administrator - một số mục sẽ thiếu dữ liệu.");
+            Warn(Loc.T("CẢNH BÁO: đang chạy KHÔNG có quyền Administrator - một số mục sẽ thiếu dữ liệu.",
+                       "WARNING: running WITHOUT Administrator rights - some items will lack data."));
 
         var renderer = new HtmlReportRenderer();
         var xlsx = new XlsxWriter();
@@ -268,8 +302,8 @@ public static class Program
         // phai bien dich lai va ky lai.
         var rulesPath = opts.RulesPath ?? ProbeConventionalRulesFile();
         var rules = DetectionRuleSet.LoadOrEmbedded(rulesPath, out var rulesWarning);
-        if (rulesWarning is not null) Warn($"CẢNH BÁO: {rulesWarning}");
-        Info($"Bộ luật phát hiện: {rules.Describe()}");
+        if (rulesWarning is not null) Warn(Loc.T("CẢNH BÁO: ", "WARNING: ") + rulesWarning);
+        Info(Loc.T("Bộ luật phát hiện: ", "Detection rules: ") + rules.Describe());
 
         var auditOptions = new AuditOptions
         {
@@ -282,56 +316,65 @@ public static class Program
 
         if (opts.Scope is AuditScope.License or AuditScope.All)
         {
-            Info("\n[1] Đang kiểm tra bản quyền Windows & phần mềm...");
+            Info(Loc.T("\n[1] Đang kiểm tra bản quyền Windows & phần mềm...", "\n[1] Checking Windows & software licenses..."));
             var ctx = WindowsEnvironment.CreateContext(scanTime, progress, cancel);
             var report = LicenseReportBuilder.Build(ctx, auditOptions);
-            if (!SaveWithProgress(report, level3, renderer, xlsx, opts, progress)) exitCode = ExitPartial;
+            if (writeFiles && !SaveWithProgress(report, level3, renderer, xlsx, opts, progress)) exitCode = ExitPartial;
             if (report.Warnings.Count > 0) exitCode = ExitPartial;
             produced.Add(report);
         }
 
         if (opts.Scope is AuditScope.Hardware or AuditScope.All)
         {
-            Info("\n[2] Đang thu thập cấu hình phần cứng...");
+            Info(Loc.T("\n[2] Đang thu thập cấu hình phần cứng...", "\n[2] Collecting hardware configuration..."));
             var ctx = WindowsEnvironment.CreateContext(scanTime.AddSeconds(1), progress, cancel);
             var report = HardwareReportBuilder.Build(ctx, auditOptions);
-            if (!SaveWithProgress(report, level3, renderer, xlsx, opts, progress)) exitCode = ExitPartial;
+            if (writeFiles && !SaveWithProgress(report, level3, renderer, xlsx, opts, progress)) exitCode = ExitPartial;
             if (report.Warnings.Count > 0) exitCode = ExitPartial;
             produced.Add(report);
         }
 
-        // Trang tong hop - doc SAU vao moi thu muc con cap 3 (ke ca thu muc
-        // ket qua copy tu may khac vao)
-        Info("\n[3] Đang cập nhật tsudev-tong-hop.html...");
         string? dashboardPath = null;
-        cancel.ThrowIfCancellationRequested();
-        progress.BeginStep("Trang tổng hợp");
-        try
+        if (writeFiles)
         {
-            dashboardPath = new DashboardBuilder(renderer).BuildAndSave(level2);
-            progress.EndStep();
-            Info($"    → {dashboardPath}");
-        }
-        catch (Exception ex)
-        {
-            progress.FailStep(ex.Message);
-            Warn($"Không tạo được trang tổng hợp: {ex.Message}");
-            exitCode = ExitPartial;
+            // Trang tong hop - doc SAU vao moi thu muc con cap 3 (ke ca thu muc
+            // ket qua copy tu may khac vao)
+            Info(Loc.T("\n[3] Đang cập nhật tsudev-tong-hop.html...", "\n[3] Updating tsudev-tong-hop.html..."));
+            cancel.ThrowIfCancellationRequested();
+            progress.BeginStep(Loc.T("Trang tổng hợp", "Summary page"));
+            try
+            {
+                dashboardPath = new DashboardBuilder(renderer).BuildAndSave(level2);
+                progress.EndStep();
+                Info($"    → {dashboardPath}");
+            }
+            catch (Exception ex)
+            {
+                progress.FailStep(ex.Message);
+                Warn(Loc.T("Không tạo được trang tổng hợp: ", "Could not create the summary page: ") + ex.Message);
+                exitCode = ExitPartial;
+            }
         }
 
-        Info("\n=== HOÀN TẤT ===");
+        Info(Loc.T("\n=== HOÀN TẤT ===", "\n=== DONE ==="));
         foreach (var r in produced)
         {
             Info($"  {r.Title}");
-            Info($"    {Path.Combine(level3, r.HtmlReportFile)}");
+            if (writeFiles) Info($"    {Path.Combine(level3, r.HtmlReportFile)}");
             if (r.Warnings.Count > 0)
                 foreach (var w in r.Warnings) Warn($"    ! {w}");
         }
 
-        if (!opts.Silent && dashboardPath is not null)
+        if (jsonOut is not null)
+        {
+            jsonOut.Write(JsonOnlyDocument(produced));
+            jsonOut.WriteLine();
+            jsonOut.Flush();
+        }
+        else if (!opts.Silent && dashboardPath is not null)
             TryOpen(dashboardPath);
         else if (opts.Silent)
-            Info("[Chế độ --silent] Bỏ qua tự động mở trình duyệt.");
+            Info(Loc.T("[Chế độ --silent] Bỏ qua tự động mở trình duyệt.", "[--silent mode] Not opening the browser."));
 
         // Ket luan danh gia thang "thieu du lieu": mot may co dau hieu kich hoat
         // trai phep can duoc bao dong hon la mot muc thu thap bi trong.
@@ -340,8 +383,31 @@ public static class Program
             : ExitCodes.FromVerdicts(produced.Select(r => r.VerdictLevel));
         exitCode = ExitCodes.Combine(exitCode, verdictCode);
 
-        Info($"\nMã thoát: {exitCode} ({ExitCodes.Describe(exitCode)})");
+        Info(Loc.T("\nMã thoát: ", "\nExit code: ") + $"{exitCode} ({ExitCodes.Describe(exitCode)})");
         return exitCode;
+    }
+
+    /// <summary>
+    /// Tai lieu JSON cua che do --json-only: MOT doi tuong, luon cung hinh dang
+    /// du quet mot hay hai pham vi - may doc khong phai doan "mang hay doi tuong".
+    /// </summary>
+    private static string JsonOnlyDocument(IEnumerable<AuditReport> reports)
+    {
+        var arr = new System.Text.Json.Nodes.JsonArray();
+        foreach (var r in reports)
+            arr.Add(System.Text.Json.Nodes.JsonNode.Parse(AuditJson.WriteReport(r)));
+        var doc = new System.Text.Json.Nodes.JsonObject
+        {
+            ["tool"] = "Tsu Swico",
+            ["version"] = CurrentVersion(),
+            ["language"] = Loc.HtmlLang,
+            ["reports"] = arr
+        };
+        return doc.ToJsonString(new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        });
     }
 
     /// <summary>
@@ -354,7 +420,7 @@ public static class Program
     private static bool SaveWithProgress(AuditReport report, string dir, HtmlReportRenderer renderer,
         XlsxWriter xlsx, CliOptions opts, ConsoleProgressReporter progress)
     {
-        progress.BeginStep("Ghi báo cáo ra đĩa");
+        progress.BeginStep(Loc.T("Ghi báo cáo ra đĩa", "Writing reports to disk"));
         try
         {
             var ok = Save(report, dir, renderer, xlsx, opts);
@@ -379,23 +445,23 @@ public static class Program
             var html = renderer.Render(report, dashboardRelativeLink: "../tsudev-tong-hop.html");
             File.WriteAllText(Path.Combine(dir, report.HtmlReportFile), html, utf8NoBom);
         }
-        catch (Exception ex) { Warn($"Không ghi được HTML: {ex.Message}"); allOk = false; }
+        catch (Exception ex) { Warn(Loc.T("Không ghi được HTML: ", "Could not write HTML: ") + ex.Message); allOk = false; }
 
         try
         {
             var jsonName = Path.ChangeExtension(report.HtmlReportFile, ".json");
             File.WriteAllText(Path.Combine(dir, jsonName), AuditJson.WriteReport(report), utf8NoBom);
         }
-        catch (Exception ex) { Warn($"Không ghi được JSON: {ex.Message}"); allOk = false; }
+        catch (Exception ex) { Warn(Loc.T("Không ghi được JSON: ", "Could not write JSON: ") + ex.Message); allOk = false; }
 
         try
         {
             var tables = report.Sections.SelectMany(s => s.Tables)
-                .Select((t, i) => { if (string.IsNullOrWhiteSpace(t.Title)) t.Title = $"Bảng {i + 1}"; return t; })
+                .Select((t, i) => { if (string.IsNullOrWhiteSpace(t.Title)) t.Title = Loc.T("Bảng ", "Table ") + (i + 1); return t; })
                 .ToList();
             xlsx.Write(Path.Combine(dir, Path.ChangeExtension(report.HtmlReportFile, ".xlsx")), tables);
         }
-        catch (Exception ex) { Warn($"Không ghi được XLSX: {ex.Message}"); allOk = false; }
+        catch (Exception ex) { Warn(Loc.T("Không ghi được XLSX: ", "Could not write XLSX: ") + ex.Message); allOk = false; }
 
         if (opts.ExportCsv)
         {
@@ -408,7 +474,7 @@ public static class Program
                     WriteCsv(Path.Combine(dir, csvName), table);
                 }
             }
-            catch (Exception ex) { Warn($"Không ghi được CSV: {ex.Message}"); allOk = false; }
+            catch (Exception ex) { Warn(Loc.T("Không ghi được CSV: ", "Could not write CSV: ") + ex.Message); allOk = false; }
         }
 
         return allOk;
@@ -448,15 +514,15 @@ public static class Program
         var asm = typeof(Program).Assembly;
         var version = asm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
                       ?? asm.GetName().Version?.ToString()
-                      ?? "khong xac dinh";
+                      ?? Loc.T("không xác định", "unknown");
 
         // Cat phan bam commit ma SDK tu them (vi du "3.0.0+9e1f2c...").
         var plus = version.IndexOf('+', StringComparison.Ordinal);
         if (plus > 0) version = version[..plus];
 
         Console.WriteLine($"Tsu Swico {version}");
-        Console.WriteLine($"Lược đồ dữ liệu: {AuditReport.CurrentSchemaVersion}");
-        Console.WriteLine($"Bộ luật phát hiện đóng kèm: {DetectionRuleSet.Embedded.Version}");
+        Console.WriteLine(Loc.T("Lược đồ dữ liệu: ", "Data schema: ") + AuditReport.CurrentSchemaVersion);
+        Console.WriteLine(Loc.T("Bộ luật phát hiện đóng kèm: ", "Built-in detection rules: ") + DetectionRuleSet.Embedded.Version);
     }
 
     private static void TryOpen(string path)

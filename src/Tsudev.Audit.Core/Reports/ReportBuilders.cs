@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Globalization;
 using Tsudev.Audit.Core.Abstractions;
 using Tsudev.Audit.Core.Collectors;
@@ -36,55 +37,61 @@ public static class LicenseReportBuilder
             ReportKind = ReportKind.LicenseAudit,
             ComputerName = ctx.ComputerName,
             ScanTime = ctx.ScanTime,
-            Title = "Báo cáo kiểm tra bản quyền Windows & phần mềm đã cài đặt",
+            Title = Loc.T("Báo cáo kiểm tra bản quyền Windows & phần mềm đã cài đặt", "Windows & installed software license audit report"),
             HtmlReportFile = FileNaming.Html("Windows_License_Audit", ctx)
         };
 
         if (!ctx.IsElevated)
-            ctx.Warn("Đang chạy KHÔNG có quyền Administrator - một số mục (bản quyền, Defender, DISM) có thể thiếu dữ liệu.");
+            ctx.Warn(Loc.T("Đang chạy KHÔNG có quyền Administrator - một số mục (bản quyền, Defender, DISM) có thể thiếu dữ liệu.", "Running WITHOUT Administrator rights - some items (licensing, Defender, DISM) may lack data."));
 
         // --- 1. He dieu hanh ---
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-os", NavLabel = "1. Hệ điều hành", Heading = "1. Thông tin hệ điều hành",
-            Tables = { ScanStep.Run(ctx, "Hệ điều hành", () => OsInfoCollector.Collect(ctx)) }
+            Id = "sec-os", NavLabel = Loc.T("1. Hệ điều hành", "1. Operating system"), Heading = Loc.T("1. Thông tin hệ điều hành", "1. Operating system information"),
+            Tables = { ScanStep.Run(ctx, Loc.T("Hệ điều hành", "Operating system"), () => OsInfoCollector.Collect(ctx)) }
         });
 
         // --- 2. Ban quyen Windows ---
-        var (licTable, license) = ScanStep.Run(ctx, "Bản quyền Windows",
+        var (licTable, license) = ScanStep.Run(ctx, Loc.T("Bản quyền Windows", "Windows license"),
             () => WindowsLicenseCollector.Collect(ctx));
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-license", NavLabel = "2. Bản quyền Windows",
-            Heading = "2. Trạng thái bản quyền Windows (Activation License)",
-            Description = $"Tổng hợp: {license.Describe()}. " +
+            Id = "sec-license", NavLabel = Loc.T("2. Bản quyền Windows", "2. Windows license"),
+            Heading = Loc.T("2. Trạng thái bản quyền Windows (Activation License)", "2. Windows activation status"),
+            Description = Loc.T($"Tổng hợp: {license.Describe()}. " +
                           "Windows khai báo nhiều SKU dưới cùng một sản phẩm; kết luận chỉ là <b>hợp lệ</b> khi " +
                           "<b>không còn SKU nào</b> ở trạng thái có vấn đề hoặc đang trong thời gian dùng thử.",
+                          $"Summary: {license.Describe()}. " +
+                          "Windows declares several SKUs under one product; the verdict is <b>valid</b> only when " +
+                          "<b>no SKU</b> is left in a problem state or still in a trial period."),
             Tables = { licTable },
-            PreformattedText = ScanStep.Run(ctx, "Chi tiết slmgr", () => SlmgrCollector.Collect(ctx))
+            PreformattedText = ScanStep.Run(ctx, Loc.T("Chi tiết slmgr", "slmgr details"), () => SlmgrCollector.Collect(ctx))
         });
 
         // --- 2b. Office / M365 ---
-        var (officeTable, office) = ScanStep.Run(ctx, "Bản quyền Office / M365",
+        var (officeTable, office) = ScanStep.Run(ctx, Loc.T("Bản quyền Office / M365", "Office / M365 license"),
             () => OfficeLicenseCollector.Collect(ctx));
         report.Sections.Add(new ReportSection
         {
             Id = "sec-office", NavLabel = "2b. Office/M365",
-            Heading = "2b. Bản quyền Microsoft Office / Microsoft 365",
-            Description = "Kiểm tra qua công cụ chính thức <code>ospp.vbs</code> đi kèm bộ cài Office. " +
+            Heading = Loc.T("2b. Bản quyền Microsoft Office / Microsoft 365", "2b. Microsoft Office / Microsoft 365 licensing"),
+            Description = Loc.T("Kiểm tra qua công cụ chính thức <code>ospp.vbs</code> đi kèm bộ cài Office. " +
                           "Nếu máy không cài Office, mục này sẽ trống - đây KHÔNG phải lỗi.<br>" +
                           $"<b>Tổng hợp:</b> {office.Describe()}.",
+                          "Checked with the official <code>ospp.vbs</code> tool shipped with Office. " +
+                          "If Office is not installed this section is empty - that is NOT an error.<br>" +
+                          $"<b>Summary:</b> {office.Describe()}."),
             Tables = { officeTable }
         });
 
         // --- 4. Phan mem (thu thap truoc de tinh diem rui ro o muc 3) ---
-        var software = ScanStep.Run(ctx, "Danh sách phần mềm đã cài",
+        var software = ScanStep.Run(ctx, Loc.T("Danh sách phần mềm đã cài", "Installed software list"),
             () => SoftwareCollector.Collect(ctx));
         var manualReview = software.Where(s => s.NeedsManualReview).ToList();
 
         // --- 3. Danh gia tinh hop phap ---
         var rules = options.Rules ?? DetectionRuleSet.Embedded;
-        var findings = ScanStep.Run(ctx, "Dấu hiệu kích hoạt trái phép",
+        var findings = ScanStep.Run(ctx, Loc.T("Dấu hiệu kích hoạt trái phép", "Signs of unauthorized activation"),
             () => ActivationRiskScanner.Scan(ctx, rules));
         var scope = ActivationRiskScanner.BuildScope(findings, rules);
         report.DetectionRulesVersion = rules.Version;
@@ -99,26 +106,26 @@ public static class LicenseReportBuilder
         report.RiskFindingsCount = findings.Count;
         report.RiskScore = score;
 
-        var scopeTable = DataTable.Create("Phạm vi quét (6 hạng mục cố định - luôn hiển thị dù có phát hiện hay không)",
-            "Hạng mục quét", "Nguồn dữ liệu", "Mức độ nếu phát hiện", "Số phát hiện trên máy này")
-            .Numeric("Số phát hiện trên máy này");
+        var scopeTable = DataTable.Create(Loc.T("Phạm vi quét (6 hạng mục cố định - luôn hiển thị dù có phát hiện hay không)", "Scan scope (6 fixed categories - always shown, findings or not)"),
+            Loc.T("Hạng mục quét", "Scanned category"), Loc.T("Nguồn dữ liệu", "Data source"), Loc.T("Mức độ nếu phát hiện", "Severity if found"), Loc.T("Số phát hiện trên máy này", "Findings on this machine"))
+            .Numeric(Loc.T("Số phát hiện trên máy này", "Findings on this machine"));
         foreach (var s in scope)
             scopeTable.AddRow(s.Category, s.DataSource, RiskLabels.Vietnamese(s.LevelIfFound), s.FoundCount);
 
-        var findingsTable = DataTable.Create("Danh sách chi tiết từng dấu hiệu phát hiện được",
-            "Hạng mục", "Phát hiện", "Mức độ", "Diễn giải");
+        var findingsTable = DataTable.Create(Loc.T("Danh sách chi tiết từng dấu hiệu phát hiện được", "Details of every sign found"),
+            Loc.T("Hạng mục", "Category"), Loc.T("Phát hiện", "Finding"), Loc.T("Mức độ", "Severity"), Loc.T("Diễn giải", "Explanation"));
         findingsTable.Searchable = findings.Count > 10;
         foreach (var f in findings.OrderByDescending(f => f.Level))
             findingsTable.AddRow(f.Category, f.Detection, RiskLabels.Vietnamese(f.Level), f.Explanation);
-        findingsTable.AddEmptyNotice("Không phát hiện dấu hiệu nào ở cả 6 hạng mục quét");
+        findingsTable.AddEmptyNotice(Loc.T("Không phát hiện dấu hiệu nào ở cả 6 hạng mục quét", "No signs found in any of the 6 scanned categories"));
 
         var verdictSection = new ReportSection
         {
-            Id = "sec-verdict", NavLabel = "3. Đánh giá hợp pháp",
-            Heading = "3. Đánh giá tính hợp pháp bản quyền Windows",
+            Id = "sec-verdict", NavLabel = Loc.T("3. Đánh giá hợp pháp", "3. Legitimacy verdict"),
+            Heading = Loc.T("3. Đánh giá tính hợp pháp bản quyền Windows", "3. Windows license legitimacy verdict"),
             Verdict = verdict,
             Tables = { scopeTable, findingsTable },
-            MethodNote =
+            MethodNote = Loc.T(
                 "<b>Về phương pháp và giới hạn:</b> Đây là quét heuristic theo các dấu hiệu ĐÃ BIẾT của những công cụ " +
                 "kích hoạt trái phép phổ biến - KHÔNG thể phát hiện 100% mọi biến thể, đặc biệt các bản tùy biến/đổi tên mới " +
                 "hoặc kỹ thuật kích hoạt qua Digital License/HWID không để lại artifact rõ ràng. " +
@@ -130,9 +137,21 @@ public static class LicenseReportBuilder
                 $"mỗi phát hiện Rất cao +{RiskScoring.CriticalPer}đ (tối đa {RiskScoring.CriticalCap}đ); " +
                 $"Cao +{RiskScoring.HighPer}đ (tối đa {RiskScoring.HighCap}đ); " +
                 $"Trung bình +{RiskScoring.MediumPer}đ (tối đa {RiskScoring.MediumCap}đ); " +
-                $"mỗi phần mềm cần kiểm tra thủ công +{RiskScoring.ManualReviewPer}đ (tối đa {RiskScoring.ManualReviewCap}đ)."
+                $"mỗi phần mềm cần kiểm tra thủ công +{RiskScoring.ManualReviewPer}đ (tối đa {RiskScoring.ManualReviewCap}đ).",
+                "<b>Method and limits:</b> This is a heuristic scan for KNOWN signs of common unauthorized " +
+                "activation tools - it CANNOT detect 100% of variants, especially new customised/renamed builds " +
+                "or Digital License/HWID activation techniques that leave no clear artifact. " +
+                "No findings does NOT mean the machine is guaranteed clean; conversely, findings should be verified " +
+                "manually before drawing conclusions, as some file/service names may coincide by chance. " +
+                "This result supports decision-making and is NOT legal evidence replacing a check of the " +
+                "organization's official license purchase records.<br><br>" +
+                $"<b>How the risk score is computed:</b> Genuine API failed +{RiskScoring.GenuineFailedWeight} pts; " +
+                $"each Very high finding +{RiskScoring.CriticalPer} pts (max {RiskScoring.CriticalCap}); " +
+                $"High +{RiskScoring.HighPer} pts (max {RiskScoring.HighCap}); " +
+                $"Medium +{RiskScoring.MediumPer} pts (max {RiskScoring.MediumCap}); " +
+                $"each program needing manual review +{RiskScoring.ManualReviewPer} pts (max {RiskScoring.ManualReviewCap}).")
         };
-        verdictSection.Badges.Add(new Badge { Text = $"Điểm rủi ro: {score.Value}/100 ({score.Label})", Level = score.Band });
+        verdictSection.Badges.Add(new Badge { Text = Loc.T($"Điểm rủi ro: {score.Value}/100 ({score.Label})", $"Risk score: {score.Value}/100 ({score.Label})"), Level = score.Band });
         foreach (var lvl in new[] { RiskLevel.Critical, RiskLevel.High, RiskLevel.Medium, RiskLevel.Low })
         {
             var n = findings.Count(f => f.Level == lvl);
@@ -143,32 +162,36 @@ public static class LicenseReportBuilder
         // --- 4. Danh sach phan mem ---
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-software", NavLabel = "4. Phần mềm đã cài",
-            Heading = $"4. Danh sách phần mềm đã cài đặt ({software.Count})",
-            Description = "Đọc từ 3 nhánh registry Uninstall (64-bit, 32-bit và per-user) - đầy đủ hơn nhiều so với " +
+            Id = "sec-software", NavLabel = Loc.T("4. Phần mềm đã cài", "4. Installed software"),
+            Heading = Loc.T($"4. Danh sách phần mềm đã cài đặt ({software.Count})", $"4. Installed software ({software.Count})"),
+            Description = Loc.T("Đọc từ 3 nhánh registry Uninstall (64-bit, 32-bit và per-user) - đầy đủ hơn nhiều so với " +
                           "<code>Win32_Product</code>. Cột \"Phân loại\" là bảng tra theo từ khóa, không đầy đủ 100%.",
+                          "Read from the 3 Uninstall registry branches (64-bit, 32-bit and per-user) - far more complete " +
+                          "than <code>Win32_Product</code>. The \"Category\" column is a keyword lookup, not 100% complete."),
             Tables = { SoftwareCollector.ToTable(software) }
         });
 
         // --- 5. Can kiem tra thu cong ---
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-manual", NavLabel = "5. Cần kiểm tra thủ công",
-            Heading = $"5. Phần mềm cần kiểm tra thủ công ({manualReview.Count})",
-            Description = "Các phần mềm thiếu thông tin Nhà phát hành hoặc Phiên bản trong registry - thường là phần mềm " +
+            Id = "sec-manual", NavLabel = Loc.T("5. Cần kiểm tra thủ công", "5. Manual review"),
+            Heading = Loc.T($"5. Phần mềm cần kiểm tra thủ công ({manualReview.Count})", $"5. Software needing manual review ({manualReview.Count})"),
+            Description = Loc.T("Các phần mềm thiếu thông tin Nhà phát hành hoặc Phiên bản trong registry - thường là phần mềm " +
                           "portable, tool nội bộ, hoặc cài đặt không đúng chuẩn. Nên kiểm tra nguồn gốc bản quyền thủ công.",
+                          "Programs missing Publisher or Version in the registry - usually portable software, " +
+                          "in-house tools, or non-standard installs. Check their license origin manually."),
             Tables = { SoftwareCollector.ToManualReviewTable(software) }
         });
 
-        report.SummaryCards.Add(new SummaryCard { Value = software.Count.ToString(CultureInfo.InvariantCulture), Label = "Tổng số phần mềm đã cài" });
-        report.SummaryCards.Add(new SummaryCard { Value = $"{license.Ok}/{license.Total}", Label = "SKU Windows hợp lệ / tổng số" });
+        report.SummaryCards.Add(new SummaryCard { Value = software.Count.ToString(CultureInfo.InvariantCulture), Label = Loc.T("Tổng số phần mềm đã cài", "Installed programs") });
+        report.SummaryCards.Add(new SummaryCard { Value = $"{license.Ok}/{license.Total}", Label = Loc.T("SKU Windows hợp lệ / tổng số", "Valid Windows SKUs / total") });
         report.SummaryCards.Add(new SummaryCard
         {
             Value = office.IsInstalled ? $"{office.Ok}/{office.Total}" : "-",
-            Label = office.IsInstalled ? "Sản phẩm Office hợp lệ / tổng số" : "Office (không phát hiện)"
+            Label = office.IsInstalled ? Loc.T("Sản phẩm Office hợp lệ / tổng số", "Valid Office products / total") : Loc.T("Office (không phát hiện)", "Office (not detected)")
         });
-        report.SummaryCards.Add(new SummaryCard { Value = findings.Count.ToString(CultureInfo.InvariantCulture), Label = "Dấu hiệu kích hoạt trái phép" });
-        report.SummaryCards.Add(new SummaryCard { Value = $"{score.Value}/100", Label = $"Điểm rủi ro ({score.Label})" });
+        report.SummaryCards.Add(new SummaryCard { Value = findings.Count.ToString(CultureInfo.InvariantCulture), Label = Loc.T("Dấu hiệu kích hoạt trái phép", "Signs of unauthorized activation") });
+        report.SummaryCards.Add(new SummaryCard { Value = $"{score.Value}/100", Label = Loc.T($"Điểm rủi ro ({score.Label})", $"Risk score ({score.Label})") });
 
         report.Warnings.AddRange(ctx.Warnings);
         return report;
@@ -185,25 +208,25 @@ public static class HardwareReportBuilder
             ReportKind = ReportKind.HardwareInventory,
             ComputerName = ctx.ComputerName,
             ScanTime = ctx.ScanTime,
-            Title = "Báo cáo cấu hình phần cứng thiết bị",
+            Title = Loc.T("Báo cáo cấu hình phần cứng thiết bị", "Device hardware configuration report"),
             HtmlReportFile = FileNaming.Html("Windows_Hardware_Inventory", ctx)
         };
 
         if (!ctx.IsElevated)
-            ctx.Warn("Đang chạy KHÔNG có quyền Administrator - một số mục (Defender, DISM, Serial Number) có thể thiếu dữ liệu.");
+            ctx.Warn(Loc.T("Đang chạy KHÔNG có quyền Administrator - một số mục (Defender, DISM, Serial Number) có thể thiếu dữ liệu.", "Running WITHOUT Administrator rights - some items (Defender, DISM, Serial Number) may lack data."));
 
-        var (overview, summary) = ScanStep.Run(ctx, "Tổng quan thiết bị",
+        var (overview, summary) = ScanStep.Run(ctx, Loc.T("Tổng quan thiết bị", "Device overview"),
             () => HardwareCollector.CollectOverview(ctx));
         report.HardwareSummary = summary;
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-overview", NavLabel = "1. Tổng quan", Heading = "1. Tổng quan thiết bị",
+            Id = "sec-overview", NavLabel = Loc.T("1. Tổng quan", "1. Overview"), Heading = Loc.T("1. Tổng quan thiết bị", "1. Device overview"),
             Tables = { overview }
         });
 
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-cpu", NavLabel = "2. CPU", Heading = "2. CPU (Bộ xử lý)",
+            Id = "sec-cpu", NavLabel = "2. CPU", Heading = Loc.T("2. CPU (Bộ xử lý)", "2. CPU (Processor)"),
             Tables = { ScanStep.Run(ctx, "CPU", () => HardwareCollector.CollectCpu(ctx)) }
         });
 
@@ -212,50 +235,56 @@ public static class HardwareReportBuilder
         report.Sections.Add(new ReportSection
         {
             Id = "sec-ram", NavLabel = "3. RAM",
-            Heading = $"3. RAM (Bộ nhớ) - {usedSlots} thanh đang cắm / {totalSlots} khe cắm",
+            Heading = Loc.T($"3. RAM (Bộ nhớ) - {usedSlots} thanh đang cắm / {totalSlots} khe cắm", $"3. RAM (Memory) - {usedSlots} modules installed / {totalSlots} slots"),
             Tables = { ramTable }
         });
 
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-disk", NavLabel = "4. Ổ đĩa", Heading = "4. Ổ đĩa & phân vùng",
+            Id = "sec-disk", NavLabel = Loc.T("4. Ổ đĩa", "4. Disks"), Heading = Loc.T("4. Ổ đĩa & phân vùng", "4. Disks & volumes"),
             Tables =
             {
-                ScanStep.Run(ctx, "Ổ đĩa", () => HardwareCollector.CollectDisks(ctx)),
-                ScanStep.Run(ctx, "Phân vùng", () => HardwareCollector.CollectVolumes(ctx))
+                ScanStep.Run(ctx, Loc.T("Ổ đĩa", "Disks"), () => HardwareCollector.CollectDisks(ctx)),
+                ScanStep.Run(ctx, Loc.T("Phân vùng", "Volumes"), () => HardwareCollector.CollectVolumes(ctx))
             }
         });
 
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-gpu", NavLabel = "5. GPU", Heading = "5. Card đồ họa (GPU)",
-            Tables = { ScanStep.Run(ctx, "Card đồ họa", () => HardwareCollector.CollectGpu(ctx)) }
+            Id = "sec-gpu", NavLabel = "5. GPU", Heading = Loc.T("5. Card đồ họa (GPU)", "5. Graphics card (GPU)"),
+            Tables = { ScanStep.Run(ctx, Loc.T("Card đồ họa", "Graphics card"), () => HardwareCollector.CollectGpu(ctx)) }
         });
 
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-net", NavLabel = "6. Mạng", Heading = "6. Card mạng (đang hoạt động)",
-            Tables = { ScanStep.Run(ctx, "Card mạng", () => HardwareCollector.CollectNetwork(ctx)) }
+            Id = "sec-net", NavLabel = Loc.T("6. Mạng", "6. Network"), Heading = Loc.T("6. Card mạng (đang hoạt động)", "6. Network adapters (active)"),
+            Tables = { ScanStep.Run(ctx, Loc.T("Card mạng", "Network adapters"), () => HardwareCollector.CollectNetwork(ctx)) }
         });
 
         report.Sections.Add(new ReportSection
         {
-            Id = "sec-drivers", NavLabel = "7. Driver lỗi", Heading = "7. Driver lỗi trong Device Manager",
-            Description = "Liệt kê thiết bị có mã lỗi (ConfigManagerErrorCode khác 0) - tương đương dấu chấm than vàng " +
+            Id = "sec-drivers", NavLabel = Loc.T("7. Driver lỗi", "7. Driver errors"), Heading = Loc.T("7. Driver lỗi trong Device Manager", "7. Driver errors in Device Manager"),
+            Description = Loc.T("Liệt kê thiết bị có mã lỗi (ConfigManagerErrorCode khác 0) - tương đương dấu chấm than vàng " +
                           "hoặc dấu X đỏ trong Device Manager.",
-            Tables = { ScanStep.Run(ctx, "Driver lỗi", () => HardwareCollector.CollectDriverErrors(ctx)) }
+                          "Devices with an error code (ConfigManagerErrorCode not 0) - the yellow exclamation mark " +
+                          "or red X in Device Manager."),
+            Tables = { ScanStep.Run(ctx, Loc.T("Driver lỗi", "Driver errors"), () => HardwareCollector.CollectDriverErrors(ctx)) }
         });
 
         var integrity = new ReportSection
         {
-            Id = "sec-integrity", NavLabel = "8. Toàn vẹn hệ thống",
-            Heading = "8. Toàn vẹn file hệ thống & driver",
-            Description = "Dùng 2 công cụ CHÍNH THỨC của Windows: <b>DISM CheckHealth</b> kiểm tra nhanh kho thành phần " +
+            Id = "sec-integrity", NavLabel = Loc.T("8. Toàn vẹn hệ thống", "8. System integrity"),
+            Heading = Loc.T("8. Toàn vẹn file hệ thống & driver", "8. System file & driver integrity"),
+            Description = Loc.T("Dùng 2 công cụ CHÍNH THỨC của Windows: <b>DISM CheckHealth</b> kiểm tra nhanh kho thành phần " +
                           "hệ thống, và <b>System File Checker</b> xác minh từng file hệ thống/driver so với bản gốc.",
-            Tables = { ScanStep.Run(ctx, "Toàn vẹn file hệ thống",
+                          "Uses 2 OFFICIAL Windows tools: <b>DISM CheckHealth</b> quickly checks the component " +
+                          "store, and <b>System File Checker</b> verifies each system file/driver against the original."),
+            Tables = { ScanStep.Run(ctx, Loc.T("Toàn vẹn file hệ thống", "System file integrity"),
                 () => SystemIntegrityCollector.Collect(ctx, options.RunDism, options.RunSfc)) },
-            MethodNote = "Nếu kết quả báo lỗi, chạy với quyền Administrator: <code>DISM /Online /Cleanup-Image /RestoreHealth</code> " +
-                         "rồi <code>sfc /scannow</code>. Mục System File Checker mặc định TẮT (mất 5-15 phút) - bật bằng tham số <code>--sfc</code>."
+            MethodNote = Loc.T("Nếu kết quả báo lỗi, chạy với quyền Administrator: <code>DISM /Online /Cleanup-Image /RestoreHealth</code> " +
+                         "rồi <code>sfc /scannow</code>. Mục System File Checker mặc định TẮT (mất 5-15 phút) - bật bằng tham số <code>--sfc</code>.",
+                         "If errors are reported, run as Administrator: <code>DISM /Online /Cleanup-Image /RestoreHealth</code> " +
+                         "then <code>sfc /scannow</code>. System File Checker is OFF by default (takes 5-15 minutes) - enable it with <code>--sfc</code>.")
         };
         report.Sections.Add(integrity);
 
@@ -263,26 +292,32 @@ public static class HardwareReportBuilder
             () => DefenderCollector.Collect(ctx));
         var defSection = new ReportSection
         {
-            Id = "sec-defender", NavLabel = "9. Chống mã độc",
-            Heading = "9. Phát hiện mã độc - Windows Defender",
-            Description = "Đọc trực tiếp trạng thái và <b>lịch sử phát hiện thật</b> từ Windows Defender - antivirus engine " +
+            Id = "sec-defender", NavLabel = Loc.T("9. Chống mã độc", "9. Anti-malware"),
+            Heading = Loc.T("9. Phát hiện mã độc - Windows Defender", "9. Malware detections - Windows Defender"),
+            Description = Loc.T("Đọc trực tiếp trạng thái và <b>lịch sử phát hiện thật</b> từ Windows Defender - antivirus engine " +
                           "mặc định của Windows với cơ sở dữ liệu chữ ký được Microsoft cập nhật liên tục. Đây là phương pháp " +
                           "đáng tin cậy nhất để liệt kê file (.exe, .doc, ...) đã bị phát hiện nhiễm mã độc, thay vì tự dò " +
                           "quét bằng heuristic tự viết (vốn kém chính xác và dễ gây hiểu lầm).",
+                          "Reads the status and <b>real detection history</b> straight from Windows Defender - the default " +
+                          "Windows antivirus engine, whose signature database Microsoft updates continuously. This is the most " +
+                          "reliable way to list files (.exe, .doc, ...) detected as malware, rather than a home-made heuristic " +
+                          "scan (less accurate and easily misleading)."),
             Tables = { defStatus, defThreats },
-            MethodNote = "Danh sách trên chỉ hiện các mối đe dọa Windows Defender ĐÃ TỪNG quét thấy. Để chắc chắn máy sạch " +
-                         "tại thời điểm hiện tại, hãy chạy Quick/Full Scan trong Windows Security trước khi chạy lại tool này."
+            MethodNote = Loc.T("Danh sách trên chỉ hiện các mối đe dọa Windows Defender ĐÃ TỪNG quét thấy. Để chắc chắn máy sạch " +
+                         "tại thời điểm hiện tại, hãy chạy Quick/Full Scan trong Windows Security trước khi chạy lại tool này.",
+                         "The list above only shows threats Windows Defender HAS ALREADY found. To be sure the machine is clean " +
+                         "right now, run a Quick/Full Scan in Windows Security before running this tool again.")
         };
         defSection.Badges.Add(new Badge
         {
-            Text = $"{threatCount} mối đe dọa",
+            Text = Loc.T($"{threatCount} mối đe dọa", $"{threatCount} threats"),
             Level = threatCount > 0 ? RiskLevel.High : RiskLevel.None
         });
         report.Sections.Add(defSection);
 
-        report.SummaryCards.Add(new SummaryCard { Value = ctx.Wmi.Query("Win32_Processor").Count.ToString(CultureInfo.InvariantCulture), Label = "CPU vật lý" });
-        report.SummaryCards.Add(new SummaryCard { Value = $"{usedSlots} / {totalSlots}", Label = "Khe RAM đang dùng / tổng khe" });
-        report.SummaryCards.Add(new SummaryCard { Value = threatCount.ToString(CultureInfo.InvariantCulture), Label = "Mối đe dọa Defender đã ghi nhận" });
+        report.SummaryCards.Add(new SummaryCard { Value = ctx.Wmi.Query("Win32_Processor").Count.ToString(CultureInfo.InvariantCulture), Label = Loc.T("CPU vật lý", "Physical CPUs") });
+        report.SummaryCards.Add(new SummaryCard { Value = $"{usedSlots} / {totalSlots}", Label = Loc.T("Khe RAM đang dùng / tổng khe", "RAM slots used / total") });
+        report.SummaryCards.Add(new SummaryCard { Value = threatCount.ToString(CultureInfo.InvariantCulture), Label = Loc.T("Mối đe dọa Defender đã ghi nhận", "Threats recorded by Defender") });
 
         report.Warnings.AddRange(ctx.Warnings);
         return report;
@@ -294,11 +329,11 @@ public static class RiskLabels
 {
     public static string Vietnamese(RiskLevel level) => level switch
     {
-        RiskLevel.Critical => "Rất cao",
-        RiskLevel.High => "Cao",
-        RiskLevel.Medium => "Trung bình",
-        RiskLevel.Low => "Thấp",
-        _ => "Không"
+        RiskLevel.Critical => Loc.T("Rất cao", "Very high"),
+        RiskLevel.High => Loc.T("Cao", "High"),
+        RiskLevel.Medium => Loc.T("Trung bình", "Medium"),
+        RiskLevel.Low => Loc.T("Thấp", "Low"),
+        _ => Loc.T("Không", "None")
     };
 }
 

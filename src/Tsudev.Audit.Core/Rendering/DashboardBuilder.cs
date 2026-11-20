@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Globalization;
 using System.Text;
 using Tsudev.Audit.Core.Serialization;
@@ -130,31 +131,31 @@ public sealed class DashboardBuilder
         var report = new AuditReport
         {
             ReportKind = ReportKind.LicenseAudit,
-            Title = "Tổng hợp kết quả rà quét",
-            ComputerName = machines == 1 ? entries[0].Report.ComputerName : $"{machines} máy",
+            Title = Loc.T("Tổng hợp kết quả rà quét", "Scan results summary"),
+            ComputerName = machines == 1 ? entries[0].Report.ComputerName : Loc.T($"{machines} máy", $"{machines} computers"),
             ScanTime = latestScan ?? DateTimeOffset.Now,
             SummaryCards =
             {
-                new SummaryCard { Value = machines.ToString(CultureInfo.InvariantCulture), Label = "Máy đã quét" },
-                new SummaryCard { Value = entries.Count.ToString(CultureInfo.InvariantCulture), Label = "Bản báo cáo" },
-                new SummaryCard { Value = suspicious.ToString(CultureInfo.InvariantCulture), Label = "Báo cáo cần xem lại" }
+                new SummaryCard { Value = machines.ToString(CultureInfo.InvariantCulture), Label = Loc.T("Máy đã quét", "Computers scanned") },
+                new SummaryCard { Value = entries.Count.ToString(CultureInfo.InvariantCulture), Label = Loc.T("Bản báo cáo", "Reports") },
+                new SummaryCard { Value = suspicious.ToString(CultureInfo.InvariantCulture), Label = Loc.T("Báo cáo cần xem lại", "Reports to review") }
             }
         };
 
         var section = new ReportSection
         {
             Id = "sec-tong-hop",
-            NavLabel = "Tổng hợp",
-            Heading = "Toàn bộ báo cáo tìm thấy",
+            NavLabel = Loc.T("Tổng hợp", "Summary"),
+            Heading = Loc.T("Toàn bộ báo cáo tìm thấy", "All reports found"),
             Description = entries.Count == 0
-                ? "Chưa tìm thấy báo cáo nào trong thư mục này. Chạy công cụ, hoặc copy thư mục kết quả từ máy khác vào đây rồi mở lại trang này."
-                : "Bảng gom mọi báo cáo nằm trong thư mục này và mọi thư mục con, không giới hạn độ sâu. Copy thư mục kết quả từ máy khác vào đây rồi chạy lại công cụ là bảng tự cập nhật.",
-            MethodNote = "Trang này dựng lại từ các file .json đi kèm mỗi báo cáo. File .json hỏng hoặc không đúng định dạng sẽ bị bỏ qua, nên số dòng ở đây có thể ít hơn số thư mục bạn nhìn thấy."
+                ? Loc.T("Chưa tìm thấy báo cáo nào trong thư mục này. Chạy công cụ, hoặc copy thư mục kết quả từ máy khác vào đây rồi mở lại trang này.", "No reports found in this folder yet. Run the tool, or copy result folders from other computers here and reopen this page.")
+                : Loc.T("Bảng gom mọi báo cáo nằm trong thư mục này và mọi thư mục con, không giới hạn độ sâu. Copy thư mục kết quả từ máy khác vào đây rồi chạy lại công cụ là bảng tự cập nhật.", "This table gathers every report in this folder and all subfolders, at any depth. Copy result folders from other computers here and run the tool again to refresh it."),
+            MethodNote = Loc.T("Trang này dựng lại từ các file .json đi kèm mỗi báo cáo. File .json hỏng hoặc không đúng định dạng sẽ bị bỏ qua, nên số dòng ở đây có thể ít hơn số thư mục bạn nhìn thấy.", "This page is rebuilt from the .json file next to each report. Broken or malformed .json files are skipped, so there may be fewer rows here than folders you see.")
         };
 
-        var table = DataTable.Create("Danh sách báo cáo",
-            "Máy", "Loại báo cáo", "Thời điểm quét", "Kết luận", "Điểm rủi ro", "Số phát hiện", "Cấu hình", "Mở báo cáo")
-            .Numeric("Điểm rủi ro", "Số phát hiện");
+        var table = DataTable.Create(Loc.T("Danh sách báo cáo", "Reports"),
+            Loc.T("Máy", "Computer"), Loc.T("Loại báo cáo", "Report type"), Loc.T("Thời điểm quét", "Scan time"), Loc.T("Kết luận", "Verdict"), Loc.T("Điểm rủi ro", "Risk score"), Loc.T("Số phát hiện", "Findings"), Loc.T("Cấu hình", "Configuration"), Loc.T("Mở báo cáo", "Open report"))
+            .Numeric(Loc.T("Điểm rủi ro", "Risk score"), Loc.T("Số phát hiện", "Findings"));
         table.Searchable = true;
 
         foreach (var e in entries)
@@ -162,16 +163,16 @@ public sealed class DashboardBuilder
             var r = e.Report;
             table.AddRow(
                 r.ComputerName,
-                r.ReportKind == ReportKind.LicenseAudit ? "Bản quyền" : "Phần cứng",
+                r.ReportKind == ReportKind.LicenseAudit ? Loc.T("Bản quyền", "License") : Loc.T("Phần cứng", "Hardware"),
                 DateDisplay.DateTimeText(r.ScanTime),
                 r.VerdictText ?? VerdictLabel(r.VerdictLevel),
                 r.RiskScore is null ? "-" : $"{r.RiskScore.Value}/100 ({r.RiskScore.Label})",
                 r.RiskFindingsCount.ToString(CultureInfo.InvariantCulture),
                 r.HardwareSummary ?? "-",
-                e.HtmlRelativePath ?? "(không tìm thấy file HTML)");
+                e.HtmlRelativePath ?? Loc.T("(không tìm thấy file HTML)", "(HTML file not found)"));
         }
 
-        if (entries.Count == 0) table.AddEmptyNotice("Chưa có báo cáo nào.");
+        if (entries.Count == 0) table.AddEmptyNotice(Loc.T("Chưa có báo cáo nào.", "No reports yet."));
         section.Tables.Add(table);
         report.Sections.Add(section);
 
@@ -187,7 +188,7 @@ public sealed class DashboardBuilder
             var escaped = HtmlReportRenderer.E(e.HtmlRelativePath);
             html = html.Replace(
                 $"<td>{escaped}</td>",
-                $"<td><a href=\"{escaped}\">Mở &rarr;</a></td>",
+                Loc.T($"<td><a href=\"{escaped}\">Mở &rarr;</a></td>", $"<td><a href=\"{escaped}\">Open &rarr;</a></td>"),
                 StringComparison.Ordinal);
         }
 
@@ -196,10 +197,10 @@ public sealed class DashboardBuilder
 
     private static string VerdictLabel(VerdictLevel level) => level switch
     {
-        VerdictLevel.Ok => "Bình thường",
-        VerdictLevel.Warning => "Cần xem lại",
-        VerdictLevel.Bad => "Có vấn đề",
-        _ => "Chưa xác định"
+        VerdictLevel.Ok => Loc.T("Bình thường", "Normal"),
+        VerdictLevel.Warning => Loc.T("Cần xem lại", "Needs review"),
+        VerdictLevel.Bad => Loc.T("Có vấn đề", "Problem"),
+        _ => Loc.T("Chưa xác định", "Undetermined")
     };
 }
 

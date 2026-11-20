@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Text.RegularExpressions;
 using Tsudev.Audit.Core.Abstractions;
 using Tsudev.Audit.Core.Models;
@@ -35,7 +36,7 @@ public static class OfficeLicenseCollector
 
     public static (DataTable Table, OfficeLicenseSummary Summary) Collect(SystemContext ctx)
     {
-        var t = DataTable.Create("", "Sản phẩm", "Mô tả", "Trạng thái", "SKU ID", "Nguồn dữ liệu");
+        var t = DataTable.Create("", Loc.T("Sản phẩm", "Product"), Loc.T("Mô tả", "Description"), Loc.T("Trạng thái", "Status"), "SKU ID", Loc.T("Nguồn dữ liệu", "Data source"));
         int ok = 0, problem = 0, grace = 0, unknown = 0;
 
         void Count(LicenseHealth h)
@@ -82,7 +83,7 @@ public static class OfficeLicenseCollector
                 timeoutSeconds: 90, cancellation: ctx.Cancellation);
             if (!result.Success && string.IsNullOrWhiteSpace(result.StandardOutput))
             {
-                ctx.Warn("Không chạy được ospp.vbs để kiểm tra bản quyền Office.");
+                ctx.Warn(Loc.T("Không chạy được ospp.vbs để kiểm tra bản quyền Office.", "Could not run ospp.vbs to check Office licensing."));
             }
             else
             {
@@ -97,11 +98,13 @@ public static class OfficeLicenseCollector
         {
             // Co du lieu WMI nhung khong tim thay ospp.vbs: KHONG duoc ket luan
             // la may khong cai Office.
-            ctx.Warn("Không tìm thấy ospp.vbs (thường gặp với bản Office Click-to-Run). " +
-                     "Trạng thái Office lấy từ WMI.");
+            ctx.Warn(Loc.T("Không tìm thấy ospp.vbs (thường gặp với bản Office Click-to-Run). " +
+                           "Trạng thái Office lấy từ WMI.",
+                           "ospp.vbs not found (common with Click-to-Run Office). " +
+                           "Office status is read from WMI."));
         }
 
-        t.AddEmptyNotice("Không tìm thấy Office/M365 cài đặt trên máy (đây KHÔNG phải lỗi)");
+        t.AddEmptyNotice(Loc.T("Không tìm thấy Office/M365 cài đặt trên máy (đây KHÔNG phải lỗi)", "No Office/M365 installation found on this machine (this is NOT an error)"));
         return (t, new OfficeLicenseSummary(ok + problem + grace + unknown, ok, problem, grace, unknown));
     }
 
@@ -150,14 +153,14 @@ public static class OfficeLicenseCollector
 
     public static string DescribeOsppStatus(string? statusRaw) => (statusRaw ?? "").ToUpperInvariant() switch
     {
-        "LICENSED" => "Licensed (Đã kích hoạt)",
-        "OOB_GRACE" => "Grace period (Chưa kích hoạt - còn hạn dùng thử)",
-        "OOT_GRACE" => "Out-of-tolerance grace (Cảnh báo - có thể do thay đổi phần cứng)",
-        "NOTIFICATIONS" => "Notification (Chưa kích hoạt - đã hết hạn thông báo)",
-        "NON_GENUINE_GRACE" => "Non-genuine grace (Nghi ngờ không hợp lệ)",
-        "UNLICENSED" => "Unlicensed (Chưa kích hoạt)",
-        "" => "Không xác định",
-        var other => $"Không xác định ({other})"
+        "LICENSED" => Loc.T("Licensed (Đã kích hoạt)", "Licensed (Activated)"),
+        "OOB_GRACE" => Loc.T("Grace period (Chưa kích hoạt - còn hạn dùng thử)", "Grace period (Not activated - trial still running)"),
+        "OOT_GRACE" => Loc.T("Out-of-tolerance grace (Cảnh báo - có thể do thay đổi phần cứng)", "Out-of-tolerance grace (Warning - possibly a hardware change)"),
+        "NOTIFICATIONS" => Loc.T("Notification (Chưa kích hoạt - đã hết hạn thông báo)", "Notification (Not activated - notification period expired)"),
+        "NON_GENUINE_GRACE" => Loc.T("Non-genuine grace (Nghi ngờ không hợp lệ)", "Non-genuine grace (Suspected non-genuine)"),
+        "UNLICENSED" => Loc.T("Unlicensed (Chưa kích hoạt)", "Unlicensed (Not activated)"),
+        "" => Loc.T("Không xác định", "Unknown"),
+        var other => Loc.T($"Không xác định ({other})", $"Unknown ({other})")
     };
 
     private static string Match1(string input, string pattern)

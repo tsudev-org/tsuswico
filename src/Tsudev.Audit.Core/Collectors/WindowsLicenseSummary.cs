@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using Tsudev.Audit.Core.Abstractions;
 using Tsudev.Audit.Core.Models;
 using Tsudev.Audit.Core.Reports;
@@ -41,5 +42,5 @@ public sealed record WindowsLicenseSummary(
          : LicenseHealth.Unknown;
 
     public string Describe()
-        => $"{Total} sản phẩm: {Ok} hợp lệ, {Problem} có vấn đề, {Grace} đang dùng thử, {Unknown} không xác định";
+        => Loc.T($"{Total} sản phẩm: {Ok} hợp lệ, {Problem} có vấn đề, {Grace} đang dùng thử, {Unknown} không xác định", $"{Total} products: {Ok} valid, {Problem} with problems, {Grace} in trial, {Unknown} unknown");
 }

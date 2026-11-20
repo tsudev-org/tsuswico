@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Diagnostics;
 using System.Management;
 using System.Runtime.Versioning;
@@ -50,15 +51,15 @@ public sealed class WmiQuery : IWmiQuery
         }
         catch (ManagementException ex)
         {
-            _warn($"Không truy vấn được WMI '{className}' ({wmiNamespace}): {ex.Message}");
+            _warn(Loc.T($"Không truy vấn được WMI '{className}' ({wmiNamespace}): {ex.Message}", $"Could not query WMI '{className}' ({wmiNamespace}): {ex.Message}"));
         }
         catch (UnauthorizedAccessException)
         {
-            _warn($"Không đủ quyền truy vấn WMI '{className}' - hãy chạy với quyền Administrator.");
+            _warn(Loc.T($"Không đủ quyền truy vấn WMI '{className}' - hãy chạy với quyền Administrator.", $"Not allowed to query WMI '{className}' - run as Administrator."));
         }
         catch (Exception ex)
         {
-            _warn($"Lỗi khi truy vấn WMI '{className}': {ex.Message}");
+            _warn(Loc.T($"Lỗi khi truy vấn WMI '{className}': {ex.Message}", $"Error while querying WMI '{className}': {ex.Message}"));
         }
 
         return result;
@@ -111,7 +112,7 @@ public sealed class ProcessRunner : IProcessRunner
             };
 
             using var process = Process.Start(psi);
-            if (process is null) return ProcessResult.Failed($"Không khởi chạy được '{fileName}'.");
+            if (process is null) return ProcessResult.Failed(Loc.T($"Không khởi chạy được '{fileName}'.", $"Could not start '{fileName}'."));
 
             // Doc async de tranh deadlock khi buffer output day.
             //
@@ -139,7 +140,7 @@ public sealed class ProcessRunner : IProcessRunner
                 if (DateTime.UtcNow >= deadline)
                 {
                     try { process.Kill(entireProcessTree: true); } catch { /* da thoat roi */ }
-                    return ProcessResult.Failed($"'{fileName}' chạy quá {timeoutSeconds} giây - đã hủy.");
+                    return ProcessResult.Failed(Loc.T($"'{fileName}' chạy quá {timeoutSeconds} giây - đã hủy.", $"'{fileName}' ran longer than {timeoutSeconds} seconds - stopped."));
                 }
             }
 
@@ -154,7 +155,7 @@ public sealed class ProcessRunner : IProcessRunner
         }
         catch (Exception ex)
         {
-            return ProcessResult.Failed($"Lỗi khi chạy '{fileName}': {ex.Message}");
+            return ProcessResult.Failed(Loc.T($"Lỗi khi chạy '{fileName}': {ex.Message}", $"Error while running '{fileName}': {ex.Message}"));
         }
     }
 }

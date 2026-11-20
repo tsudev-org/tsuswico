@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Tsudev.Audit.Tests;
 
 /// <summary>Muc 17 cua bo test cu: tien trinh quet - thu tu buoc, huy, ma thoat.</summary>
@@ -161,4 +163,42 @@ public class ProgressTests
         Assert.True(CliOptions.UsageText.Contains("130", StringComparison.Ordinal),
             "phan tro giup co liet ke ma thoat 130");
     }
+}
+
+/// <summary>STATE muc 3.5-4b: dong tien trinh thang cot o ca hai ngon ngu.</summary>
+public class ProgressTextTests
+{
+    [Fact]
+    public void Nhan_ngan_va_dai_cho_cot_thoi_gian_cung_vi_tri()
+    {
+        var a = ProgressText.PadLabel("CPU") + " " + ProgressText.Elapsed(TimeSpan.FromSeconds(1));
+        var b = ProgressText.PadLabel("Tổng quan thiết bị") + " " + ProgressText.Elapsed(TimeSpan.FromSeconds(1.34));
+        Assert.Equal(a.Length, b.Length);
+        Assert.EndsWith("  1.0 s", a, StringComparison.Ordinal);
+        Assert.EndsWith("  1.3 s", b, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Nhan_dai_nhat_hien_co_vua_cot()
+    {
+        using (Loc.Use(AppLanguage.En))
+            Assert.True(Loc.T("", "Signs of unauthorized activation").Length <= ProgressText.LabelWidth);
+        Assert.True("Dấu hiệu kích hoạt trái phép".Length <= ProgressText.LabelWidth);
+    }
+
+    [Fact]
+    public void Thoi_gian_dung_dau_cham_bat_ke_culture()
+    {
+        var old = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = new CultureInfo("vi-VN");
+            Assert.Equal("612.5 s", ProgressText.Elapsed(TimeSpan.FromSeconds(612.5)));
+        }
+        finally { CultureInfo.CurrentCulture = old; }
+    }
+
+    [Fact]
+    public void Nhan_qua_dai_khong_bi_cat()
+        => Assert.StartsWith(new string('x', 50), ProgressText.PadLabel(new string('x', 50)), StringComparison.Ordinal);
 }

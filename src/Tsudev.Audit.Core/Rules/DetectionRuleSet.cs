@@ -1,3 +1,4 @@
+using Tsudev.Audit.Core.Localization;
 using System.Reflection;
 using System.Text.Json;
 using Tsudev.Audit.Core.Serialization;
@@ -97,7 +98,7 @@ public sealed class DetectionRuleSet
         {
             if (!File.Exists(path))
             {
-                warning = $"Không tìm thấy file bộ luật '{path}'. Dùng bộ luật đóng kèm ({Embedded.Version}).";
+                warning = Loc.T($"Không tìm thấy file bộ luật '{path}'. Dùng bộ luật đóng kèm ({Embedded.Version}).", $"Rules file '{path}' not found. Using the built-in rules ({Embedded.Version}).");
                 return Embedded;
             }
 
@@ -105,8 +106,10 @@ public sealed class DetectionRuleSet
             var problems = loaded.Validate();
             if (problems.Count > 0)
             {
-                warning = $"File bộ luật '{path}' không hợp lệ: {string.Join("; ", problems)}. " +
-                          $"Dùng bộ luật đóng kèm ({Embedded.Version}).";
+                warning = Loc.T($"File bộ luật '{path}' không hợp lệ: {string.Join("; ", problems)}. " +
+                                $"Dùng bộ luật đóng kèm ({Embedded.Version}).",
+                                $"Rules file '{path}' is invalid: {string.Join("; ", problems)}. " +
+                                $"Using the built-in rules ({Embedded.Version}).");
                 return Embedded;
             }
 
@@ -117,27 +120,32 @@ public sealed class DetectionRuleSet
             // trong bao cao, khong chi ghi ra man hinh.
             if (!string.Equals(loaded.Version, Embedded.Version, StringComparison.Ordinal))
             {
-                warning = $"Đang dùng bộ luật từ file ngoài '{path}' (phiên bản {loaded.Version}), " +
-                          $"KHÁC với bộ luật đóng kèm trong chương trình (phiên bản {Embedded.Version}). " +
-                          "File ngoài luôn được ưu tiên. Nếu bạn vừa nâng cấp chương trình, " +
-                          "hãy xoá hoặc cập nhật file này để dùng bộ luật mới.";
+                warning = Loc.T(
+                    $"Đang dùng bộ luật từ file ngoài '{path}' (phiên bản {loaded.Version}), " +
+                    $"KHÁC với bộ luật đóng kèm trong chương trình (phiên bản {Embedded.Version}). " +
+                    "File ngoài luôn được ưu tiên. Nếu bạn vừa nâng cấp chương trình, " +
+                    "hãy xoá hoặc cập nhật file này để dùng bộ luật mới.",
+                    $"Using rules from the external file '{path}' (version {loaded.Version}), " +
+                    $"which DIFFERS from the rules built into the program (version {Embedded.Version}). " +
+                    "The external file always wins. If you have just upgraded the program, " +
+                    "delete or update this file to use the new rules.");
             }
 
             return loaded;
         }
         catch (JsonException ex)
         {
-            warning = $"File bộ luật '{path}' sai định dạng JSON: {ex.Message}. Dùng bộ luật đóng kèm ({Embedded.Version}).";
+            warning = Loc.T($"File bộ luật '{path}' sai định dạng JSON: {ex.Message}. Dùng bộ luật đóng kèm ({Embedded.Version}).", $"Rules file '{path}' is not valid JSON: {ex.Message}. Using the built-in rules ({Embedded.Version}).");
             return Embedded;
         }
         catch (IOException ex)
         {
-            warning = $"Không đọc được file bộ luật '{path}': {ex.Message}. Dùng bộ luật đóng kèm ({Embedded.Version}).";
+            warning = Loc.T($"Không đọc được file bộ luật '{path}': {ex.Message}. Dùng bộ luật đóng kèm ({Embedded.Version}).", $"Could not read rules file '{path}': {ex.Message}. Using the built-in rules ({Embedded.Version}).");
             return Embedded;
         }
         catch (UnauthorizedAccessException ex)
         {
-            warning = $"Không có quyền đọc file bộ luật '{path}': {ex.Message}. Dùng bộ luật đóng kèm ({Embedded.Version}).";
+            warning = Loc.T($"Không có quyền đọc file bộ luật '{path}': {ex.Message}. Dùng bộ luật đóng kèm ({Embedded.Version}).", $"No permission to read rules file '{path}': {ex.Message}. Using the built-in rules ({Embedded.Version}).");
             return Embedded;
         }
     }
@@ -155,23 +163,23 @@ public sealed class DetectionRuleSet
         var problems = new List<string>();
 
         if (string.IsNullOrWhiteSpace(Version))
-            problems.Add("thiếu trường 'version'");
+            problems.Add(Loc.T("thiếu trường 'version'", "missing field 'version'"));
         if (SuspiciousNames.Count == 0)
-            problems.Add("'suspiciousNames' rỗng (sẽ không phát hiện được gì)");
+            problems.Add(Loc.T("'suspiciousNames' rỗng (sẽ không phát hiện được gì)", "'suspiciousNames' is empty (nothing would be detected)"));
         if (ScanRoots.Count == 0)
-            problems.Add("'scanRoots' rỗng (sẽ không quét thư mục nào)");
+            problems.Add(Loc.T("'scanRoots' rỗng (sẽ không quét thư mục nào)", "'scanRoots' is empty (no folder would be scanned)"));
         if (HookFiles.Count == 0)
-            problems.Add("'hookFiles' rỗng");
+            problems.Add(Loc.T("'hookFiles' rỗng", "'hookFiles' is empty"));
         if (HookDirectories.Count == 0)
-            problems.Add("'hookDirectories' rỗng");
+            problems.Add(Loc.T("'hookDirectories' rỗng", "'hookDirectories' is empty"));
 
         if (SuspiciousNames.Any(string.IsNullOrWhiteSpace))
-            problems.Add("'suspiciousNames' chứa mục rỗng (sẽ khớp với mọi tên)");
+            problems.Add(Loc.T("'suspiciousNames' chứa mục rỗng (sẽ khớp với mọi tên)", "'suspiciousNames' contains an empty entry (it would match every name)"));
 
         return problems;
     }
 
     /// <summary>Mo ta ngan gon de hien trong bao cao.</summary>
     public string Describe()
-        => $"{Version} ({SuspiciousNames.Count} tên nghi vấn, {KnownKmsHosts.Count} máy chủ KMS, {HookFiles.Count} file hook)";
+        => Loc.T($"{Version} ({SuspiciousNames.Count} tên nghi vấn, {KnownKmsHosts.Count} máy chủ KMS, {HookFiles.Count} file hook)", $"{Version} ({SuspiciousNames.Count} suspicious names, {KnownKmsHosts.Count} KMS hosts, {HookFiles.Count} hook files)");
 }
