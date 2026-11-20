@@ -1,6 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp:** đọc `logs/handover/20261120-02_khep-phien-tsuswico-22.md` mục 2-4 (theo dõi WINGET-2, QU-STD-BRAND, PRO1 P3).
+> **Phiên kế tiếp:** đọc `logs/handover/20261120-03_khep-phien-tsuswico-8b.md` mục 2-4 (theo dõi WINGET-2, PRO1 P3 chờ phiếu SW1).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
@@ -17,14 +17,14 @@
 > **`docs/STATE.md` thắng**. File này chỉ trỏ tới đó, không chép lại nội dung
 > (`AGENTS.md` mục 1: mỗi tri thức ghi một lần duy nhất).
 
-- **Phiên gần nhất:** tsuswico-22 - 20/11/2026
-- **Bàn giao gần nhất:** `logs/handover/20261120-02_khep-phien-tsuswico-22.md`
+- **Phiên gần nhất:** tsuswico-8b - 20/11/2026
+- **Bàn giao gần nhất:** `logs/handover/20261120-03_khep-phien-tsuswico-8b.md`
 
 ## Hàng đợi task (làm từ trên xuống)
 
 Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái.
 
-> **Việc làm được ngay, không cần ai** (thứ tự: phiếu `20261110-01` mục 1c): ~~`QU-7`~~ ✅, ~~`QU-STD-TABLE`~~ ✅, ~~`3.5`~~ ✅, `QU-STD-BRAND`. Mọi việc
+> **Việc làm được ngay, không cần ai** (thứ tự: phiếu `20261110-01` mục 1c): ~~`QU-7`~~ ✅, ~~`QU-STD-TABLE`~~ ✅, ~~`3.5`~~ ✅, ~~`QU-STD-BRAND`~~ ✅. Mọi việc
 > còn lại đều chặn ở người dùng hoặc bên ngoài - xem cột lý do.
 
 - [ ] **QU-2** 🔶 20/11/2026: release.yml (runner Windows) biên dịch Inno với `VersionInfoVersion=26.11.2001.0` THÀNH CÔNG. Còn ca ngày một chữ số (`26.12.0101.0`) - tự kiểm ở bản đầu tháng 12. Dòng cũ: Nhờ người dùng kiểm **Inno Setup** biên dịch được với
@@ -37,7 +37,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - [x] **XM-2.3** ✅ 17/11/2026 (phiên tsudev-27): hồ sơ [16837](https://www.bestpractices.dev/projects/16837) passing 100% (`docs/best-practices.json`; `dynamic_analysis` Unmet trung thực). Kèm #27 (ghim SHA 16 action, quyền token, Dependabot, SECURITY.md, CONTRIBUTING.md, mẫu issue), bật CodeQL default setup, #28 sửa 2 cảnh báo CodeQL high ở website.
 - [x] **TEN-1** ✅ Thư mục cục bộ đã đổi `~/projects/tsudev-swico` → `~/projects/tsuswico` (16/11/2026, phiên S008, chủ dự án cho phép làm trong phiên).
 - [x] **TEN-2 / V1** ✅ 20/11/2026: `v26.11.2001` phát hành theo khuôn mới (#40, ADR-0003), Scoop `tsuswico` + `tsudev-swico` (scoop-bucket#25), attest đạt. Còn: PR winget-pkgs 26.11.2001 (mục WINGET-2 dưới). Dòng cũ: Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
-- [ ] **WINGET-2** 🔶 20/11/2026: chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
+- [ ] **WINGET-2** 🔶 20/11/2026 (kiểm lại phiên 8b: vẫn chờ bước 08-10, chỉ nhãn `New-Manifest`, không lỗi): chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
       (bước 01-07 đạt lúc nộp). Chờ bot cài thử + gộp. Kèm #43 sửa thư mục manifest `tsudev/SWICO`.
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
@@ -49,7 +49,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       HẾT việc (NativeAOT chỉ là cân nhắc, `docs/STATE.md` mục 3.5 mục 5).
 - [ ] **PRO1** 🔶 P1 ✅ 20/11 (kiểm kê + `docs/adr/0002-luu-cuc-bo-pro-dong-bo.md` + v3.9.1). **P2** ✅ #44 20/11
       (`Core/Pro/`: Entitlements BCL, ProNotice + 5 test 7.3, InstallationId, vi/en - chưa nối CLI). P3 ⛔
-      `client_id` ở tsudev.com; P4 ⛔ PRO-D (`TsuSync` .NET). Phiếu `logs/handover/20261119-PRO1_*.md` mục 4.
+      `client_id` ở tsudev.com - phiếu `tsudev/logs/handover/20261120-SW1_*.md` (IdP cần thêm client NATIVE loopback, chèn bảng chưa đủ); P4 ⛔ PRO-D (`TsuSync` .NET). Phiếu `logs/handover/20261119-PRO1_*.md` mục 4.
 - [x] **3.6** ✅ thay bằng `26.11.2001` (ADR-0003). Dòng cũ: Quyết định có phát hành `26.8.1901` không - **đọc mục 4.7 trước**
 - [x] **QU-6** ✅ S007 - tự giải theo bộ quy ước v3.2.0 (`BRAND_ASSETS.md`): wordmark lấy token, xem `docs/STATE.md` mục S007. Dòng cũ: ⛔ Quyết có đưa **4 sắc chữ ký thương hiệu** `tsudev` vào
       `tokens/design-tokens.json` không - hiện là bốn giá trị màu **duy nhất**
@@ -64,7 +64,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 
 - [x] **QU-STD-AUTH** ✅ S007 kiểm chứng: không có màn hình đăng nhập; chạy thật trên Windows 11 ở chế độ khách đủ chức năng. Kết nối duy nhất là kiểm tra bản mới (công bố trong PRIVACY.md, tắt bằng `--no-update-check`). Dòng cũ: Repo này là **hạng C - ngoại tuyến** (tài liệu nêu đích danh). Việc ở đây là **kiểm chứng chứ không phải cài đặt**: chạy đủ chức năng lõi ở chế độ khách, `MUST NOT` chặn chức năng nào sau màn hình đăng nhập, `MUST NOT` gọi mạng ngầm khi chưa đăng nhập. Checklist: `.standards/docs/AUTH_AND_ACCOUNT.md` mục 17, hai dòng cuối. Một phần mềm rà quét máy tính mà tự gọi ra ngoài là thứ đầu tiên bị công cụ bảo mật gắn cờ.
 - [x] **QU-STD-TABLE** XONG 11/11/2026: báo cáo HTML - bảng liệt kê (có ô lọc) có chân bảng bộ chọn `10/20/50/100/200` (mặc định 10, nhớ theo bảng) - tóm tắt `aria-live` - phân trang; đổi mốc giữ bản ghi đầu; in ra giấy đủ dòng; script gắn sự kiện trong khối (không thêm `on*=`), băm CSP báo cáo mẫu cập nhật. Không có máy chủ nên mục 12 "tải lại từ máy chủ / chặn 200 ở máy chủ" không áp dụng. Dòng cũ: Thêm bộ chọn số bản ghi `10/20/50/100/200` (mặc định `10`, góc dưới bên trái) cho các bảng liệt kê chương trình, gói UWP, dịch vụ, tác vụ theo lịch và mục khởi động. Chuẩn: `.standards/docs/DATA_TABLE.md` mục 12.
-- [ ] **QU-STD-BRAND** 🔶 S007 làm phần web (favicon, og-image, manifest, `<head>` đủ ở swico.tsudev.com; README + metadata repo). Còn: đối chiếu checklist `BRAND_ASSETS.md` mục 14 cho icon app/bộ cài. Bổ sung tài sản nhận diện còn thiếu và siêu dữ liệu nối về `tsudev.com`. Chuẩn: `.standards/docs/BRAND_ASSETS.md` mục 14 và `.standards/docs/ECOSYSTEM_IDENTITY.md` mục 9.
+- [x] **QU-STD-BRAND** ✅ 20/11/2026 #47: exe + bộ cài dùng chung `assets/brand/app/app.ico`, ảnh trình thuật sĩ 5+4 cỡ HiDPI sinh trong `brand-assets.mjs` (`--check`), CI biên dịch thử bộ cài, `assets/brand/README.md`. Dòng cũ: S007 làm phần web (favicon, og-image, manifest, `<head>` đủ ở swico.tsudev.com; README + metadata repo). Còn: đối chiếu checklist `BRAND_ASSETS.md` mục 14 cho icon app/bộ cài. Bổ sung tài sản nhận diện còn thiếu và siêu dữ liệu nối về `tsudev.com`. Chuẩn: `.standards/docs/BRAND_ASSETS.md` mục 14 và `.standards/docs/ECOSYSTEM_IDENTITY.md` mục 9.
 - [x] **QU-STD-1** ✅ S007. Di trú `tokens/` sang `.standards/tokens/` (nguồn chân lý duy nhất). Hiện có **5 file mã nguồn** đọc token cục bộ. Đây là thay đổi PHÁ VỠ: `text-muted` đổi giá trị ở cả ba chế độ và có thêm `border-control`. Làm theo CHANGELOG mục 2.0.0 "Hướng dẫn nâng cấp", chạy lại ảnh chụp giao diện.
 - [x] **QU-STD-2** ✅ S007. Xóa bản sao quy ước cũ nay đã trùng `.standards/`: docs/DESIGN_SYSTEM.md docs/PROJECT_STRUCTURE.md docs/templates/HANDOVER.md - giữ lại chỉ tạo hai nguồn chân lý.
 - [x] **QU-STD-3** ✅ S007 (nút phụ của website dùng `border-control`; báo cáo không có viền nút phụ/ô nhập dùng `border-strong`). Rà chỗ dùng `border-strong` cho viền nút phụ hoặc ô nhập, đổi sang `border-control` (`.standards/docs/DESIGN_SYSTEM.md` mục 1).
@@ -76,6 +76,10 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 | (không có) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 20/11/2026 - **tsuswico-8b:** #47 QU-STD-BRAND (icon exe/bộ cài một dây chuyền, wizard HiDPI, CI biên dịch Inno ở
+  PR); phiếu SW1 ở repo tsudev (client OIDC native cho PRO1 P3); WINGET-2 vẫn chờ bot.
+  Bàn giao: `logs/handover/20261120-03_khep-phien-tsuswico-8b.md`.
 
 - 20/11/2026 - **tsuswico-22:** WINGET-2 nộp microsoft/winget-pkgs#484563; #43 sửa thư mục manifest winget; #44
   PRO1 P2 (`Core/Pro/`, 58 test); #45 3.5 `--log-file` JSON Lines (CI Windows kiểm nhật ký thật). 282 PASS.
