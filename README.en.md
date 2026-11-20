@@ -67,6 +67,7 @@ swico.exe --rules .\new-rules.json Scan with an updated rule set
 swico.exe --no-verdict-exit        Verdict does not affect the exit code
 swico.exe --json-only > result.json  JSON to stdout only (no files written)
 swico.exe --lang vi                Vietnamese interface (auto|vi|en)
+swico.exe --log-file swico.jsonl   Structured log to send for support
 swico.exe --help                   All options
 ```
 
@@ -77,6 +78,10 @@ the summary page. JSON keys are never translated, so integrations work the same 
 **`--json-only`** (implies `--silent`): stdout carries exactly ONE JSON document wrapping every report produced;
 progress lines and messages go to stderr; no files are written and no browser opens. Meant for RMM tools and scripts
 reading from a pipe.
+
+**`--log-file <file>`**: appends a JSON Lines log (one event per line: `run.start`, `update.check`, `step.ok`/`step.fail`
+with durations, `report.done`, `run.fatal` with the stack trace, `run.end` with the exit code) - send this file when
+asking for support instead of a screenshot. Nothing is written without this option.
 
 The tool asks for Administrator rights because reading licensing data requires them.
 

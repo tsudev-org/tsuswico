@@ -127,6 +127,12 @@ public sealed class CliOptions
     /// </summary>
     public bool JsonOnly { get; private set; }
 
+    /// <summary>
+    /// Ghi nhat ky co cau truc (JSON Lines, ghi noi tiep) ra tep nay - de gui khi
+    /// can ho tro tu xa. null = khong ghi. Xem <c>Tsudev.Audit.Core.Logging.RunLog</c>.
+    /// </summary>
+    public string? LogFile { get; private set; }
+
     public static CliOptions Parse(string[] args)
     {
         var o = new CliOptions();
@@ -174,6 +180,12 @@ public sealed class CliOptions
                     o.RulesPath = args[i];
                     break;
 
+                case "--log-file":
+                    if (++i >= args.Length || string.IsNullOrWhiteSpace(args[i]))
+                        throw new ArgumentException(Loc.T("--log-file cần đường dẫn tệp nhật ký.", "--log-file needs a log file path."));
+                    o.LogFile = args[i];
+                    break;
+
                 case var l when l.StartsWith("--lang=", StringComparison.Ordinal):
                     o.Language = LanguageResolver.ParseChoice(args[i]["--lang=".Length..]);
                     break;
@@ -208,6 +220,7 @@ THAM SỐ:
       --no-update-check           Bỏ qua kiểm tra phiên bản mới
       --json-only                 Chỉ in báo cáo JSON ra stdout (không ghi tệp, không mở trình duyệt)
       --lang <auto|vi|en>         Ngôn ngữ (mặc định: auto - theo Windows; hoặc biến TSUSWICO_LANG)
+      --log-file <tệp.jsonl>      Ghi nhật ký có cấu trúc (JSON Lines) để gửi khi cần hỗ trợ
   -v, --verbose                   Hiện chi tiết lỗi
       --version                   Hiện phiên bản rồi thoát
   -h, --help                      Hiện trợ giúp này
@@ -283,6 +296,7 @@ OPTIONS:
       --no-update-check           Skip the check for a newer version
       --json-only                 Print only the JSON report to stdout (no files, no browser)
       --lang <auto|vi|en>         Language (default: auto - follows Windows; or TSUSWICO_LANG)
+      --log-file <file.jsonl>     Write a structured log (JSON Lines) to send for support
   -v, --verbose                   Show error details
       --version                   Show the version and exit
   -h, --help                      Show this help

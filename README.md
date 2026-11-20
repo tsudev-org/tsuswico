@@ -137,6 +137,7 @@ swico.exe --rules .\luat-moi.json  Quét bằng bộ luật cập nhật
 swico.exe --no-verdict-exit        Kết luận không ảnh hưởng mã thoát
 swico.exe --json-only > ketqua.json  Chỉ in JSON ra stdout (không ghi tệp)
 swico.exe --lang en                Giao diện tiếng Anh (auto|vi|en)
+swico.exe --log-file swico.jsonl   Ghi nhật ký có cấu trúc để gửi hỗ trợ
 swico.exe --version                Xem phiên bản
 swico.exe --help                   Xem toàn bộ tham số
 ```
@@ -147,6 +148,10 @@ không dịch - hợp đồng tích hợp giữ nguyên ở cả hai ngôn ngữ
 
 **`--json-only`** (ngầm bật `--silent`): stdout chỉ có MỘT tài liệu JSON gói mọi báo cáo đã quét; dòng tiến trình
 và thông báo chuyển sang stderr; không ghi tệp, không mở trình duyệt. Dùng cho RMM/script đọc qua ống dẫn.
+
+**`--log-file <tệp>`**: ghi nối tiếp nhật ký JSON Lines (mỗi dòng một sự kiện: `run.start`, `update.check`,
+`step.ok`/`step.fail` kèm thời lượng, `report.done`, `run.fatal` kèm ngăn xếp lỗi, `run.end` kèm mã thoát) - gửi tệp
+này khi cần hỗ trợ thay vì chụp màn hình. Không ghi tệp nào nếu không có tham số này.
 
 Công cụ yêu cầu quyền Administrator để đọc trạng thái bản quyền, Defender và
 chạy DISM/SFC. Windows sẽ tự hiện hộp thoại UAC.

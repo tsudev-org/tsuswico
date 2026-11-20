@@ -13,6 +13,10 @@
   theo `kid`); thông báo "nhiều thiết bị chưa có Pro" vi/en nguyên văn PRODUCT_POLICY 7.3 (không hiện ở
   `--silent`/`--json-only`, chu kỳ 30 ngày, mốc `tsu.pro_notice.last_shown`); mã cài đặt 128 bit (chỉ sinh khi đăng
   nhập). **Chưa nối vào CLI** - chưa có lệnh đăng nhập (P3), nên hành vi và kết nối mạng của bản này không đổi.
+- **`--log-file <tệp>`**: nhật ký có cấu trúc JSON Lines (ghi nối tiếp) cho hỗ trợ từ xa - sự kiện `run.start`,
+  `update.check`, `step.ok`/`step.fail` kèm thời lượng, `report.done`, `report.warning`, `run.fatal` kèm ngăn xếp lỗi,
+  `run.end` kèm mã thoát; không chứa kết quả quét (PRIVACY.md). Không thêm gói NuGet; mở tệp hỏng ⇒ cảnh báo rồi quét
+  tiếp (3.5).
 
 ### Sửa
 

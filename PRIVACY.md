@@ -75,6 +75,12 @@ mục chứa file thực thi), dưới dạng HTML, JSON, XLSX và CSV.
 Kết quả quét **không bao giờ** rời khỏi máy. Kết nối duy nhất của công cụ là
 kiểm tra phiên bản, mô tả ở mục trên.
 
+**Tệp nhật ký** chỉ được tạo khi bạn tự thêm `--log-file <tệp>`, ở đúng chỗ bạn chỉ.
+Nó chứa những dòng đã in ra màn hình (gồm tên máy và đường dẫn thư mục kết quả),
+tên và thời lượng từng bước quét, mã thoát và chi tiết lỗi - **không** chứa kết
+quả quét (số sê-ri, khoá sản phẩm, danh sách phần mềm). Công cụ không gửi tệp này
+đi đâu; nếu bạn gửi nó cho người hỗ trợ thì đó là lựa chọn của bạn.
+
 ## Sau khi ghi ra đĩa
 
 Từ thời điểm đó, dữ liệu nằm dưới quyền kiểm soát của bạn. Nếu bạn copy thư mục
