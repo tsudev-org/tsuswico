@@ -18,6 +18,13 @@
     <Copyright>Copyright (c) 2026 TsuDEV</Copyright>
     <Description>Kiểm tra bản quyền Windows và thu thập cấu hình phần cứng</Description>
     <RepositoryUrl>https://github.com/tsudev-org/tsuswico</RepositoryUrl>
+    <!-- Khoa phien ban goi NuGet (ke ca goi bac cau) trong packages.lock.json. CI restore bang
+         che do locked-mode: goi doi ma lock file khong doi => do (OpenSSF Scorecard Pinned-Dependencies, AN1). -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <!-- Khong dong goi NuGet => co dinh PackageVersion de lock file KHONG doi theo moi ban phat hanh
+         (ProjectReference ghi phien ban goi cua du an duoc tham chieu vao lock file). Version, FileVersion,
+         InformationalVersion van lay tu VersionPrefix nhu cu. -->
+    <PackageVersion>1.0.0</PackageVersion>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
