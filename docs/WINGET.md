@@ -63,8 +63,8 @@ Hoặc làm tay:
 ```powershell
 winget settings --enable LocalManifestFiles
 # giải nén winget-manifest-<phiên-bản>.zip từ Releases
-winget validate --manifest .\manifests\t\tsudev\Tsu Swico\<phiên-bản>
-winget install  --manifest .\manifests\t\tsudev\Tsu Swico\<phiên-bản>
+winget validate --manifest .\manifests\t\tsudev\SWICO\<phiên-bản>
+winget install  --manifest .\manifests\t\tsudev\SWICO\<phiên-bản>
 ```
 
 > Khác biệt duy nhất so với kho công khai: người dùng phải bật một thiết lập và
@@ -93,7 +93,7 @@ winget install Microsoft.WingetCreate
 
 wingetcreate submit `
   --token <GitHub personal access token> `
-  packaging\winget-out\manifests\t\tsudev\Tsu Swico\26.8.1901
+  packaging\winget-out\manifests\t\tsudev\SWICO\26.8.1901
 ```
 
 Công cụ tự fork `microsoft/winget-pkgs`, tạo nhánh và mở pull request.
@@ -109,8 +109,8 @@ Công cụ tự fork `microsoft/winget-pkgs`, tạo nhánh và mở pull request
 ### Kiểm tra trước khi nộp
 
 ```powershell
-winget validate --manifest packaging\winget-out\manifests\t\tsudev\Tsu Swico\26.8.1901
-winget install --manifest packaging\winget-out\manifests\t\tsudev\Tsu Swico\26.8.1901
+winget validate --manifest packaging\winget-out\manifests\t\tsudev\SWICO\26.8.1901
+winget install --manifest packaging\winget-out\manifests\t\tsudev\SWICO\26.8.1901
 ```
 
 Lệnh thứ hai cài **từ manifest cục bộ** - cách duy nhất kiểm chứng manifest đúng
@@ -134,6 +134,12 @@ sẵn ở bất kỳ đâu:
 curl.exe -sSL -o setup.exe <InstallerUrl>
 (Get-FileHash setup.exe -Algorithm SHA256).Hash
 ```
+
+### ⚠️ Thư mục phải là `tsudev/SWICO`, KHÔNG theo tên hiển thị
+
+`winget-manifest-26.11.2001.zip` mang thư mục `manifests/t/tsudev/Tsu Swico/` (lần đổi tên ADR-0001 thay nhầm chuỗi
+trong `make-winget-manifest.py`). PR microsoft/winget-pkgs#484563 đã nộp vào đúng `manifests/t/tsudev/SWICO/`; từ bản
+sau, trình sinh suy đường dẫn từ `PackageIdentifier` của template. Nội dung tệp không đổi.
 
 ## Sau khi pull request được hợp nhất
 
