@@ -37,6 +37,11 @@ Xem phiếu gốc mục 8 (giá Pro, ân hạn, nơi đặt dịch vụ đồng 
   `--silent`/`--json-only`). Sync tsudev-standards **v3.9.1**.
   CÒN: P2 (`Entitlements` + `ProNotice` 5 test + `InstallationId`, làm được ngay với nguồn giả), P3 cần `client_id` Tsu
   Swico ở tsudev.com, P4 cần PRO-D (`TsuSync` .NET), P5 PRIVACY/THREAT_MODEL trước khi phát hành P3.
+- 20/11/2026 - tsuswico-22: **P2 xong** (PR `feat/pro1-p2-entitlements`), `src/Tsudev.Audit.Core/Pro/`:
+  `EntitlementVerifier` + `JwksKeySet` (BCL, chỉ ES256), `CachedEntitlementSource`, `ProNotice` + `ProNoticePrompt`
+  (5 test bắt buộc 7.3 + `--silent`/`--json-only`, nội dung đối chiếu thẳng với bảng trong PRODUCT_POLICY),
+  `InstallationIdStore` (sinh khi đăng nhập theo ADR-0002, lệch có chủ đích với 14.3 "lần chạy đầu"), `LocalStateStore`
+  (`state.json`). 58 test mới. CHƯA nối vào `Program.cs` - nối ở P3 cùng lệnh `login` (cần `client_id`).
 
 ## 5. Đã chốt (19/11/2026, bổ sung sau khi mở phiếu)
 

@@ -96,7 +96,7 @@ trọng `prefers-reduced-motion`. Không tự thiết kế huy hiệu.
 | Bước | Việc | Chặn bởi |
 | --- | --- | --- |
 | P1 | ADR này + kiểm kê + sync v3.9.1 | - (XONG cùng PR) |
-| P2 | `Entitlements` (.NET, kiểm JWS bằng JWKS giả trong test), `ProNotice` + 5 test, `InstallationId`, chuỗi vi/en | Không - làm được ngay với nguồn quyền lợi giả |
+| P2 | `Entitlements` (.NET, kiểm JWS bằng JWKS giả trong test), `ProNotice` + 5 test, `InstallationId`, chuỗi vi/en | - (XONG 20/11/2026, `src/Tsudev.Audit.Core/Pro/`; nối vào CLI ở P3) |
 | P3 | `login`/`logout`/`account` loopback PKCE | `client_id` Tsu Swico đăng ký ở tsudev.com (👤/phiên tsudev) |
 | P4 | Đồng bộ báo cáo qua `TsuSync` + tổng hợp đa máy | PRO-D1..D3 (`tsudev-org/tsusync`, thư viện .NET) |
 | P5 | PRIVACY.md + THREAT_MODEL (giả mạo JWS, dùng lại token, liệt kê thiết bị, rò mã cài đặt) + phiếu rà soát bảo mật | Trước khi phát hành P3 |
