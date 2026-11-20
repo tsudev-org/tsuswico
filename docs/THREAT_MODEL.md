@@ -52,6 +52,6 @@ qua TLS; (C) cổng loopback - **mọi tiến trình trên máy** đều gọi t
 - [x] Client công khai: không secret nào trong exe (`token_endpoint_auth_method: none`)
 - [x] Mọi kết nối mới liệt kê trong `PRIVACY.md` / `PRIVACY.en.md`, nêu rõ chỉ sau khi đăng nhập
 - [x] Test hạng C + IdP giả, không test nào gọi `tsudev.com`
-- [x] Chạy thật trên Windows 11 với tsudev.com production: P1-P6, P8, P9, P11, P12 đạt (20/11/2026); P7, P10 chưa làm
-- [ ] Điều khoản thuê bao 7.5 trước liên kết mua trong `swico account` - chờ câu chữ kênh web (ADR-0002 mục 2.5); P3
-      **chưa in liên kết mua** nên chưa vi phạm
+- [x] Chạy thật trên Windows 11 với tsudev.com production: P1-P12, P14 (`login --silent`, trước mang mã P12) đạt (20/11/2026; P7 proxy chết, P10 tài khoản Windows thứ hai - DPAPI không giải được); P13 bỏ qua có chủ đích, `ProRenewalTests` phủ
+- [x] Điều khoản thuê bao 7.5 (bộ quy ước v4.0.0) trước liên kết mua trong `swico account` - PRO2 #57, test so nguyên
+      văn với `.standards`; chạy thật vi/en 20/11/2026 (`docs/WINDOWS-VERIFICATION.md` P12)
