@@ -1,6 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp:** đọc `logs/handover/20261120-03_khep-phien-tsuswico-8b.md` mục 2-4 (theo dõi WINGET-2, PRO1 P3 chờ phiếu SW1).
+> **Phiên kế tiếp:** đọc `logs/handover/20261120-04_khep-phien-tsuswico-93.md` mục 2-4 (PRO1 P3 chờ chạy thật Windows mục P, WINGET-2 chờ moderator).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
@@ -17,8 +17,8 @@
 > **`docs/STATE.md` thắng**. File này chỉ trỏ tới đó, không chép lại nội dung
 > (`AGENTS.md` mục 1: mỗi tri thức ghi một lần duy nhất).
 
-- **Phiên gần nhất:** tsuswico-8b - 20/11/2026
-- **Bàn giao gần nhất:** `logs/handover/20261120-03_khep-phien-tsuswico-8b.md`
+- **Phiên gần nhất:** tsuswico-93 - 20/11/2026
+- **Bàn giao gần nhất:** `logs/handover/20261120-04_khep-phien-tsuswico-93.md`
 
 ## Hàng đợi task (làm từ trên xuống)
 
@@ -37,7 +37,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - [x] **XM-2.3** ✅ 17/11/2026 (phiên tsudev-27): hồ sơ [16837](https://www.bestpractices.dev/projects/16837) passing 100% (`docs/best-practices.json`; `dynamic_analysis` Unmet trung thực). Kèm #27 (ghim SHA 16 action, quyền token, Dependabot, SECURITY.md, CONTRIBUTING.md, mẫu issue), bật CodeQL default setup, #28 sửa 2 cảnh báo CodeQL high ở website.
 - [x] **TEN-1** ✅ Thư mục cục bộ đã đổi `~/projects/tsudev-swico` → `~/projects/tsuswico` (16/11/2026, phiên S008, chủ dự án cho phép làm trong phiên).
 - [x] **TEN-2 / V1** ✅ 20/11/2026: `v26.11.2001` phát hành theo khuôn mới (#40, ADR-0003), Scoop `tsuswico` + `tsudev-swico` (scoop-bucket#25), attest đạt. Còn: PR winget-pkgs 26.11.2001 (mục WINGET-2 dưới). Dòng cũ: Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
-- [ ] **WINGET-2** 🔶 20/11/2026 (kiểm lại phiên 8b: vẫn chờ bước 08-10, chỉ nhãn `New-Manifest`, không lỗi): chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
+- [ ] **WINGET-2** 🔶 20/11/2026 (phiên 93: nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` = báo động nhầm mã thoát 20 như #419878, chờ moderator - `docs/WINGET.md`): chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
       (bước 01-07 đạt lúc nộp). Chờ bot cài thử + gộp. Kèm #43 sửa thư mục manifest `tsudev/SWICO`.
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
@@ -47,9 +47,10 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       `InventoryCollectors.cs` + `LicenseCollectors.cs` → 12 tệp, mỗi tệp MỘT kiểu (kể cả record). ~~`--json-only`~~ ✅ + ~~căn
       cột dòng tiến trình~~ ✅ (#37, 20/11/2026). ~~logging có cấu trúc~~ ✅ #45 (`--log-file` JSON Lines).
       HẾT việc (NativeAOT chỉ là cân nhắc, `docs/STATE.md` mục 3.5 mục 5).
-- [ ] **PRO1** 🔶 P1 ✅ 20/11 (kiểm kê + `docs/adr/0002-luu-cuc-bo-pro-dong-bo.md` + v3.9.1). **P2** ✅ #44 20/11
-      (`Core/Pro/`: Entitlements BCL, ProNotice + 5 test 7.3, InstallationId, vi/en - chưa nối CLI). P3 ⛔
-      `client_id` **`tsuswico`** CHỐT, cơ chế native loopback đã gộp tsudev#339 - OWNER đã INSERT `OAuthClient` 20/11/2026 - đo: 127.0.0.1 hai cổng khác nhau + `[::1]` ⇒ 303, `localhost`/path khác ⇒ 400 ⇒ **P3 LÀM ĐƯỢC NGAY**; P4 ⛔ PRO-D (`TsuSync` .NET). Phiếu `logs/handover/20261119-PRO1_*.md` mục 4.
+- [ ] **PRO1** 🔶 P1 ✅ P2 ✅ (#44). **P3 + P5** ✅ #51 `a7cbf1d` 20/11/2026: `swico login|logout|account`, DPAPI,
+      quyền lợi + `X-Tsu-Installation`, ProNoticePrompt nối `MainCore`, PRIVACY vi/en + `docs/THREAT_MODEL.md`; 334 PASS.
+      Còn 👤 chạy thật Windows `docs/WINDOWS-VERIFICATION.md` mục P TRƯỚC khi phát hành; câu chữ 7.5 (v3.9.2) cho liên
+      kết mua. P4 ⛔ PRO-D (`TsuSync` .NET). Phiếu `logs/handover/20261119-PRO1_*.md` mục 4.
 - [x] **3.6** ✅ thay bằng `26.11.2001` (ADR-0003). Dòng cũ: Quyết định có phát hành `26.8.1901` không - **đọc mục 4.7 trước**
 - [x] **QU-6** ✅ S007 - tự giải theo bộ quy ước v3.2.0 (`BRAND_ASSETS.md`): wordmark lấy token, xem `docs/STATE.md` mục S007. Dòng cũ: ⛔ Quyết có đưa **4 sắc chữ ký thương hiệu** `tsudev` vào
       `tokens/design-tokens.json` không - hiện là bốn giá trị màu **duy nhất**
@@ -76,6 +77,10 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 | (không có) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 20/11/2026 - **tsuswico-93:** #51 PRO1 P3 + P5 (đăng nhập OIDC PKCE loopback, DPAPI, quyền lợi Pro, thông báo 7.3
+  nối CLI, PRIVACY vi/en, THREAT_MODEL, test hạng C + IdP giả; 334 PASS). WINGET-2: nhãn báo động nhầm, ghi `docs/WINGET.md`.
+  Bàn giao: `logs/handover/20261120-04_khep-phien-tsuswico-93.md`.
 
 - 20/11/2026 - **tsuswico-8b:** #47 QU-STD-BRAND (icon exe/bộ cài một dây chuyền, wizard HiDPI, CI biên dịch Inno ở
   PR); phiếu SW1 ở repo tsudev (client OIDC native cho PRO1 P3); WINGET-2 vẫn chờ bot.
