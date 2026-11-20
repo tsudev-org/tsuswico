@@ -52,10 +52,15 @@ cần ADR riêng về hạn mức.
 ### 2.3. Đăng nhập, quyền lợi, mã cài đặt
 
 - Lệnh mới `swico.exe login` / `logout` / `account` (chỉ ở chế độ tương tác): OIDC Authorization Code + PKCE qua
-  **loopback** `http://127.0.0.1:<cổng ngẫu nhiên>/callback` (RFC 8252), trình duyệt hệ thống; scope
-  `openid tsudev.entitlements`. Không nhúng WebView.
-- Token làm mới lưu bằng **DPAPI** (`ProtectedData`, phạm vi CurrentUser) ở `%LOCALAPPDATA%\tsudev\tsuswico\`. Không
-  lưu mật khẩu.
+  **loopback** `http://127.0.0.1:<cổng ngẫu nhiên>/callback` (RFC 8252, đường lui `http://[::1]:...`), trình duyệt hệ
+  thống; scope `openid offline_access tsudev.entitlements` kèm `prompt=consent`, `state`, `nonce`; id_token kiểm ES256
+  theo JWKS. Không nhúng WebView. *(Bổ sung P3, 20/11/2026: `offline_access` bắt buộc để có refresh token;
+  oidc-provider 9.x bỏ `offline_access` khi yêu cầu thiếu `prompt=consent`. Bộ nhận dùng `TcpListener`, không
+  `HttpListener`/http.sys. Mở trình duyệt qua `explorer.exe` để không chạy trình duyệt ở quyền quản trị.)*
+- Token làm mới lưu bằng **DPAPI** (phạm vi CurrentUser, P/Invoke `crypt32!CryptProtectData` - không cần gói
+  `ProtectedData`) ở `%LOCALAPPDATA%\tsudev\tsuswico\`. Không lưu mật khẩu. Refresh xoay vòng nằm trong khoá tệp
+  `session.lock` (hai tiến trình refresh cùng lúc sẽ kích hoạt phát hiện dùng lại của tsudev.com). Lần quét tương tác
+  chỉ làm mới khi JWS đệm cũ hơn 24 giờ; `--silent`/`--json-only` không bao giờ gọi mạng tài khoản.
 - **Mã cài đặt** 128 bit (`RandomNumberGenerator`), sinh lần đầu đăng nhập (không sinh khi chưa đăng nhập - bản miễn phí
   không cần), lưu cùng thư mục, gửi trong `X-Tsu-Installation` (AUTH_AND_ACCOUNT 14.3). Không dùng MAC/serial dù app
   đọc được chúng - dữ liệu quét KHÔNG BAO GIỜ dùng làm định danh thiết bị.
@@ -97,9 +102,9 @@ trọng `prefers-reduced-motion`. Không tự thiết kế huy hiệu.
 | --- | --- | --- |
 | P1 | ADR này + kiểm kê + sync v3.9.1 | - (XONG cùng PR) |
 | P2 | `Entitlements` (.NET, kiểm JWS bằng JWKS giả trong test), `ProNotice` + 5 test, `InstallationId`, chuỗi vi/en | - (XONG 20/11/2026, `src/Tsudev.Audit.Core/Pro/`; nối vào CLI ở P3) |
-| P3 | `login`/`logout`/`account` loopback PKCE | `client_id` Tsu Swico đăng ký ở tsudev.com (👤/phiên tsudev) |
+| P3 | `login`/`logout`/`account` loopback PKCE | - (XONG 20/11/2026, client `tsuswico` - tsudev#339; chạy thật trên Windows: `docs/WINDOWS-VERIFICATION.md` mục P) |
 | P4 | Đồng bộ báo cáo qua `TsuSync` + tổng hợp đa máy | PRO-D1..D3 (`tsudev-org/tsusync`, thư viện .NET) |
-| P5 | PRIVACY.md + THREAT_MODEL (giả mạo JWS, dùng lại token, liệt kê thiết bị, rò mã cài đặt) + phiếu rà soát bảo mật | Trước khi phát hành P3 |
+| P5 | PRIVACY.md + THREAT_MODEL (giả mạo JWS, dùng lại token, liệt kê thiết bị, rò mã cài đặt) + phiếu rà soát bảo mật | XONG cùng P3 (`PRIVACY.md`, `PRIVACY.en.md`, `docs/THREAT_MODEL.md` mục 4); còn mục P Windows thật trước khi phát hành |
 
 Khi P3 phát hành, `PRIVACY.md` `MUST` đổi tuyên bố "đúng một kết nối" thành danh sách đầy đủ, nêu rõ các kết nối mới
 chỉ xảy ra **sau khi người dùng tự đăng nhập**.

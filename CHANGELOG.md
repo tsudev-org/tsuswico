@@ -8,6 +8,15 @@
 
 ### Thêm
 
+- **Tài khoản TsuDEV, không bắt buộc: `swico login` / `account` / `logout`** (PRO1 P3, ADR-0002 mục 2.3-2.4). Đăng
+  nhập bằng trình duyệt hệ thống (OIDC Authorization Code + PKCE S256, `state`, `nonce`, loopback
+  `http://127.0.0.1:<cổng ngẫu nhiên>/callback`, lùi về `[::1]`), id_token kiểm ES256 theo JWKS; refresh token lưu
+  DPAPI (CurrentUser) trong `%LOCALAPPDATA%\tsudev\tsuswico\`, xoay vòng có khoá tệp chống hai tiến trình refresh
+  cùng lúc; quyền lợi Pro lấy kèm `X-Tsu-Installation`, đệm ≤ 7 ngày, mạng lỗi ⇒ coi là miễn phí. Thông báo "nhiều
+  thiết bị chưa có Pro" nay hiện ở đầu lần quét tương tác (không bao giờ ở `--silent`/`--json-only`). **Chưa đăng
+  nhập thì không thêm kết nối mạng hay tệp nào** (hạng C, có test canh). Không thêm gói NuGet (DPAPI qua
+  `crypt32`). `PRIVACY.md` liệt kê đủ các kết nối mới (+ bản tiếng Anh `PRIVACY.en.md`), `docs/THREAT_MODEL.md`.
+
 - **Ảnh trình thuật sĩ bộ cài cho màn hình HiDPI** (QU-STD-BRAND, `BRAND_ASSETS.md` mục 12/14): 5 cỡ ảnh lớn + 4 cỡ ảnh
   nhỏ, Inno Setup tự chọn cỡ khớp - hết mờ ở mức phóng 125-200%. Icon exe và icon bộ cài nay là CÙNG một tệp
   `assets/brand/app/app.ico` sinh từ ảnh gốc (trước là bản đổi cỡ tự viết, khác byte); thiếu tệp ⇒ dừng biên dịch

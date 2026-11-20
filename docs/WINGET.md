@@ -141,6 +141,22 @@ curl.exe -sSL -o setup.exe <InstallerUrl>
 trong `make-winget-manifest.py`). PR microsoft/winget-pkgs#484563 đã nộp vào đúng `manifests/t/tsudev/SWICO/`; từ bản
 sau, trình sinh suy đường dẫn từ `PackageIdentifier` của template. Nội dung tệp không đổi.
 
+### Nhãn `Validation-Executable-Error` = báo động nhầm đã biết - KHÔNG sửa manifest, KHÔNG chạy lại release
+
+Bước "08. Installation Validation" (NEUTRAL) cài bộ cài rồi chạy `swico.exe` **không tham số** trong máy ảo. Swico
+quét chính máy ảo đó và thoát bằng **mã kết luận** (`10` CẢNH BÁO / `20` NGHIÊM TRỌNG - máy ảo thử nghiệm không kích
+hoạt bản quyền), bot hiểu mã khác 0 là "ứng dụng chạy lỗi". Không có gì sai trong manifest hay bộ cài.
+
+- **Đã xảy ra:** #419878 (26.8.18.2) - moderator ghi *"Executable ... swico.exe returned exit code: 20"*, tự gỡ nhãn,
+  gắn `Validation-Completed` sau ~3 tuần, gộp ngày 21/09/2026. #484563 (26.11.2001) - cùng nhãn lúc 02:43 20/11/2026,
+  kèm `Azure-Pipeline-Passed` (bước 01-07, 09, 10 SUCCESS).
+- **Việc cần làm:** chờ moderator. Muốn nhanh hơn thì (chủ dự án quyết - bình luận công khai) để lại một bình luận ngắn
+  giải thích mã thoát, ví dụ: *"swico.exe is a CLI audit tool: run without arguments it scans the machine and exits
+  with a verdict code (10 = warning, 20 = critical findings such as an unactivated test VM). 0-3 are tool-health codes.
+  Exit code 20 here is the scan result, not an installation failure (same as #419878)."*
+- **KHÔNG** thêm `--no-verdict-exit` hay đổi hành vi mặc định chỉ để qua bot: mã thoát là hợp đồng với RMM (README mục
+  Mã thoát).
+
 ## Sau khi pull request được hợp nhất
 
 Bot của winget chạy kiểm thử tự động, thường mất vài giờ tới vài ngày. Khi xong:

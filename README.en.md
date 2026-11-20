@@ -14,9 +14,10 @@ to install. A product of [TsuDEV](https://tsudev.com). Product page: [swico.tsud
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16837/badge)](https://www.bestpractices.dev/projects/16837)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/tsudev-org/tsuswico/badge)](https://scorecard.dev/viewer/?uri=github.com/tsudev-org/tsuswico)
 
-**Offline by design.** Every scan runs fully without Internet access or an account. The only network call is the
-check for a newer version, which can be turned off with `--no-update-check`. Scan data never leaves the machine
-([PRIVACY.md](PRIVACY.md)).
+**Offline by design.** Every scan runs fully without Internet access or an account. While you are not signed in, the
+only network call is the check for a newer version, which can be turned off with `--no-update-check`. Signing in to a
+TsuDEV account (`swico login`) is optional and only fetches TsuDEV Pro entitlements. Scan data never leaves the machine
+([PRIVACY.en.md](PRIVACY.en.md), [threat model](docs/THREAT_MODEL.md)).
 
 ## What it does
 
@@ -69,7 +70,17 @@ swico.exe --json-only > result.json  JSON to stdout only (no files written)
 swico.exe --lang vi                Vietnamese interface (auto|vi|en)
 swico.exe --log-file swico.jsonl   Structured log to send for support
 swico.exe --help                   All options
+
+swico.exe login                    Sign in to a TsuDEV account (optional)
+swico.exe account                  Show the account, Pro plan and device count
+swico.exe logout                   Sign out and delete account data on this computer
 ```
+
+**TsuDEV account (optional).** `swico login` opens the default browser at tsudev.com (OIDC + PKCE; the result comes
+back to a temporary `127.0.0.1` port on the same machine); the password is only ever typed on tsudev.com. The refresh
+token is stored DPAPI-encrypted in `%LOCALAPPDATA%\tsudev\tsuswico\`. These three commands are interactive only - they
+cannot be combined with `--silent`/`--json-only`, and `--silent`/`--json-only` scans never contact tsudev.com even when
+signed in. Nothing is lost without an account. Full list of connections and files: [PRIVACY.en.md](PRIVACY.en.md).
 
 **Language**, in order of precedence: `--lang` ▸ the `TSUSWICO_LANG` environment variable ▸ the Windows display
 language (Vietnamese ⇒ `vi`, anything else ⇒ `en`). It covers the CLI, the update dialog, the HTML/XLSX reports and

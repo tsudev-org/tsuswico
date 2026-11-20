@@ -265,6 +265,28 @@ jobs:
           Write-Host "--json-only: JSON hop le, $($doc.reports[0].sections.Count) muc, khong ghi tep"
           exit 0
 
+      # Tai khoan TsuDEV (PRO1 P3) - hang C tren Windows THAT: sau moi lan quet o tren va cac lenh
+      # tai khoan khi CHUA dang nhap, %LOCALAPPDATA%\tsudev\tsuswico\ PHAI khong ton tai (khong tep,
+      # khong mang - phan "khong mang" do ProOfflineGuardTests canh). login/account voi --silent
+      # hoac --json-only PHAI bi tu choi (ma 3): chung chi chay tuong tac.
+      - name: Lenh tai khoan khi chua dang nhap
+        shell: pwsh
+        run: |
+          $dir = Join-Path $env:LOCALAPPDATA 'tsudev\tsuswico'
+          if (Test-Path $dir) { throw "Lan quet chua dang nhap da tao $dir" }
+          $acc = (./publish/swico.exe account) -join "`n"
+          if ($LASTEXITCODE -ne 0) { throw "account thoat voi ma $LASTEXITCODE" }
+          if ($acc -notmatch 'Not signed in') { throw "account khong bao chua dang nhap: $acc" }
+          ./publish/swico.exe logout | Out-Host
+          if ($LASTEXITCODE -ne 0) { throw "logout thoat voi ma $LASTEXITCODE" }
+          ./publish/swico.exe login --silent 2>&1 | Out-Host
+          if ($LASTEXITCODE -ne 3) { throw "login --silent phai bi tu choi (3), nhan $LASTEXITCODE" }
+          ./publish/swico.exe account --json-only 2>&1 | Out-Host
+          if ($LASTEXITCODE -ne 3) { throw "account --json-only phai bi tu choi (3), nhan $LASTEXITCODE" }
+          if (Test-Path $dir) { throw "Lenh tai khoan khi chua dang nhap da tao $dir" }
+          Write-Host 'Lenh tai khoan: hang C dat (khong tep), che do khong tuong tac bi tu choi'
+          exit 0
+
       - name: Luu ket qua quet de doi chieu khi can
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

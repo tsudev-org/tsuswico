@@ -209,7 +209,9 @@ public class EntitlementTests
         Assert.Equal("https://tsudev.com/api/me/entitlements", ProContract.EntitlementsUrl);
         Assert.Equal("tsu-ent+jwt", ProContract.EntitlementType);
         Assert.Equal("X-Tsu-Installation", ProContract.InstallationHeader);
-        Assert.Equal("openid tsudev.entitlements", ProContract.Scope);
+        // offline_access: refresh token luu DPAPI (P3); thieu tsudev.entitlements ⇒ 403 insufficient_scope.
+        Assert.Equal("openid offline_access tsudev.entitlements", ProContract.Scope);
+        Assert.Equal("tsuswico", ProContract.ClientId);
         Assert.Equal("https://tsudev.com/pro?app=tsuswico", ProContract.ProUrl("tsuswico"));
     }
 }
