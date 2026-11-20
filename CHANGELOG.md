@@ -6,6 +6,19 @@
 
 ## [Chưa phát hành]
 
+### Thêm
+
+- **Nền tảng TsuDEV Pro, phần chạy ngoại tuyến** (PRO1 P2, `docs/adr/0002-luu-cuc-bo-pro-dong-bo.md`): kiểm JWS quyền
+  lợi ES256 bằng `ECDsa` của .NET (chỉ `ES256`, `typ` `tsu-ent+jwt`, `iss`, `aud`, `exp`, sống ≤ 7 ngày, chọn khoá
+  theo `kid`); thông báo "nhiều thiết bị chưa có Pro" vi/en nguyên văn PRODUCT_POLICY 7.3 (không hiện ở
+  `--silent`/`--json-only`, chu kỳ 30 ngày, mốc `tsu.pro_notice.last_shown`); mã cài đặt 128 bit (chỉ sinh khi đăng
+  nhập). **Chưa nối vào CLI** - chưa có lệnh đăng nhập (P3), nên hành vi và kết nối mạng của bản này không đổi.
+
+### Sửa
+
+- Trình sinh manifest winget đặt thư mục `manifests/t/tsudev/SWICO/` (suy từ `PackageIdentifier`) thay vì
+  `tsudev/Tsu Swico/` (#43).
+
 ## [26.11.2001] - 20/11/2026
 
 Bản đầu tiên theo khuôn phát hành thống nhất của hệ TsuDEV (phiếu V1, `docs/adr/0003-khuon-phat-hanh-v1-khong-cau-noi.md`):
