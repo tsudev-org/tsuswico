@@ -301,10 +301,10 @@ src/
     Testing/                                   Adapter giả lập cho unit test
   Tsudev.Audit.Windows/     net8.0-windows  ← Adapter mỏng: WMI, Registry, Process
   Tsudev.Audit.Cli/         net8.0-windows  ← 1 file exe
-assets/                     Logo gốc + biến thể sinh tự động (icon, favicon, ảnh trình thuật sĩ)
-  favicon/                  Bộ favicon đầy đủ: .ico, PNG 16/32/180/192/512, webmanifest
+assets/                     Logo nhà làm tsudev (nhúng báo cáo HTML)
+  brand/                    Logo sản phẩm: MỘT ảnh gốc → icon exe/bộ cài, ảnh trình thuật sĩ (xem brand/README.md)
 packaging/
-  tools/make-assets.py      Sinh mọi biến thể của logo từ file gốc
+  tools/make-assets.py      Sinh logo nhà làm tsudev-logo-{72,144} cho báo cáo
 tests/
   unittests/                net8.0          ← xUnit, 179 ca kiểm tra, chạy được trên mọi nền tảng
 ```

@@ -22,7 +22,8 @@
  *     header - AVIF/WebP nhỏ hơn PNG 5-20 lần, PNG chỉ là đường lui.
  *   - favicon.ico 7 lớp THẬT (16-256), favicon-{16,32,96}.png, android-chrome-{192,512}.png,
  *     maskable riêng (nền đặc, vùng an toàn 80%), apple-touch-icon 180 nền đặc, og-image 1200x630.
- *   - assets/brand/app/: icon-{16..1024}.png + app.ico 7 lớp cho ứng dụng desktop.
+ *   - assets/brand/app/: icon-{16..1024}.png + app.ico 7 lớp cho ứng dụng desktop (exe + bộ cài), và
+ *     wizard-{large,small}-WxH.bmp cho trình thuật sĩ Inno Setup khi brand.json có `installer`.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -148,6 +149,34 @@ function buildIco(entries) {
   return Buffer.concat([header, dir, ...entries.map((e) => e.data)]);
 }
 
+/** BMP 24-bit không nén (BITMAPINFOHEADER), lưu từ dưới lên, thứ tự BGR, hàng đệm tới bội 4. */
+function encodeBmp24(w, h, rgb) {
+  const stride = Math.ceil((w * 3) / 4) * 4;
+  const body = Buffer.alloc(stride * h);
+  for (let y = 0; y < h; y++) {
+    const row = (h - 1 - y) * stride;
+    for (let x = 0; x < w; x++) {
+      const s = (y * w + x) * 3;
+      body[row + x * 3] = rgb[s + 2];
+      body[row + x * 3 + 1] = rgb[s + 1];
+      body[row + x * 3 + 2] = rgb[s];
+    }
+  }
+  const hd = Buffer.alloc(54);
+  hd.write('BM', 0, 'ascii');
+  hd.writeUInt32LE(54 + body.length, 2);
+  hd.writeUInt32LE(54, 10);
+  hd.writeUInt32LE(40, 14);
+  hd.writeInt32LE(w, 18);
+  hd.writeInt32LE(h, 22);
+  hd.writeUInt16LE(1, 26);
+  hd.writeUInt16LE(24, 28);
+  hd.writeUInt32LE(body.length, 34);
+  hd.writeInt32LE(2835, 38);
+  hd.writeInt32LE(2835, 42);
+  return Buffer.concat([hd, body]);
+}
+
 const esc = (s) => String(s).replace(/[<>&'"]/g, (c) => `&#${c.charCodeAt(0)};`);
 
 async function main() {
@@ -214,6 +243,28 @@ async function main() {
   // Cỡ theo `appSizes` (mặc định tới 512; Tauri cần thêm 1024 làm đầu vào `tauri icon`).
   for (const s of CFG.appSizes ?? [16, 24, 32, 48, 64, 128, 256, 512]) emit(app(`icon-${s}.png`), await at(s));
   emit(app('app.ico'), await ico(rounded));
+
+  // --- Ảnh trình thuật sĩ bộ cài Inno Setup (BRAND_ASSETS.md mục 12.1 "Ảnh mở đầu bản cài").
+  // BMP 24-bit trộn sẵn trên nền trắng: mọi bản Inno 6.x đều đọc (PNG/alpha chỉ chắc ở bản mới).
+  // Nhiều cỡ cho màn hình HiDPI - .iss khai danh sách, Setup tự chọn ảnh khớp vùng ảnh nhất.
+  // Dãy cỡ phủ cả bảng trước 6.6.0 (164x314, 202x386...) lẫn từ 6.6.0 (202x386, 269x515...).
+  if (CFG.installer) {
+    for (const [w, h] of CFG.installer.large) emit(app(`wizard-large-${w}x${h}.bmp`), await wizardBmp(w, h, 0.73, 0.31));
+    for (const s of CFG.installer.small) emit(app(`wizard-small-${s}x${s}.bmp`), await wizardBmp(s, s, 0.86, 0.5));
+  }
+
+  /** Logo (tỉ lệ `scale` theo cạnh ngắn) đặt giữa ngang, tâm ở `cy` chiều cao; nền trắng; BMP 24-bit. */
+  async function wizardBmp(w, h, scale, cy) {
+    const side = Math.round(Math.min(w, h) * scale);
+    const top = Math.max(0, Math.min(h - side, Math.round(h * cy - side / 2)));
+    const { data } = await sharp({ create: { width: w, height: h, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 1 } } })
+      .composite([{ input: await at(side), left: Math.round((w - side) / 2), top }])
+      .flatten({ background: '#ffffff' })
+      .removeAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    return encodeBmp24(w, h, data);
+  }
 
   // --- Ghi hoặc kiểm.
   const bad = [];

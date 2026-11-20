@@ -458,8 +458,9 @@ vẫn thấy được registry ghi gì, `ParseExact` thì ném.
   16:41 mang hash của bản build 16:33, còn asset bị lần chạy 16:39 ghi đè lúc
   16:43. Quy tắc: **nộp manifest SAU KHI asset trên release đã ở trạng thái cuối
   cùng**, và trước khi nộp luôn tải file từ chính `InstallerUrl` rồi tính lại hash.
-- **Logo và biến thể** sinh bằng `packaging/tools/make-assets.py`. Sửa
-  `assets/tsudev-logo.png` xong phải chạy lại script.
+- **Logo sản phẩm** (icon exe + bộ cài, ảnh trình thuật sĩ Inno, favicon website) sinh bằng
+  `node website/scripts/brand-assets.mjs` từ `assets/brand/source/` - `assets/brand/README.md`. Logo NHÀ LÀM
+  `assets/tsudev-logo-{72,144}.png` (báo cáo HTML) sinh bằng `packaging/tools/make-assets.py`.
 
 ### 4.5 Về tính trung thực của tài liệu
 

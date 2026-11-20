@@ -68,21 +68,21 @@ OutputDir=..\output
 ;  voi ReleaseName.InstallerFileName trong ma nguon. Doi mot ben ma quen ben
 ;  kia thi cap nhat hong IM LANG - xem docs/VERSIONING.md.
 OutputBaseFilename=tsuswico_{#AppVersion}_windows-x64-setup
-; Icon di kem trong repo. Neu thieu, ISCC bao loi va dung han - nen kiem tra
-; su ton tai thay vi tin la no luon o do.
-#if FileExists(AddBackslash(SourcePath) + "..\..\assets\swico.ico")
-SetupIconFile=..\..\assets\swico.ico
+; Icon + anh trinh thuat si SINH tu MOT anh goc boi website/scripts/brand-assets.mjs
+; (assets/brand/, CI chay --check) - KHONG sua tay, KHONG cat tay (BRAND_ASSETS.md muc 14-15).
+; Exe dung CHUNG app.ico (Tsudev.Audit.Cli.csproj) nen icon exe va icon bo cai khong the lech.
+; Thieu tep thi DUNG bien dich: truoc day "#if FileExists" am tham bo icon/anh -> bo cai
+; phat hanh ra mang icon mac dinh cua Inno ma khong cong nao bao.
+#define Brand "..\..\assets\brand\app\"
+#if !FileExists(AddBackslash(SourcePath) + Brand + "app.ico")
+  #error Thieu assets/brand/app/app.ico - chay: node website/scripts/brand-assets.mjs
 #endif
+SetupIconFile={#Brand}app.ico
 
-; Anh thuong hieu trong trinh thuat si. Inno Setup CHI nhan dinh dang BMP -
-; khong nhan PNG - nen hai file nay duoc sinh tu logo goc boi
-; packaging/tools/make-assets.py.
-#if FileExists(AddBackslash(SourcePath) + "..\..\assets\wizard-large.bmp")
-WizardImageFile=..\..\assets\wizard-large.bmp
-#endif
-#if FileExists(AddBackslash(SourcePath) + "..\..\assets\wizard-small.bmp")
-WizardSmallImageFile=..\..\assets\wizard-small.bmp
-#endif
+; Nhieu co cho man hinh HiDPI: Setup tu chon anh khop vung anh nhat. BMP 24-bit vi moi
+; ban Inno 6.x deu doc; day co phu ca bang co truoc 6.6.0 lan tu 6.6.0 (brand.json "installer").
+WizardImageFile={#Brand}wizard-large-164x314.bmp,{#Brand}wizard-large-202x386.bmp,{#Brand}wizard-large-269x515.bmp,{#Brand}wizard-large-336x643.bmp,{#Brand}wizard-large-430x824.bmp
+WizardSmallImageFile={#Brand}wizard-small-58x58.bmp,{#Brand}wizard-small-77x77.bmp,{#Brand}wizard-small-97x97.bmp,{#Brand}wizard-small-124x124.bmp
 ; Payload (swico.exe) nay KHONG con duoc nen san ben trong nua - xem ghi chu
 ; trong Tsudev.Audit.Cli.csproj - nen buoc nen o day moi thuc su co tac dung.
 ; lzma2/max cham khi DONG GOI nhung giai nen nhanh nhu cac muc khac, ma nguoi
