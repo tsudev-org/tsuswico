@@ -1,6 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp:** đọc `logs/handover/20261120-07_khep-phien-tsuswico-4c.md` mục 2-4 (mục P chạy thật ĐẠT - P13 bỏ qua có chủ đích; WINGET-2 chờ moderator; dọn hồ sơ Windows tạm sau khởi động lại).
+> **Phiên kế tiếp:** đọc `logs/handover/20261120-08_khep-phien-tsuswico-57.md` mục 2-4 (logo/favicon báo cáo xong #59; WINGET-2 chờ moderator; dọn hồ sơ Windows tạm sau khởi động lại - máy chưa khởi động lại).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
@@ -17,8 +17,8 @@
 > **`docs/STATE.md` thắng**. File này chỉ trỏ tới đó, không chép lại nội dung
 > (`AGENTS.md` mục 1: mỗi tri thức ghi một lần duy nhất).
 
-- **Phiên gần nhất:** tsuswico-4c - 20/11/2026
-- **Bàn giao gần nhất:** `logs/handover/20261120-07_khep-phien-tsuswico-4c.md`
+- **Phiên gần nhất:** tsuswico-57 - 20/11/2026
+- **Bàn giao gần nhất:** `logs/handover/20261120-08_khep-phien-tsuswico-57.md`
 
 ## Hàng đợi task (làm từ trên xuống)
 
@@ -80,6 +80,11 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 | (không có) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 20/11/2026 - **tsuswico-57:** #59 báo cáo HTML mang favicon + logo Tsu Swico giống website (đầu trang sản phẩm, chân
+  trang nhà làm tsudev hiện hành; ảnh từ `brand-assets.mjs` → `assets/brand/report/`, nhúng assembly), gỡ logo cú cũ;
+  349 PASS, website deploy. Phiếu LG1 sang tsucwico, qulythuchi, sound-db, tsudev. Máy chưa khởi động lại ⇒ chưa dọn
+  hồ sơ tạm; WINGET-2 vẫn chờ. Bàn giao: `logs/handover/20261120-08_khep-phien-tsuswico-57.md`.
 
 - 20/11/2026 - **tsuswico-4c:** chạy thật mục P (chủ dự án ủy quyền): P7 ✅ (proxy chết), P10 ✅ (tài khoản Windows tạm,
   DPAPI không giải được), P12 vi/en ✅; P13 bỏ qua có chủ đích; sửa dòng P12 (lệnh con phải đứng đầu) + đổi mã trùng P12 → P14;

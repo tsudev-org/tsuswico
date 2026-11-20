@@ -2,7 +2,7 @@
 
 - **Mã phiếu**: 20261120-07
 - **Thời điểm**: 20/11/2026
-- **Trạng thái**: MỞ - phiên kế tiếp đọc, làm hàng đợi `logs/STATE.md`, rồi đổi thành ĐÓNG
+- **Trạng thái**: ĐÓNG (20/11/2026, phiên tsuswico-57 - việc mở chuyển sang phiếu `20261120-08`)
 - **Phiếu trước**: `20261120-06_khep-phien-tsuswico-96.md` - ĐÓNG
 
 ## 1. Đã làm (chỉ tài liệu, không đổi mã)
