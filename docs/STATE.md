@@ -201,8 +201,10 @@ Xếp theo giá trị giảm dần:
 2. ✅ **XONG (16/11/2026, phiên tsudev-27) - tách file gộp nhiều class thành file riêng** (`InventoryCollectors.cs` 4 class,
    `LicenseCollectors.cs` 5 class). Đã hoãn từ Phase 1 vì lúc đó chưa có test;
    nay có bộ test xUnit làm lưới an toàn.
-3. **Logging có cấu trúc** thay `Console.WriteLine` rải rác, kèm tuỳ chọn ghi log
-   ra file cho tình huống hỗ trợ từ xa.
+3. ✅ **XONG (20/11/2026, phiên tsuswico-22) - logging có cấu trúc**: `--log-file` ghi JSON Lines
+   (`Core/Logging/RunLog.cs` + `LoggingProgressSink`), mọi dòng `Info/Warn/Error` của CLI + sự kiện máy đọc.
+   KHÔNG dùng `Microsoft.Extensions.Logging` (DECISIONS.md mục 4 hàng 7 từng gợi ý): thêm 4-5 gói vào bản single-file
+   chỉ để ghi một tệp. Màn hình vẫn là `Console` (màu, stderr) - log là bản sao có cấu trúc, không thay kênh hiển thị.
 4. ✅ **XONG (#37, 20/11/2026) - `--json-only`** cho tích hợp máy-đọc-máy: stdout một tài liệu
    `{tool, version, language, reports[]}`, tiến trình sang stderr, không ghi tệp.
 4b. ✅ **XONG (#37) - căn cột cho dòng tiến trình.** Ghi chú cũ: Hiện nhãn và thời gian

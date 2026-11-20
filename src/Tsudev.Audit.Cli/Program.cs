@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Tsudev.Audit.Core.Cli;
 using Tsudev.Audit.Core.Localization;
+using Tsudev.Audit.Core.Logging;
 using Tsudev.Audit.Core.Models;
 using Tsudev.Audit.Core.Rendering;
 using Tsudev.Audit.Core.Reports;
@@ -30,8 +31,29 @@ public static class Program
     private const int ExitFatal = ExitCodes.Fatal;
     private const int ExitBadArgs = ExitCodes.BadArgs;
 
+    /// <summary>Nhat ky co cau truc - chi bat bang --log-file (docs/STATE.md 3.5 muc 3).</summary>
+    private static RunLog Log = RunLog.Null;
+
     [SupportedOSPlatform("windows")]
     public static int Main(string[] args)
+    {
+        var started = Stopwatch.StartNew();
+        var code = ExitFatal;
+        try
+        {
+            code = MainCore(args);
+            return code;
+        }
+        finally
+        {
+            Log.Info("run.end", null, ("exit_code", code), ("exit", ExitCodes.Describe(code)),
+                     ("ms", started.ElapsedMilliseconds));
+            Log.Dispose();
+        }
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static int MainCore(string[] args)
     {
         ConfigureConsole();
 
@@ -57,6 +79,8 @@ public static class Program
         if (opts.ShowHelp) { CliOptions.PrintUsage(); return ExitOk; }
 
         if (opts.ShowVersion) { PrintVersion(); return ExitOk; }
+
+        OpenLog(opts, args);
 
         if (!OperatingSystem.IsWindows())
         {
@@ -85,7 +109,7 @@ public static class Program
 
         try
         {
-            return Run(opts, progress, jsonOut, cancel.Token);
+            return Run(opts, new LoggingProgressSink(progress, Log), jsonOut, cancel.Token);
         }
         catch (OperationCanceledException)
         {
@@ -104,6 +128,7 @@ public static class Program
             // Don dong con quay do dang TRUOC khi in loi, neu khong thong bao
             // loi se de len chinh dong dang quay va doc thanh mot dong lai cai.
             progress.Dispose();
+            Log.Error("run.fatal", ex.ToString(), ("type", ex.GetType().FullName));
             Error(Loc.T("\nLỖI NGHIÊM TRỌNG: ", "\nFATAL ERROR: ") + ex.Message);
             if (opts.Verbose) Error(ex.ToString());
             return ExitFatal;
@@ -170,6 +195,8 @@ public static class Program
         // Ban dang chay den tu dau quyet dinh cach cap nhat - xem tinh huong 3.
         var kind = InstallKindDetector.Detect();
         var result = new UpdateChecker(new GitHubUpdateFeed(current)).Check(current, kind);
+        Log.Info("update.check", null, ("status", result.Status), ("install_kind", kind),
+                 ("current", current), ("latest", result.Latest?.Version.ToString()));
 
         switch (result.Status)
         {
@@ -270,7 +297,7 @@ public static class Program
     }
 
     [SupportedOSPlatform("windows")]
-    private static int Run(CliOptions opts, ConsoleProgressReporter progress, TextWriter? jsonOut,
+    private static int Run(CliOptions opts, LoggingProgressSink progress, TextWriter? jsonOut,
         CancellationToken cancel)
     {
         var exitCode = ExitOk;
@@ -322,6 +349,7 @@ public static class Program
             if (writeFiles && !SaveWithProgress(report, level3, renderer, xlsx, opts, progress)) exitCode = ExitPartial;
             if (report.Warnings.Count > 0) exitCode = ExitPartial;
             produced.Add(report);
+            LogReport("license", report);
         }
 
         if (opts.Scope is AuditScope.Hardware or AuditScope.All)
@@ -332,6 +360,7 @@ public static class Program
             if (writeFiles && !SaveWithProgress(report, level3, renderer, xlsx, opts, progress)) exitCode = ExitPartial;
             if (report.Warnings.Count > 0) exitCode = ExitPartial;
             produced.Add(report);
+            LogReport("hardware", report);
         }
 
         string? dashboardPath = null;
@@ -418,7 +447,7 @@ public static class Program
     /// bao cao nhieu nghin dong phan mem thi ghi XLSX khong he tuc thi.
     /// </summary>
     private static bool SaveWithProgress(AuditReport report, string dir, HtmlReportRenderer renderer,
-        XlsxWriter xlsx, CliOptions opts, ConsoleProgressReporter progress)
+        XlsxWriter xlsx, CliOptions opts, LoggingProgressSink progress)
     {
         progress.BeginStep(Loc.T("Ghi báo cáo ra đĩa", "Writing reports to disk"));
         try
@@ -555,7 +584,42 @@ public static class Program
         catch (System.Security.SecurityException) { /* bi chinh sach chan */ }
     }
 
-    private static void Info(string msg) => Console.WriteLine(msg);
+    /// <summary>
+    /// Mo nhat ky neu co --log-file. Mo khong duoc ⇒ canh bao roi QUET TIEP:
+    /// tep log la phu tro ho tro, khong dang lam hong mot lan quet.
+    /// </summary>
+    private static void OpenLog(CliOptions opts, string[] args)
+    {
+        if (opts.LogFile is null) return;
+        try
+        {
+            Log = RunLog.OpenFile(opts.LogFile);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException
+                                       or NotSupportedException or System.Security.SecurityException)
+        {
+            Warn(Loc.T("Không mở được tệp nhật ký: ", "Could not open the log file: ") + ex.Message);
+            return;
+        }
+        Log.Info("run.start", null,
+            ("tool", "Tsu Swico"), ("version", CurrentVersion()), ("args", string.Join(' ', args)),
+            ("lang", Loc.HtmlLang), ("scope", opts.Scope), ("silent", opts.Silent), ("json_only", opts.JsonOnly),
+            ("elevated", OperatingSystem.IsWindows() && WindowsEnvironment.IsElevated()),
+            ("os", Environment.OSVersion.VersionString), ("runtime", Environment.Version.ToString()));
+    }
+
+    private static void LogReport(string kind, AuditReport report)
+    {
+        Log.Info("report.done", null, ("kind", kind), ("verdict", report.VerdictLevel),
+                 ("warnings", report.Warnings.Count));
+        foreach (var w in report.Warnings) Log.Warn("report.warning", w, ("kind", kind));
+    }
+
+    private static void Info(string msg)
+    {
+        Log.Info("console", msg.Trim());
+        Console.WriteLine(msg);
+    }
 
     /// <summary>
     /// Loi nghiem trong: mau DO va ra stderr.
@@ -566,6 +630,7 @@ public static class Program
     /// </summary>
     private static void Error(string msg)
     {
+        Log.Error("console", msg.Trim());
         if (Console.IsErrorRedirected) { Console.Error.WriteLine(msg); return; }
 
         var prev = Console.ForegroundColor;
@@ -583,6 +648,7 @@ public static class Program
 
     private static void Warn(string msg)
     {
+        Log.Warn("console", msg.Trim());
         // Khi dau ra bi chuyen huong (file log, ong dan), KHONG dat mau: ma mau
         // se lot vao file lam ban noi dung.
         if (Console.IsOutputRedirected) { Console.WriteLine(msg); return; }

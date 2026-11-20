@@ -124,7 +124,7 @@ jobs:
         shell: pwsh
         run: |
           # Giu lai dau ra de kiem tra ca NOI DUNG lan CACH no duoc in ra.
-          $out = ./publish/swico.exe --scope hardware --silent --no-update-check --no-csv -o out 2>&1
+          $out = ./publish/swico.exe --scope hardware --silent --no-update-check --no-csv -o out --log-file out/swico.jsonl 2>&1
           $exit = $LASTEXITCODE
           $out | ForEach-Object { Write-Host $_ }
           if ($exit -ge 2) { throw "Quet that bai voi ma thoat $exit" }
@@ -196,6 +196,20 @@ jobs:
             if ($parts -notcontains $need) { throw "File .xlsx thieu phan $need" }
           }
           Write-Host "File .xlsx co $($parts.Count) phan - hop le"
+
+          # --- Nhat ky co cau truc (--log-file, docs/STATE.md 3.5) ---
+          # Moi dong la JSON; co run.start, du buoc step.ok kem ms, va run.end
+          # mang DUNG ma thoat cua tien trinh.
+          $log = @(Get-Content out/swico.jsonl -Encoding utf8 | ForEach-Object { $_ | ConvertFrom-Json })
+          $ev = $log | ForEach-Object { $_.event }
+          if ($ev[0] -ne 'run.start') { throw "Dong dau nhat ky khong phai run.start: $($ev[0])" }
+          $ok = @($log | Where-Object { $_.event -eq 'step.ok' -and $null -ne $_.ms })
+          if ($ok.Count -lt 10) { throw "Nhat ky chi co $($ok.Count) step.ok kem ms" }
+          $end = $log[-1]
+          if ($end.event -ne 'run.end' -or $end.exit_code -ne $exit) {
+            throw "Dong cuoi nhat ky phai la run.end voi exit_code=$exit, thay: $($end | ConvertTo-Json -Compress)"
+          }
+          Write-Host "Nhat ky: $($log.Count) dong, $($ok.Count) step.ok, run.end exit_code=$($end.exit_code)"
 
           # swico.exe tra ve 1 khi co muc thieu du lieu (vi du Defender tren may
           # ao). Do KHONG phai loi cua buoc nay, nen phai dat lai de GitHub
