@@ -32,7 +32,17 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        run: dotnet restore Tsudev.SystemAudit.sln
+        # --locked-mode: goi NuGet phai TRUNG packages.lock.json (Scorecard Pinned-Dependencies, AN1).
+        # Doi goi => chay `dotnet restore Tsudev.SystemAudit.sln --force-evaluate` roi commit lock file.
+        run: dotnet restore Tsudev.SystemAudit.sln --locked-mode
+
+      # Cong audit (AN1 B2): goi NuGet co lo hong da cong bo (ke ca goi bac cau) => do.
+      - name: Kiem lo hong goi NuGet
+        run: |
+          dotnet list Tsudev.SystemAudit.sln package --vulnerable --include-transitive | tee vuln.txt
+          if grep -q "has the following vulnerable packages" vuln.txt; then
+            echo "::error::Co goi NuGet dinh lo hong - xem log o tren"; exit 1
+          fi
 
       - name: Build
         run: dotnet build Tsudev.SystemAudit.sln -c Release --no-restore
