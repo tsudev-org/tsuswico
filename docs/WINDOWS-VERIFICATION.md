@@ -241,18 +241,18 @@ chỉ đo được trên Windows thật với tsudev.com production: DPAPI, trì
 
 | # | Việc cần làm | Kỳ vọng | Kết quả thật |
 |---|---|---|---|
-| P1 | Trước khi đăng nhập: `swico.exe account` | "Chưa đăng nhập..."; thư mục `%LOCALAPPDATA%\tsudev\tsuswico\` **không** tồn tại | |
-| P2 | `swico.exe login` | Trình duyệt mặc định mở `tsudev.com/oidc/auth?...`; in kèm liên kết dự phòng | |
-| P3 | Trong lúc P2, mở Task Manager > Details, bật cột **Elevated** | Tiến trình trình duyệt **Elevated = No** (swico.exe = Yes) | |
-| P4 | Đăng nhập tsudev.com, bấm Cho phép | Tab hiện "Đã nhận phản hồi đăng nhập"; cửa sổ swico in "Đã đăng nhập", mã tài khoản, Gói, số thiết bị | |
-| P5 | Mở `%LOCALAPPDATA%\tsudev\tsuswico\` | Có `refresh-token.dpapi` (nhị phân, **không** đọc được chữ `ey`/token), `account.json`, `entitlement.jws`, `jwks.json`, `installation-id` (22 ký tự) | |
-| P6 | `swico.exe account` | Thông tin như P4, không lỗi; chạy lần 2 vẫn được (refresh xoay vòng không tự đăng xuất) | |
-| P7 | Ngắt mạng, `swico.exe account` | Cảnh báo "Không lấy được quyền lợi mới - đang dùng bản lưu..."; mã thoát 0 | |
-| P8 | Có mạng, `swico.exe --scope hardware` (tương tác) | Quét bình thường; nếu tài khoản có ≥ 2 thiết bị và chưa Pro thì hiện thông báo 7.3 trước khi quét, bấm Enter = Để sau | |
-| P9 | `swico.exe --scope hardware --silent` | Không thông báo, không chờ phím | |
-| P10 | Chép `refresh-token.dpapi` sang tài khoản Windows khác (hoặc máy khác) cùng thư mục, chạy `swico.exe account` ở đó | Báo phiên hết hạn / chưa đăng nhập - DPAPI không giải được | |
-| P11 | `swico.exe logout` | "Đã đăng xuất và xoá..."; thư mục ở P5 **biến mất**; báo cáo cũ còn nguyên | |
-| P12 | `swico.exe login --silent` | Mã thoát 3, báo chỉ chạy tương tác | |
+| P1 | Trước khi đăng nhập: `swico.exe account` | "Chưa đăng nhập..."; thư mục `%LOCALAPPDATA%\tsudev\tsuswico\` **không** tồn tại | ✅ 20/11/2026 Win 11 26200 (agent qua WSL, UAC do người bấm): "Chưa đăng nhập", thư mục không tồn tại, mã 0 |
+| P2 | `swico.exe login` | Trình duyệt mặc định mở `tsudev.com/oidc/auth?...`; in kèm liên kết dự phòng | ❌ bản `a7cbf1d`: `explorer.exe <url>` từ tiến trình nâng quyền mở **thư mục Documents**, không mở trình duyệt. ✅ sau sửa (COM ShellWindows): Edge mở trang tsudev.com |
+| P3 | Trong lúc P2, mở Task Manager > Details, bật cột **Elevated** | Tiến trình trình duyệt **Elevated = No** (swico.exe = Yes) | ✅ sau sửa: 2 tiến trình Edge mới + toàn bộ 66 tiến trình `msedge` Elevated = 0 (Edge đang chạy sẵn - chưa đo ca Edge chưa mở) |
+| P4 | Đăng nhập tsudev.com, bấm Cho phép | Tab hiện "Đã nhận phản hồi đăng nhập"; cửa sổ swico in "Đã đăng nhập", mã tài khoản, Gói, số thiết bị | ✅ tab "Đã nhận phản hồi đăng nhập - Tsu Swico"; in tài khoản, Gói: Miễn phí, 1 thiết bị, đệm đến +7 ngày; mã 0 |
+| P5 | Mở `%LOCALAPPDATA%\tsudev\tsuswico\` | Có `refresh-token.dpapi` (nhị phân, **không** đọc được chữ `ey`/token), `account.json`, `entitlement.jws`, `jwks.json`, `installation-id` (22 ký tự) | ✅ 5 tệp; `refresh-token.dpapi` 262 B mở đầu khối DPAPI `01000000D08C9DDF`, không chứa token rõ; `installation-id` 22 ký tự |
+| P6 | `swico.exe account` | Thông tin như P4, không lỗi; chạy lần 2 vẫn được (refresh xoay vòng không tự đăng xuất) | ✅ hai lần liên tiếp đều được (refresh xoay vòng, không tự đăng xuất) |
+| P7 | Ngắt mạng, `swico.exe account` | Cảnh báo "Không lấy được quyền lợi mới - đang dùng bản lưu..."; mã thoát 0 | ⏭ chưa làm (không ngắt mạng máy người dùng); test `Ngoai_tuyen_dung_JWS_dem_con_han` phủ logic |
+| P8 | Có mạng, `swico.exe --scope hardware` (tương tác) | Quét bình thường; nếu tài khoản có ≥ 2 thiết bị và chưa Pro thì hiện thông báo 7.3 trước khi quét, bấm Enter = Để sau | ✅ quét tương tác 9 s, mã 0; 1 thiết bị ⇒ không hiện thông báo (đúng), không tạo `state.json` |
+| P9 | `swico.exe --scope hardware --silent` | Không thông báo, không chờ phím | ✅ không thông báo, không chờ phím, mã 0 |
+| P10 | Chép `refresh-token.dpapi` sang tài khoản Windows khác (hoặc máy khác) cùng thư mục, chạy `swico.exe account` ở đó | Báo phiên hết hạn / chưa đăng nhập - DPAPI không giải được | ⏭ cần tài khoản Windows thứ hai - chưa làm |
+| P11 | `swico.exe logout` | "Đã đăng xuất và xoá..."; thư mục ở P5 **biến mất**; báo cáo cũ còn nguyên | ✅ thư mục biến mất, 3 báo cáo còn nguyên, `account` lại báo chưa đăng nhập |
+| P12 | `swico.exe login --silent` | Mã thoát 3, báo chỉ chạy tương tác | ✅ mã 3, thông báo "chỉ chạy ở chế độ tương tác" |
 
 > P3 và P10 là hai mục quan trọng nhất: trình duyệt chạy quyền quản trị, hoặc token chép sang máy khác dùng được, đều
 > là lỗi bảo mật (`docs/THREAT_MODEL.md` T8, T3).

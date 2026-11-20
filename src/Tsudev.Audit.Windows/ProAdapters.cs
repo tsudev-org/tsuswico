@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
@@ -87,27 +86,101 @@ public static class SystemBrowser
 {
     /// <summary>
     /// swico.exe chay voi quyen quan tri (app.manifest). ShellExecute mot URL tu tien trinh da nang quyen
-    /// se mo trinh duyet CUNG quyen quan tri - trang web dang nhap chay elevated la dieu khong ai muon.
-    /// Giao URL cho <c>explorer.exe</c>: explorer.exe dang chay (khong nang quyen) cua phien nhan lenh va
-    /// mo trinh duyet mac dinh o muc quyen thuong. Chi nhan URL https (khong de ky tu la chen thanh tham so).
+    /// se mo trinh duyet CUNG quyen quan tri - trang dang nhap chay elevated la dieu khong ai muon.
+    ///
+    /// Cach chuan (Raymond Chen, "How can I launch an unelevated process from my elevated process"): nho
+    /// CHINH explorer.exe cua desktop (khong nang quyen) goi ShellExecute qua COM ShellWindows ⇒
+    /// IShellBrowser ⇒ IShellView ⇒ IShellFolderViewDual.Application.
+    ///
+    /// DA DO SAI tren Windows 11 that (20/11/2026, WINDOWS-VERIFICATION P2): <c>explorer.exe &lt;url&gt;</c>
+    /// tu tien trinh nang quyen BO QUA URL va mo thu muc Documents. Khong lui ve ShellExecute truc tiep
+    /// (trinh duyet elevated): that bai ⇒ tra false, nguoi dung dan lien ket da in.
+    /// Chi nhan URL https.
     /// </summary>
     public static bool Open(Uri url)
+        => url.Scheme == Uri.UriSchemeHttps && TryShellExecuteUnelevated(url.AbsoluteUri);
+
+    /// <summary>
+    /// Mo tep bao cao cuc bo (HTML) bang ung dung mac dinh, o quyen thuong. Bao cao HTML co script
+    /// (bo loc, phan trang) - khong nen chay trong trinh duyet elevated. Khong duoc ⇒ ShellExecute
+    /// truc tiep nhu truoc (tep do chinh cong cu vua ghi, khong phai trang web la).
+    /// </summary>
+    public static void OpenLocalFile(string path)
     {
-        if (url.Scheme != Uri.UriSchemeHttps) return false;
-        try
-        {
-            var explorer = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
-            using var p = Process.Start(new ProcessStartInfo(explorer) { ArgumentList = { url.AbsoluteUri }, UseShellExecute = false });
-            return p is not null;
-        }
+        if (!File.Exists(path) || TryShellExecuteUnelevated(Path.GetFullPath(path))) return;
+        try { using var p = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true }); }
         catch (Win32Exception) { }
         catch (InvalidOperationException) { }
+    }
+
+    private static bool TryShellExecuteUnelevated(string file)
+    {
         try
         {
-            using var p = Process.Start(new ProcessStartInfo(url.AbsoluteUri) { UseShellExecute = true });
-            return p is not null;
+            ShellExecuteUnelevated(file);
+            return true;
         }
-        catch (Win32Exception) { return false; }
+        catch (COMException) { return false; }
+        catch (InvalidCastException) { return false; }
         catch (InvalidOperationException) { return false; }
+        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException) { return false; }
+    }
+
+    private static void ShellExecuteUnelevated(string file)
+    {
+        var type = Type.GetTypeFromCLSID(new Guid("9BA05972-F6A8-11CF-A442-00A0C90A8F39"), throwOnError: true)!;
+        var windows = (IShellWindows)Activator.CreateInstance(type)!;
+        object loc = 0;          // CSIDL_DESKTOP
+        object root = null!;    // VT_EMPTY
+        const int SwcDesktop = 8, SwfoNeedDispatch = 1;
+        var desktop = windows.FindWindowSW(ref loc, ref root, SwcDesktop, out _, SwfoNeedDispatch)
+                      ?? throw new InvalidOperationException("Khong thay cua so desktop cua explorer.");
+
+        var sidTopLevelBrowser = new Guid("4C96BE40-915C-11CF-99D3-00AA004AE837");
+        var iidShellBrowser = typeof(IShellBrowser).GUID;
+        ((IServiceProvider)desktop).QueryService(ref sidTopLevelBrowser, ref iidShellBrowser, out var browserObj);
+        var view = ((IShellBrowser)browserObj).QueryActiveShellView();
+        var iidDispatch = new Guid("00020400-0000-0000-C000-000000000046");
+        view.GetItemObject(0 /* SVGIO_BACKGROUND */, ref iidDispatch, out var folderView);
+
+        dynamic app = ((dynamic)folderView).Application;   // IShellDispatch2
+        app.ShellExecute(file, "", "", "open", 1 /* SW_SHOWNORMAL */);
+    }
+
+    // ---- Giao dien COM toi thieu (thu tu vtable PHAI dung; ham giu cho chi de dem o) ----
+
+    [ComImport, Guid("85CB6900-4D95-11CF-960C-0080C7F4EE85"), InterfaceType(ComInterfaceType.InterfaceIsDual)]
+    private interface IShellWindows
+    {
+        void get_Count(); void Item(); void _NewEnum(); void Register(); void RegisterPending();
+        void Revoke(); void OnNavigate(); void OnActivated();
+        [return: MarshalAs(UnmanagedType.IDispatch)]
+        object? FindWindowSW([MarshalAs(UnmanagedType.Struct)] ref object pvarLoc,
+                             [MarshalAs(UnmanagedType.Struct)] ref object pvarLocRoot,
+                             int swClass, out int phwnd, int swfwOptions);
+    }
+
+    [ComImport, Guid("6D5140C1-7436-11CE-8034-00AA006009FA"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    private interface IServiceProvider
+    {
+        void QueryService(ref Guid guidService, ref Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvObject);
+    }
+
+    [ComImport, Guid("000214E2-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    private interface IShellBrowser
+    {
+        void GetWindow(); void ContextSensitiveHelp(); void InsertMenusSB(); void SetMenuSB(); void RemoveMenusSB();
+        void SetStatusTextSB(); void EnableModelessSB(); void TranslateAcceleratorSB(); void BrowseObject();
+        void GetViewStateStream(); void GetControlWindow(); void SendControlMsg();
+        IShellView QueryActiveShellView();
+    }
+
+    [ComImport, Guid("000214E3-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    private interface IShellView
+    {
+        void GetWindow(); void ContextSensitiveHelp(); void TranslateAccelerator(); void EnableModeless();
+        void UIActivate(); void Refresh(); void CreateViewWindow(); void DestroyViewWindow(); void GetCurrentInfo();
+        void AddPropertySheetPages(); void SaveViewState(); void SelectItem();
+        void GetItemObject(uint uItem, ref Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
     }
 }
