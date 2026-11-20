@@ -17,6 +17,19 @@ import argparse, hashlib, datetime, pathlib, shutil, sys
 TEMPLATE_DIR = pathlib.Path("packaging/winget/template")
 
 
+def manifest_subdir(template_dir: pathlib.Path) -> pathlib.Path:
+    """`tsudev.SWICO` => `t/tsudev/SWICO` (quy tac cua microsoft/winget-pkgs)."""
+    ids = set()
+    for tpl in template_dir.glob("*.yaml"):
+        for line in tpl.read_text(encoding="utf-8").splitlines():
+            if line.startswith("PackageIdentifier:"):
+                ids.add(line.split(":", 1)[1].strip())
+    if len(ids) != 1:
+        raise SystemExit(f"LOI: template phai co dung MOT PackageIdentifier, thay {sorted(ids)}")
+    parts = ids.pop().split(".")
+    return pathlib.Path(parts[0][0].lower(), *parts)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--version", required=True)
@@ -35,7 +48,10 @@ def main() -> int:
 
     # Duong dan trong kho winget-pkgs duoc suy ra TU PackageIdentifier, khong
     # duoc dat tuy y: manifests/<chu-cai-dau>/<NhaPhatHanh>/<Goi>/<PhienBan>/
-    out = pathlib.Path(a.out) / "manifests" / "t" / "tsudev" / "Tsu Swico" / a.version
+    # Doc PackageIdentifier tu template - KHONG viet cung ten san pham: ban
+    # 26.11.2001 tung sinh "tsudev/Tsu Swico/" vi lan doi ten (ADR-0001) thay
+    # nham chuoi o day, trong khi dung phai la "tsudev/SWICO/".
+    out = pathlib.Path(a.out) / "manifests" / manifest_subdir(TEMPLATE_DIR) / a.version
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
