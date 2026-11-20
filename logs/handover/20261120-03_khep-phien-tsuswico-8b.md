@@ -45,8 +45,8 @@
   `http://127.0.0.1/...` hoặc `http://[::1]/...` không ghi cổng ⇒ nhận cổng bất kỳ; `localhost`/path khác ⇒ 400.
 - Đăng ký: `http://127.0.0.1/callback` VÀ `http://[::1]/callback`. P3 dùng `127.0.0.1` (ADR-0002 2.3); `[::1]` là
   đường lui nếu máy chỉ có IPv6 loopback.
-- **Còn 👤 OWNER**: chạy INSERT ở phiếu SW1 mục 5 (máy agent không có chuỗi Neon). Đo lúc ghi: IdP vẫn 400.
-  Mã P3 viết và test được với IdP giả trước; kiểm thật (303) chỉ sau INSERT.
+- **OWNER đã chạy INSERT** (20/11/2026). Đo `/oidc/auth?client_id=tsuswico`: `127.0.0.1:53123` và `:61999` ⇒ 303,
+  `[::1]:50000` ⇒ 303, `localhost:53123` ⇒ 400, path `/khac` ⇒ 400. **P3 không còn bị chặn.**
 
 ## 4. Câu lệnh khởi động phiên kế tiếp
 
