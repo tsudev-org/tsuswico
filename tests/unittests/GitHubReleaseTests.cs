@@ -90,5 +90,14 @@ public class GitHubReleaseTests
         Assert.True(GitHubReleaseParser.IsPortableAsset("tsuswico_26.8.2001_x64-portable.zip")
                  && GitHubReleaseParser.IsPortableAsset("swico-portable-26.8.18.zip"),
             "IsPortableAsset nhan ca hai dang ten");
+        // Khuon V1 (tsudev-standards VERSIONING 2.2, tu 26.11.2001): them {os}- truoc kien truc.
+        Assert.True(GitHubReleaseParser.IsInstallerAsset("tsuswico_26.11.2001_windows-x64-setup.exe")
+                 && !GitHubReleaseParser.IsInstallerAsset("tsuswico_26.11.2001_windows-x64-portable.zip"),
+            "IsInstallerAsset nhan ten khuon V1, khong nham ban portable");
+        Assert.True(GitHubReleaseParser.IsPortableAsset("tsuswico_26.11.2001_windows-x64-portable.zip"),
+            "IsPortableAsset nhan ten khuon V1");
+        Assert.True(ReleaseName.InstallerFileName(new VersionNumber(26, 11, 20)) == "tsuswico_26.11.2001_windows-x64-setup.exe"
+                 && GitHubReleaseParser.IsInstallerAsset(ReleaseName.InstallerFileName(new VersionNumber(26, 11, 20))),
+            "ten do ReleaseName sinh ra luon duoc bo doc cap nhat nhan ra");
     }
 }

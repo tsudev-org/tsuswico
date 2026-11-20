@@ -15,6 +15,8 @@ public class VersionNumberTests
     [InlineData("tsuswico_26.8.1902", 26, 8, 19, 2, "doc duoc ca TEN PHAT HANH day du, khong chi tag")]
     [InlineData("TSUSWICO_26.8.1901", 26, 8, 19, 0, "tien to ten phat hanh khong phan biet hoa thuong")]
     [InlineData("tsuswico_26.8.1901_x64-setup.exe", 26, 8, 19, 0, "doc duoc so hieu tu chinh TEN FILE CAI DAT")]
+    [InlineData("tsuswico_26.11.2001_windows-x64-setup.exe", 26, 11, 20, 0, "doc duoc TEN FILE khuon V1 (co {os}-)")]
+    [InlineData("v26.11.2001", 26, 11, 20, 0, "the khuon V1 dau tien")]
     [InlineData("26.9.0901", 26, 9, 9, 0, "26.9.0901 = ngay 9 thang 9 ban 01")]
     // --- DOC DUOC DANG CU: hai ban 26.8.18 va 26.8.18.2 DA PHAT HANH ra ngoai ---
     [InlineData("26.8.18", 26, 8, 18, 0, "van doc duoc dang cu 26.8.18")]

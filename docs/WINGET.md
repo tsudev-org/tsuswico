@@ -37,7 +37,7 @@ Sinh lại thủ công khi cần:
 ```bash
 python3 packaging/tools/make-winget-manifest.py \
     --version 26.8.1901 \
-    --installer packaging/output/tsuswico_26.8.1901_x64-setup.exe \
+    --installer packaging/output/tsuswico_26.8.1901_windows-x64-setup.exe \
     --out packaging/winget-out
 ```
 

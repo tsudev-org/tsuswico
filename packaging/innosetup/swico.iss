@@ -31,7 +31,7 @@ AppPublisher={#AppPublisher}
 AppPublisherURL=https://swico.tsudev.com
 AppSupportURL={#AppUrl}/issues
 AppUpdatesURL={#AppUrl}/releases
-VersionInfoVersion={#AppVersion}
+VersionInfoVersion={#AppVersion}.0
 VersionInfoCompany={#AppPublisher}
 VersionInfoDescription={#AppName} Setup
 VersionInfoCopyright=Copyright (C) 2026 {#AppPublisher}
@@ -67,7 +67,7 @@ OutputDir=..\output
 ;  Chuc nang tu cap nhat tim file cai dat THEO TEN, nen ten o day phai khop
 ;  voi ReleaseName.InstallerFileName trong ma nguon. Doi mot ben ma quen ben
 ;  kia thi cap nhat hong IM LANG - xem docs/VERSIONING.md.
-OutputBaseFilename=tsuswico_{#AppVersion}_x64-setup
+OutputBaseFilename=tsuswico_{#AppVersion}_windows-x64-setup
 ; Icon di kem trong repo. Neu thieu, ISCC bao loi va dung han - nen kiem tra
 ; su ton tai thay vi tin la no luon o do.
 #if FileExists(AddBackslash(SourcePath) + "..\..\assets\swico.ico")

@@ -11,9 +11,9 @@ namespace Tsudev.Audit.Core.Updates;
 /// <code>
 ///   {ten-app}_{YY}.{M}.{DD}{NN}_{arch}-setup.{ext}
 ///
-///   tsuswico_26.8.1901_x64-setup.exe   ban thu 01 ngay 19/08/2026
-///   tsuswico_26.8.1902_x64-setup.exe   ban thu 02 CUNG NGAY
-///   tsuswico_26.8.2001_x64-setup.exe   ban thu 01 ngay 20/08/2026
+///   tsuswico_26.8.1901_windows-x64-setup.exe   ban thu 01 ngay 19/08/2026
+///   tsuswico_26.8.1902_windows-x64-setup.exe   ban thu 02 CUNG NGAY
+///   tsuswico_26.8.2001_windows-x64-setup.exe   ban thu 01 ngay 20/08/2026
 /// </code>
 ///
 /// Chuoi phien ban trong ma nguon va manifest la <c>26.8.1901</c> - DONG BO voi
@@ -47,6 +47,9 @@ public static class ReleaseName
     /// <c>tsudev-swico_</c>, nen doi tien to dang moi khong lam gay duong cap nhat nao.</remarks>
     public const string AppName = "tsuswico";
 
+    /// <summary>He dieu hanh trong ten tep (tsudev-standards VERSIONING 2.2, tu 26.11.2001).</summary>
+    public const string DefaultOs = "windows";
+
     /// <summary>Kien truc mac dinh. Du an hien chi phat hanh win-x64.</summary>
     public const string DefaultArch = "x64";
 
@@ -70,17 +73,17 @@ public static class ReleaseName
         => string.Create(CultureInfo.InvariantCulture, $"v{version}");
 
     /// <summary>
-    /// Ten file cai dat, vi du <c>tsuswico_26.8.1901_x64-setup.exe</c>.
+    /// Ten file cai dat, vi du <c>tsuswico_26.8.1901_windows-x64-setup.exe</c>.
     ///
     /// Chuc nang tu cap nhat tim file cai dat THEO TEN, nen ham nay va
     /// <see cref="GitHubReleaseParser"/> phai luon noi cung mot thu tieng.
     /// </summary>
     public static string InstallerFileName(VersionNumber version, string arch = DefaultArch)
-        => string.Create(CultureInfo.InvariantCulture, $"{NamePrefix}{version}_{arch}-setup.exe");
+        => string.Create(CultureInfo.InvariantCulture, $"{NamePrefix}{version}_{DefaultOs}-{arch}-setup.exe");
 
-    /// <summary>Ten ban portable, vi du <c>tsuswico_26.8.1901_x64-portable.zip</c>.</summary>
+    /// <summary>Ten ban portable, vi du <c>tsuswico_26.8.1901_windows-x64-portable.zip</c>.</summary>
     public static string PortableFileName(VersionNumber version, string arch = DefaultArch)
-        => string.Create(CultureInfo.InvariantCulture, $"{NamePrefix}{version}_{arch}-portable.zip");
+        => string.Create(CultureInfo.InvariantCulture, $"{NamePrefix}{version}_{DefaultOs}-{arch}-portable.zip");
 
     /// <summary>
     /// Bo moi tien to duoc cong nhan khoi mot chuoi phien ban. Dung chung boi

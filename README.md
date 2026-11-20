@@ -37,14 +37,14 @@ dẫn, báo cáo mẫu xem trực tiếp trên trình duyệt.
 
 ## Đánh số phiên bản
 
-Mỗi bản phát hành mang tên `tsuswico_YY.M.DDNN_x64-setup.exe` - **CalVer**,
+Mỗi bản phát hành mang tên `tsuswico_YY.M.DDNN_windows-x64-setup.exe` - **CalVer**,
 phiên bản chính là ngày phát hành, hai chữ số cuối là **thứ tự bản trong ngày**:
 
 | Tên file cài đặt | Nghĩa |
 |---|---|
-| `tsuswico_26.8.1901_x64-setup.exe` | bản thứ **01** ngày 19/08/2026 |
-| `tsuswico_26.8.1902_x64-setup.exe` | bản thứ **02** cùng ngày 19/08/2026 |
-| `tsuswico_26.9.0301_x64-setup.exe` | bản thứ 01 ngày 03/09/2026 |
+| `tsuswico_26.8.1901_windows-x64-setup.exe` | bản thứ **01** ngày 19/08/2026 |
+| `tsuswico_26.8.1902_windows-x64-setup.exe` | bản thứ **02** cùng ngày 19/08/2026 |
+| `tsuswico_26.9.0301_windows-x64-setup.exe` | bản thứ 01 ngày 03/09/2026 |
 
 Ngày và số thứ tự đều **đệm đủ hai chữ số**. Đó không phải chuyện thẩm mỹ: thành
 phần thứ ba được đọc bằng phép chia cho 100, nên `26.9.0901` là ngày 9 bản 1, còn
@@ -65,8 +65,8 @@ Tải từ [Releases](https://github.com/tsudev-org/tsuswico/releases):
 
 | Cách | Tệp | Dùng khi |
 |---|---|---|
-| **Cài đặt** | `tsuswico_<phiên-bản>_x64-setup.exe` | Cài cố định, có mục gỡ cài đặt, hỗ trợ `/VERYSILENT` để triển khai hàng loạt |
-| **Portable** | `tsuswico_<phiên-bản>_x64-portable.zip` | Cắm USB đi từng máy - giải nén chạy thẳng, không đụng registry |
+| **Cài đặt** | `tsuswico_<phiên-bản>_windows-x64-setup.exe` | Cài cố định, có mục gỡ cài đặt, hỗ trợ `/VERYSILENT` để triển khai hàng loạt |
+| **Portable** | `tsuswico_<phiên-bản>_windows-x64-portable.zip` | Cắm USB đi từng máy - giải nén chạy thẳng, không đụng registry |
 | **Chỉ file exe** | `swico.exe` | Nhúng vào script hoặc RMM |
 
 Cả ba chứa **cùng một chương trình**; chỉ khác cách giao đến máy đích. Đối chiếu
@@ -83,7 +83,7 @@ cosign verify-blob SHA256SUMS.txt --bundle SHA256SUMS.txt.sigstore.json \
   --certificate-identity-regexp '^https://github.com/tsudev-org/tsuswico/\.github/workflows/release\.yml@' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 sha256sum -c SHA256SUMS.txt --ignore-missing          # PowerShell: Get-FileHash <tệp> -Algorithm SHA256
-gh attestation verify tsuswico_<phiên-bản>_x64-setup.exe -R tsudev-org/tsuswico
+gh attestation verify tsuswico_<phiên-bản>_windows-x64-setup.exe -R tsudev-org/tsuswico
 ```
 
 Hai bản đã phát hành (26.8.18, 26.8.18.2) chỉ có `SHA256SUMS.txt`, chưa có chữ ký. Ký mã Authenticode cho tệp `.exe`

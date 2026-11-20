@@ -6,6 +6,17 @@
 
 ## [Chưa phát hành]
 
+## [26.11.2001] - 20/11/2026
+
+Bản đầu tiên theo khuôn phát hành thống nhất của hệ TsuDEV (phiếu V1, `docs/adr/0003-khuon-phat-hanh-v1-khong-cau-noi.md`):
+thẻ `v26.11.2001`, tiêu đề `Tsu Swico 26.11.2001`, tệp `tsuswico_26.11.2001_windows-x64-setup.exe` /
+`tsuswico_26.11.2001_windows-x64-portable.zip`.
+
+> **Đang dùng 26.8.18 / 26.8.18.2:** hai bản đó không tự nhận ra khuôn số hiệu mới. Cập nhật một lần bằng
+> `winget upgrade tsudev.SWICO`, `scoop update tsuswico` hoặc tải tay; từ bản này trở đi tự cập nhật bình thường.
+
+Gồm mọi mục dưới đây (đổi tên Tsu Swico, song ngữ, `--json-only`, bộ chọn số dòng, các sửa lỗi) - tích luỹ từ sau 26.8.18.2.
+
 ### Đổi
 
 - **Sản phẩm đổi tên thành Tsu Swico** (`docs/adr/0001-ten-san-pham-tsu-swico.md`): CLI, báo cáo, bộ cài, website,
