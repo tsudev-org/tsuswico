@@ -9,8 +9,9 @@ Một sản phẩm của [TsuDEV](https://tsudev.com).
 
 **Hạng sản phẩm: C - Ngoại tuyến** (theo `.standards/docs/AUTH_AND_ACCOUNT.md`
 mục 1): mọi chức năng quét chạy trọn vẹn không cần Internet và không cần tài
-khoản; kết nối mạng duy nhất là kiểm tra phiên bản mới, tắt được bằng
-`--no-update-check`.
+khoản; khi chưa đăng nhập, kết nối mạng duy nhất là kiểm tra phiên bản mới, tắt
+được bằng `--no-update-check`. Tài khoản TsuDEV (`swico login`) là tuỳ chọn, chỉ
+để nhận quyền lợi TsuDEV Pro.
 
 [English](README.en.md) · **Tiếng Việt**
 
@@ -140,7 +141,17 @@ swico.exe --lang en                Giao diện tiếng Anh (auto|vi|en)
 swico.exe --log-file swico.jsonl   Ghi nhật ký có cấu trúc để gửi hỗ trợ
 swico.exe --version                Xem phiên bản
 swico.exe --help                   Xem toàn bộ tham số
+
+swico.exe login                    Đăng nhập tài khoản TsuDEV (không bắt buộc)
+swico.exe account                  Xem tài khoản, gói Pro, số thiết bị
+swico.exe logout                   Đăng xuất và xoá dữ liệu tài khoản trên máy
 ```
+
+**Tài khoản TsuDEV (không bắt buộc).** `swico login` mở trình duyệt mặc định tới tsudev.com (OIDC + PKCE, trang nhận
+kết quả là cổng tạm `127.0.0.1` trên chính máy); mật khẩu chỉ nhập trên trang tsudev.com. Refresh token lưu mã hoá
+DPAPI trong `%LOCALAPPDATA%\tsudev\tsuswico\`. Ba lệnh này chỉ chạy tương tác - không dùng cùng `--silent`/`--json-only`,
+và lần quét `--silent`/`--json-only` không bao giờ gọi tsudev.com dù đã đăng nhập. Không đăng nhập thì không mất chức
+năng nào. Danh sách kết nối và tệp: [`PRIVACY.md`](PRIVACY.md).
 
 **Ngôn ngữ** theo thứ tự ưu tiên: `--lang` ▸ biến môi trường `TSUSWICO_LANG` ▸ ngôn ngữ Windows (tiếng Việt ⇒
 `vi`, mọi ngôn ngữ khác ⇒ `en`). Áp cho CLI, hộp thoại cập nhật, báo cáo HTML/XLSX và trang tổng hợp. Khóa JSON
@@ -278,12 +289,15 @@ Chi tiết: [`docs/UPDATES.md`](docs/UPDATES.md).
 
 ## Quyền riêng tư
 
-**Không dữ liệu nào của máy được quét rời khỏi máy.** Công cụ thực hiện đúng
+**Không dữ liệu nào của máy được quét rời khỏi máy.** Khi chưa đăng nhập, công cụ thực hiện đúng
 **một** kết nối mạng - kiểm tra phiên bản mới - và kết nối đó chỉ để lộ địa chỉ
 IP cùng số hiệu phiên bản, như mọi yêu cầu HTTP. Tắt bằng `--no-update-check`.
+Sau khi bạn tự `swico login`, có thêm các kết nối tới tsudev.com để lấy quyền lợi Pro (token + mã cài đặt ngẫu nhiên,
+không kèm dữ liệu quét); `swico logout` thu hồi và xoá hết.
 
-Toàn bộ mã chạm tới mạng nằm gọn trong một file để bạn tự kiểm chứng:
-`src/Tsudev.Audit.Windows/UpdateAdapters.cs`. Chi tiết: [`PRIVACY.md`](PRIVACY.md).
+Toàn bộ mã chạm tới mạng nằm trong hai file để bạn tự kiểm chứng:
+`src/Tsudev.Audit.Windows/UpdateAdapters.cs` và `src/Tsudev.Audit.Core/Pro/ProHttp.cs`. Chi tiết:
+[`PRIVACY.md`](PRIVACY.md); mô hình đe doạ: [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md).
 
 ## Kiến trúc
 
@@ -363,7 +377,11 @@ trên máy không có mạng. Chi tiết: [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY
 | Cổng kiểm tra cập nhật (gồm nhánh bản portable) | ✅ 9 ca |
 | Đọc bản phát hành GitHub + đối chiếu mã băm | ✅ 8 ca, gồm nhận **cả hai** dạng tên tệp |
 | Bộ luật tách rời (nạp, kiểm tra, quay về mặc định) | ✅ Đã test |
-| CLI parse tham số | ✅ 12 ca |
+| CLI parse tham số | ✅ 12 ca (+ 11 ca lệnh tài khoản) |
+| Đăng nhập OIDC/PKCE trên IdP giả, loopback thật, refresh xoay vòng, đăng xuất | ✅ 24 ca |
+| Kiểm id_token (alg, kid, chữ ký, iss, aud/azp, exp, iat, nonce) | ✅ 9 ca |
+| Hạng C: chưa đăng nhập ⇒ 0 kết nối, 0 tệp | ✅ 3 ca |
+| **`swico login` trên Windows thật** (DPAPI, trình duyệt không nâng quyền, tsudev.com production) | ⚠️ **CHƯA** - cần người, `docs/WINDOWS-VERIFICATION.md` mục P |
 | Mã thoát (gồm ca hồi quy Office chưa kích hoạt) | ✅ 4 ca |
 | Tiến trình quét: thứ tự bước, huỷ giữa chừng, mã 130 | ✅ 9 ca |
 | **Con quay & màu trên terminal thật** | ⚠️ **CHƯA tự động hoá** - cần mắt người |

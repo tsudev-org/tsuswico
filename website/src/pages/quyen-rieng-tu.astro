@@ -3,6 +3,6 @@ import TaiLieu from '../components/TaiLieu.astro';
 import { renderMd } from '../lib/noi-dung';
 const { html } = renderMd('PRIVACY.md');
 ---
-<TaiLieu tieuDe="Quyền riêng tư" moTa="Tuyên bố quyền riêng tư của Tsu Swico: dữ liệu nào được đọc, báo cáo được ghi ở đâu, kết nối mạng duy nhất để làm gì và cách tắt hẳn kết nối đó." duongDan="/quyen-rieng-tu/" nguon="PRIVACY.md">
+<TaiLieu tieuDe="Quyền riêng tư" moTa="Quyền riêng tư của Tsu Swico: dữ liệu nào được đọc, báo cáo ghi ở đâu, kết nối mạng nào xảy ra khi chưa và khi đã đăng nhập, cách tắt." duongDan="/quyen-rieng-tu/" nguon="PRIVACY.md">
   <Fragment set:html={html} />
 </TaiLieu>

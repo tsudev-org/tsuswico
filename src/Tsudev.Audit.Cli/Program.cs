@@ -22,7 +22,7 @@ namespace Tsudev.Audit.Cli;
 /// Diem vao DUY NHAT - thay the ca hai file Run-License-Audit.bat va
 /// Run-Hardware-Inventory.bat bang mot chuong trinh voi tham so --scope.
 /// </summary>
-public static class Program
+public static partial class Program
 {
     // Ma thoat nay o Tsudev.Audit.Core.Cli.ExitCodes de kiem thu duoc tren
     // moi nen tang. Cac ten duoi day chi la but danh cho de doc.
@@ -88,6 +88,9 @@ public static class Program
             return ExitFatal;
         }
 
+        // login/logout/account: khong quet, khong kiem tra cap nhat (ADR-0002 muc 2.3).
+        if (opts.Command != CliCommand.Scan) return RunAccountCommand(opts);
+
         // --json-only: stdout danh rieng cho tai lieu JSON. Moi dong thong bao,
         // tien trinh, canh bao di sang stderr - nho vay `swico --json-only > a.json`
         // luon ra mot tep JSON hop le, con nguoi van thay tien trinh tren man hinh.
@@ -102,6 +105,11 @@ public static class Program
         // day la mot cong doan rieng va de doc lai khi ra soat bao mat.
         var gate = CheckForUpdate(opts);
         if (gate is not null) return gate.Value;
+
+        // Thong bao "nhieu thiet bi chua co Pro" (ADR-0002 muc 2.4) - cung cho voi hop thoai cap nhat,
+        // TRUOC khi quet. --silent/--json-only (RMM/GPO, khong ai xem) MUST NOT hien; chua dang nhap
+        // thi ShowProNotice tra ve ngay, khong mang, khong tep.
+        if (!opts.Silent && !opts.JsonOnly) ShowProNotice(opts);
 
         using var cancel = new CancellationTokenSource();
         using var progress = new ConsoleProgressReporter();

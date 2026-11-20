@@ -82,8 +82,17 @@ public static class ExitCodes
 
 public enum AuditScope { All, License, Hardware }
 
+/// <summary>
+/// Lenh cua mot lan chay. <see cref="Scan"/> la mac dinh (hanh vi cu). Ba lenh tai khoan TsuDEV
+/// (ADR-0002 muc 2.3) chi chay TUONG TAC: chung mo trinh duyet / in trang thai cho nguoi xem.
+/// </summary>
+public enum CliCommand { Scan, Login, Logout, Account }
+
 public sealed class CliOptions
 {
+    /// <summary>Lenh: tu dau tien <c>login</c>/<c>logout</c>/<c>account</c>, khong co thi quet.</summary>
+    public CliCommand Command { get; private set; } = CliCommand.Scan;
+
     public AuditScope Scope { get; private set; } = AuditScope.All;
     public string? OutputRoot { get; private set; }
     public bool Silent { get; private set; }
@@ -136,9 +145,28 @@ public sealed class CliOptions
     public static CliOptions Parse(string[] args)
     {
         var o = new CliOptions();
-        for (int i = 0; i < args.Length; i++)
+        var start = 0;
+        if (args.Length > 0)
+        {
+            o.Command = args[0].ToLowerInvariant() switch
+            {
+                "login" => CliCommand.Login,
+                "logout" => CliCommand.Logout,
+                "account" => CliCommand.Account,
+                _ => CliCommand.Scan,
+            };
+            if (o.Command != CliCommand.Scan) start = 1;
+        }
+
+        for (int i = start; i < args.Length; i++)
         {
             var a = args[i].ToLowerInvariant();
+            if (o.Command != CliCommand.Scan && !IsAccountOption(a))
+                throw new ArgumentException(a is "--silent" or "-s" or "--json-only"
+                    ? Loc.T($"'{args[0]}' chỉ chạy ở chế độ tương tác - không dùng cùng {args[i]}.",
+                            $"'{args[0]}' runs interactively only - it cannot be used with {args[i]}.")
+                    : Loc.T($"Tham số '{args[i]}' không dùng được với '{args[0]}'.",
+                            $"Option '{args[i]}' cannot be used with '{args[0]}'."));
             switch (a)
             {
                 case "-h" or "--help" or "/?": o.ShowHelp = true; break;
@@ -197,6 +225,12 @@ public sealed class CliOptions
         return o;
     }
 
+    /// <summary>Tham so hop le sau <c>login</c>/<c>logout</c>/<c>account</c>: ngon ngu, chi tiet, nhat ky, tro giup.</summary>
+    private static bool IsAccountOption(string a)
+        => a is "-h" or "--help" or "/?" or "--verbose" or "-v" or "--lang" or "--log-file"
+           || a.StartsWith("--lang=", StringComparison.Ordinal)
+           || !a.StartsWith('-');   // gia tri cua --lang/--log-file
+
     public static void PrintUsage() => Console.WriteLine(UsageText);
 
     /// <summary>Toan van phan tro giup - tach ra de kiem thu duoc.</summary>
@@ -207,6 +241,13 @@ Tsu Swico - Kiểm tra bản quyền Windows & cấu hình phần cứng
 
 CÁCH DÙNG:
   swico.exe [tham số]
+  swico.exe login | logout | account
+
+TÀI KHOẢN TSUDEV (KHÔNG BẮT BUỘC - bản miễn phí dùng đủ mọi chức năng quét):
+  login                           Đăng nhập tsudev.com bằng trình duyệt của máy
+  account                         Xem tài khoản, gói TsuDEV Pro, số thiết bị
+  logout                          Đăng xuất và xoá dữ liệu tài khoản trên máy này
+  Chỉ chạy ở chế độ tương tác (không dùng cùng --silent/--json-only).
 
 THAM SỐ:
   --scope <all|license|hardware>  Phạm vi quét (mặc định: all - quét cả hai)
@@ -238,8 +279,9 @@ KIỂM TRA CẬP NHẬT:
   Khi khởi động, công cụ hỏi GitHub xem đã có phiên bản mới chưa. Nếu có, phải
   cập nhật trước khi quét - để kết quả dựa trên bộ luật phát hiện mới nhất.
 
-  Đây là lần DUY NHẤT công cụ kết nối Internet. Không có dữ liệu nào của máy
-  được gửi đi. Xem PRIVACY.md.
+  Khi CHƯA đăng nhập, đây là lần DUY NHẤT công cụ kết nối Internet. Không có
+  dữ liệu nào của máy được gửi đi. Đăng nhập thêm các kết nối tới tsudev.com
+  để lấy quyền lợi TsuDEV Pro - xem PRIVACY.md.
 
   Nếu KHÔNG kiểm tra được (mất mạng, tường lửa chặn), công cụ vẫn quét bình
   thường và ghi một ghi chú vào báo cáo. Chặn ở đây sẽ làm công cụ vô dụng
@@ -283,6 +325,13 @@ Tsu Swico - Windows license & hardware configuration audit
 
 USAGE:
   swico.exe [options]
+  swico.exe login | logout | account
+
+TSUDEV ACCOUNT (OPTIONAL - the free edition has every scanning feature):
+  login                           Sign in to tsudev.com with this computer's browser
+  account                         Show the account, TsuDEV Pro plan and device count
+  logout                          Sign out and delete account data on this computer
+  Interactive only (cannot be combined with --silent/--json-only).
 
 OPTIONS:
   --scope <all|license|hardware>  What to scan (default: all - both)
@@ -314,8 +363,9 @@ UPDATE CHECK:
   On start-up the tool asks GitHub whether a newer version exists. If so, it
   must be updated before scanning - so results use the latest detection rules.
 
-  This is the ONLY time the tool connects to the Internet. No data about the
-  machine is sent. See PRIVACY.md.
+  While NOT signed in, this is the ONLY time the tool connects to the Internet.
+  No data about the machine is sent. Signing in adds connections to tsudev.com
+  to fetch TsuDEV Pro entitlements - see PRIVACY.md.
 
   If the check FAILS (offline, firewall), the tool still scans normally and
   adds a note to the report. Blocking here would make the tool useless exactly
