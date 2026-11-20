@@ -564,7 +564,8 @@ public static partial class Program
 
     private static void TryOpen(string path)
     {
-        try { Process.Start(new ProcessStartInfo(path) { UseShellExecute = true }); }
+        // Mo o quyen THUONG qua explorer cua desktop (swico chay elevated) - xem SystemBrowser.
+        try { SystemBrowser.OpenLocalFile(path); }
         catch { /* khong mo duoc trinh duyet KHONG phai loi nghiem trong */ }
     }
 

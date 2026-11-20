@@ -15,7 +15,8 @@
   cùng lúc; quyền lợi Pro lấy kèm `X-Tsu-Installation`, đệm ≤ 7 ngày, mạng lỗi ⇒ coi là miễn phí. Thông báo "nhiều
   thiết bị chưa có Pro" nay hiện ở đầu lần quét tương tác (không bao giờ ở `--silent`/`--json-only`). **Chưa đăng
   nhập thì không thêm kết nối mạng hay tệp nào** (hạng C, có test canh). Không thêm gói NuGet (DPAPI qua
-  `crypt32`). `PRIVACY.md` liệt kê đủ các kết nối mới (+ bản tiếng Anh `PRIVACY.en.md`), `docs/THREAT_MODEL.md`.
+  `crypt32`). Trình duyệt (đăng nhập và báo cáo HTML sau khi quét) mở ở quyền **thường** qua explorer của desktop,
+  dù swico chạy quyền quản trị. `PRIVACY.md` liệt kê đủ các kết nối mới (+ bản tiếng Anh `PRIVACY.en.md`), `docs/THREAT_MODEL.md`.
 
 - **Ảnh trình thuật sĩ bộ cài cho màn hình HiDPI** (QU-STD-BRAND, `BRAND_ASSETS.md` mục 12/14): 5 cỡ ảnh lớn + 4 cỡ ảnh
   nhỏ, Inno Setup tự chọn cỡ khớp - hết mờ ở mức phóng 125-200%. Icon exe và icon bộ cài nay là CÙNG một tệp

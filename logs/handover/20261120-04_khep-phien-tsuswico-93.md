@@ -36,13 +36,24 @@
    không có liên kết mua.
 4. P4 ⛔ PRO-D (`TsuSync` .NET). QU-2 ca ngày một chữ số ở bản đầu tháng 12.
 
+## 3b. Cập nhật sau khép phiên (20/11/2026, cùng phiên - chủ dự án ủy quyền chạy tự động)
+
+- **Chạy thật mục P trên Windows 11 26200** (máy chủ dự án, agent điều khiển qua WSL `powershell.exe`, người bấm
+  UAC + đăng nhập tsudev.com): P1-P6, P8, P9, P11, P12 ✅; P7, P10 chưa làm. Kết quả ghi trong
+  `docs/WINDOWS-VERIFICATION.md` mục P.
+- **Lỗi thật tìm được (P2):** `explorer.exe <url>` từ tiến trình nâng quyền mở thư mục Documents, không mở trình duyệt.
+  Sửa: `SystemBrowser` gọi `ShellExecute` qua COM `ShellWindows` của desktop (quyền thường), thất bại ⇒ in liên kết,
+  không lùi về trình duyệt nâng quyền. Báo cáo HTML sau khi quét cũng mở theo đường này (trước: ShellExecute nâng
+  quyền). Đo lại: Edge mở trang đăng nhập + báo cáo, mọi `msedge` Elevated = 0.
+- Chữ `?` trong cửa sổ kiểm thử là do đường ống PowerShell 5.1 (bảng mã 437) của kịch bản, không phải của swico.
+- Mục 3 việc 1 coi như xong trừ P7/P10; việc 3 (trước phát hành) còn câu chữ 7.5.
+
 ## 4. Câu lệnh khởi động phiên kế tiếp
 
 ```
 Bạn là agent-tsuswico. Đọc ~/.claude/CLAUDE.md, AGENTS.md, logs/STATE.md và
 logs/handover/20261120-04_khep-phien-tsuswico-93.md (mục 2-3). Khởi động: ListAgents, git pull.
-Việc: (1) nếu tôi gửi kết quả docs/WINDOWS-VERIFICATION.md mục P (swico login/account/logout trên Windows thật)
-thì ghi vào bảng, mục lệch thì sửa + thêm test hồi quy, một PR, CI xanh thì gộp; (2) kiểm
+Việc: (1) mục P đã chạy thật (mục 3b) - còn P7 (ngoại tuyến) và P10 (tài khoản Windows thứ hai) nếu tôi làm được; (2) kiểm
 microsoft/winget-pkgs#484563: gộp ⇒ WINGET-2 ✅; vẫn Validation-Executable-Error thì xử lý theo docs/WINGET.md
 (báo động nhầm mã 20, KHÔNG chạy lại release.yml, bình luận công khai chỉ khi tôi đồng ý); (3) kiểm tsudev-standards
 đã có v3.9.2 (câu chữ thuê bao kênh web 7.5) chưa - có thì sync và in điều khoản trước liên kết mua trong swico account.

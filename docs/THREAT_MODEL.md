@@ -31,7 +31,7 @@ qua TLS; (C) cổng loopback - **mọi tiến trình trên máy** đều gọi t
 | T5 | **Chặn mã ủy quyền trên loopback** (I): tiến trình khác nghe trộm/đọc URL callback | PKCE S256 (verifier 256 bit chỉ ở trong bộ nhớ) - mã vô dụng nếu thiếu verifier; mã dùng một lần, sống 60 s | `PKCE_S256_dung_vector_RFC_7636_*`, IdP giả kiểm verifier |
 | T6 | **Tiêm phản hồi giả vào cổng loopback** (S): tiến trình khác gọi `/callback?code=<mã của kẻ tấn công>` để đăng nhập nạn nhân vào tài khoản lạ (login CSRF) | `state` 256 bit so thời gian hằng số TRƯỚC mọi thứ; lặp tham số ⇒ sai dạng; `nonce` trong id_token buộc vào đúng lượt; `iss` (RFC 9207) phải là `https://tsudev.com/oidc`. Đường khác `/callback` ⇒ 404 và chờ tiếp; kết nối treo bị cắt sau 10 s; đầu yêu cầu ≤ 8 KB | `State_sai_*`, `Thieu_state_*`, `Tham_so_iss_khac_*`, `Nonce_sai_*`, `Callback_lap_tham_so_*`, `Duong_khac_callback_*` |
 | T7 | **Lẫn IdP / giả mạo discovery** (S) | Endpoint ghi cứng (không đọc discovery lúc chạy), chỉ `https://tsudev.com`, `HttpClient` KHÔNG theo chuyển hướng. id_token: chỉ ES256, `iss`, `aud` (mảng nhiều phần tử ⇒ `azp`), `exp`/`iat` lệch ≤ 5 phút | `IdTokenValidatorTests`, `Diem_cuoi_production_*` |
-| T8 | **Trình duyệt chạy quyền quản trị** (E): swico.exe đã nâng quyền, ShellExecute URL sẽ mở trình duyệt nâng quyền | Giao URL cho `explorer.exe` (shell không nâng quyền mở trình duyệt mặc định); chỉ nhận URL `https`. Không WebView | ⚠️ cần người: `docs/WINDOWS-VERIFICATION.md` P3 |
+| T8 | **Trình duyệt chạy quyền quản trị** (E): swico.exe đã nâng quyền, ShellExecute URL sẽ mở trình duyệt nâng quyền | Nhờ explorer của desktop (không nâng quyền) gọi `ShellExecute` qua COM `ShellWindows` ⇒ `IShellBrowser` ⇒ `IShellView` ⇒ `IShellDispatch2`; thất bại ⇒ in liên kết, KHÔNG lùi về ShellExecute nâng quyền; chỉ nhận URL `https`. Không WebView. Báo cáo HTML sau khi quét cũng mở theo đường này. (`explorer.exe <url>` - cách đầu tiên - đo SAI trên Windows thật: mở thư mục Documents) | ✅ đo 20/11/2026 Win 11: Edge Elevated = 0 (`WINDOWS-VERIFICATION` P2-P3) |
 | T9 | **Liệt kê / đánh dấu thiết bị** (I): dùng mã cài đặt để theo dấu máy | Mã ngẫu nhiên 128 bit, KHÔNG từ MAC/serial/mã sản phẩm dù app đọc được; chỉ sinh khi đăng nhập; chỉ gửi trong `X-Tsu-Installation` tới `/api/me/entitlements`; máy chủ lưu HMAC, JWS chỉ trả số đếm; `logout` xoá mã | `InstallationIdTests`, `Dang_nhap_thanh_cong_*` (header đúng mã) |
 | T10 | **Rò mã cài đặt / token qua nhật ký** (I) | `--log-file` chỉ ghi trạng thái (`pro.login status=...`), không ghi token, mã, URL có `code`. URL ủy quyền in ra màn hình chỉ chứa `state`/`nonce`/challenge (không bí mật sau khi dùng) | Rà mã `Program.Pro.cs` |
 | T11 | **Gọi mạng ngầm khi chưa đăng nhập** (I, vi phạm hạng C) | Mọi đường trừ `login` kiểm `HasSession` trước khi chạm `ProHttp`; đọc không tạo tệp; `--silent`/`--json-only` không bao giờ gọi tsudev.com | `ProOfflineGuardTests` (bộ xử lý HTTP ném lỗi), CI Windows "Lenh tai khoan khi chua dang nhap" |
@@ -44,7 +44,7 @@ qua TLS; (C) cổng loopback - **mọi tiến trình trên máy** đều gọi t
    mật; thiệt hại: quyền lợi + đếm thiết bị, không có dữ liệu người dùng phía máy chủ ở P3.
 2. Kỹ thuật viên chạy swico bằng tài khoản quản trị khác (UAC "over-the-shoulder"): token nằm trong
    `%LOCALAPPDATA%` của tài khoản quản trị đó, không phải của người đang ngồi máy - đúng hành vi DPAPI CurrentUser.
-3. `explorer.exe <url>` hạ quyền là hành vi của shell Windows, chưa đo trên Windows thật (T8).
+3. Mở trình duyệt ở quyền thường cần explorer.exe đang chạy làm shell (máy không có desktop/explorer thay thế ⇒ người dùng tự dán liên kết). Chưa đo ca Edge chưa chạy sẵn (T8).
 
 ## 4. Phiếu rà soát bảo mật P3 (trước khi phát hành)
 
@@ -52,6 +52,6 @@ qua TLS; (C) cổng loopback - **mọi tiến trình trên máy** đều gọi t
 - [x] Client công khai: không secret nào trong exe (`token_endpoint_auth_method: none`)
 - [x] Mọi kết nối mới liệt kê trong `PRIVACY.md` / `PRIVACY.en.md`, nêu rõ chỉ sau khi đăng nhập
 - [x] Test hạng C + IdP giả, không test nào gọi `tsudev.com`
-- [ ] Chạy thật trên Windows: `docs/WINDOWS-VERIFICATION.md` mục P (cần người)
+- [x] Chạy thật trên Windows 11 với tsudev.com production: P1-P6, P8, P9, P11, P12 đạt (20/11/2026); P7, P10 chưa làm
 - [ ] Điều khoản thuê bao 7.5 trước liên kết mua trong `swico account` - chờ câu chữ kênh web (ADR-0002 mục 2.5); P3
       **chưa in liên kết mua** nên chưa vi phạm

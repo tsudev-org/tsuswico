@@ -49,7 +49,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       HẾT việc (NativeAOT chỉ là cân nhắc, `docs/STATE.md` mục 3.5 mục 5).
 - [ ] **PRO1** 🔶 P1 ✅ P2 ✅ (#44). **P3 + P5** ✅ #51 `a7cbf1d` 20/11/2026: `swico login|logout|account`, DPAPI,
       quyền lợi + `X-Tsu-Installation`, ProNoticePrompt nối `MainCore`, PRIVACY vi/en + `docs/THREAT_MODEL.md`; 334 PASS.
-      Còn 👤 chạy thật Windows `docs/WINDOWS-VERIFICATION.md` mục P TRƯỚC khi phát hành; câu chữ 7.5 (v3.9.2) cho liên
+      Mục P chạy thật Win 11 + tsudev.com production ✅ (trừ P7/P10) - tìm + sửa lỗi mở trình duyệt khi nâng quyền; câu chữ 7.5 (v3.9.2) cho liên
       kết mua. P4 ⛔ PRO-D (`TsuSync` .NET). Phiếu `logs/handover/20261119-PRO1_*.md` mục 4.
 - [x] **3.6** ✅ thay bằng `26.11.2001` (ADR-0003). Dòng cũ: Quyết định có phát hành `26.8.1901` không - **đọc mục 4.7 trước**
 - [x] **QU-6** ✅ S007 - tự giải theo bộ quy ước v3.2.0 (`BRAND_ASSETS.md`): wordmark lấy token, xem `docs/STATE.md` mục S007. Dòng cũ: ⛔ Quyết có đưa **4 sắc chữ ký thương hiệu** `tsudev` vào
