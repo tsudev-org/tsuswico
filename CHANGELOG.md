@@ -8,6 +8,11 @@
 
 ### Thêm
 
+- **TsuDEV Pro kỳ 1 năm: nhắc gia hạn và báo hết kỳ** (bộ quy ước v4.0.0, PRODUCT_POLICY 7.5-7.6, phiếu `20261120-PRO2`).
+  Còn ≤ 7 ngày: mỗi lần chạy tương tác hiện "Gia hạn TsuDEV Pro" ([1] mở `tsudev.com/pro?app=tsuswico`, phím khác bỏ
+  qua); hết kỳ: báo một lần. `swico account` khi chưa có Pro in điều khoản "490.000 ₫ cho 1 năm, KHÔNG tự gia hạn..."
+  trước liên kết mua. Không bao giờ ở `--silent`/`--json-only`, không đổi mã thoát, không thêm kết nối mạng.
+
 - **Tài khoản TsuDEV, không bắt buộc: `swico login` / `account` / `logout`** (PRO1 P3, ADR-0002 mục 2.3-2.4). Đăng
   nhập bằng trình duyệt hệ thống (OIDC Authorization Code + PKCE S256, `state`, `nonce`, loopback
   `http://127.0.0.1:<cổng ngẫu nhiên>/callback`, lùi về `[::1]`), id_token kiểm ES256 theo JWKS; refresh token lưu

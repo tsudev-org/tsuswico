@@ -110,7 +110,7 @@ Chỉ sau khi đăng nhập, trong `%LOCALAPPDATA%\tsudev\tsuswico\` của tài 
 | `account.json` | Mã tài khoản TsuDEV (`sub`) và thời điểm đăng nhập - không email, không tên |
 | `entitlement.jws`, `jwks.json` | Quyền lợi đã ký (hết hạn tối đa sau 7 ngày) và khoá công khai để kiểm nó khi ngoại tuyến |
 | `installation-id` | Mã cài đặt (xem trên) |
-| `state.json` | Lần cuối hiện thông báo "nhiều thiết bị chưa có Pro" |
+| `state.json` | Lần cuối hiện thông báo "nhiều thiết bị chưa có Pro"; hạn Pro máy này đã thấy và hạn đã báo "hết kỳ" (để nhắc gia hạn / báo hết kỳ đúng một lần) |
 
 Không lưu mật khẩu. Không ghi registry.
 
