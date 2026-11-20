@@ -82,4 +82,9 @@ Tám kiểu đặt thẻ cùng tồn tại, khó so sánh/đối chiếu phiên 
 
 ## 6. Kết quả xử lý (mỗi repo điền vào bản sao của mình)
 
--
+- 20/11/2026 - tsuswico-68: **Đã đọc. XONG.** PR tsuswico#40 (khuôn tên tệp + ADR-0003), thẻ đầu tiên theo khuôn mới
+  **`v26.11.2001`**, Release "Tsu Swico 26.11.2001" (tệp `tsuswico_26.11.2001_windows-x64-{setup.exe,portable.zip}`,
+  SHA256SUMS + Sigstore bundle + provenance - `gh attestation verify` đạt). Mục 3.2: updater 26.8.18/26.8.18.2 KHÔNG đọc
+  được `v26.11.2001` (ngày 2001 > 31) ⇒ chủ dự án chọn **không cầu nối**, lý do ở `docs/adr/0003-*`. Đồng bộ cùng lúc:
+  release.yml, Inno (`VersionInfoVersion` = `{v}.0`), `packaging/package.json`, mẫu winget, website (deploy `3efeca7e`),
+  README vi/en, scoop-bucket#25 (gộp; cài thử thật xanh). CHƯA: PR winget-pkgs cho 26.11.2001 (manifest có trong Release).

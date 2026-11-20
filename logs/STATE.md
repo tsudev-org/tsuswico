@@ -1,8 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp (phiếu toàn hệ 20261117-P2):** đọc `~/projects/logs/handover/20261117-P2_ke-hoach-phan-phoi-tin-cay-da-nen-tang.md` hàng 6 (`tsuswico`) ở mục 3
-> + `.standards/docs/DISTRIBUTION_TRUST.md` (chuẩn v3.7.0) + `.standards/docs/VERSIONING.md` mục 2. Khuôn thẻ/tên tệp mới chỉ áp
-> cho bản phát hành KẾ TIẾP, đọc mục 2.4 (updater đã cài) trước khi đổi.
+> **Phiên kế tiếp:** đọc `logs/handover/20261120-01_khep-phien-tsuswico-68.md` mục 3-4 (WINGET-2, PRO1 P2).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
@@ -19,8 +17,8 @@
 > **`docs/STATE.md` thắng**. File này chỉ trỏ tới đó, không chép lại nội dung
 > (`AGENTS.md` mục 1: mỗi tri thức ghi một lần duy nhất).
 
-- **Phiên gần nhất:** S008 (tsudev-swico-34) - 16/11/2026
-- **Bàn giao gần nhất:** `logs/handover/20261116-01_khep-phien-S008.md`
+- **Phiên gần nhất:** tsuswico-68 - 20/11/2026
+- **Bàn giao gần nhất:** `logs/handover/20261120-01_khep-phien-tsuswico-68.md`
 
 ## Hàng đợi task (làm từ trên xuống)
 
@@ -29,7 +27,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 > **Việc làm được ngay, không cần ai** (thứ tự: phiếu `20261110-01` mục 1c): ~~`QU-7`~~ ✅, ~~`QU-STD-TABLE`~~ ✅, `3.5` (còn logging), `QU-STD-BRAND`. Mọi việc
 > còn lại đều chặn ở người dùng hoặc bên ngoài - xem cột lý do.
 
-- [ ] **QU-2** ⛔ Nhờ người dùng kiểm **Inno Setup** biên dịch được với
+- [ ] **QU-2** 🔶 20/11/2026: release.yml (runner Windows) biên dịch Inno với `VersionInfoVersion=26.11.2001.0` THÀNH CÔNG. Còn ca ngày một chữ số (`26.12.0101.0`) - tự kiểm ở bản đầu tháng 12. Dòng cũ: Nhờ người dùng kiểm **Inno Setup** biên dịch được với
       `VersionInfoVersion=26.9.0901` (ngày một chữ số) - mục **F7/F8** trong
       `docs/WINDOWS-VERIFICATION.md`. **Rủi ro kỹ thuật còn lại duy nhất** của
       việc đổi quy ước; phía .NET đã đo xong, phía Inno Setup thì chưa.
@@ -38,7 +36,9 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - [x] **3.1** ✅ PR winget #419878 đã MERGE (`tsudev.SWICO` 26.8.18.2 trên winget) - đo 16/11/2026.
 - [x] **XM-2.3** ✅ 17/11/2026 (phiên tsudev-27): hồ sơ [16837](https://www.bestpractices.dev/projects/16837) passing 100% (`docs/best-practices.json`; `dynamic_analysis` Unmet trung thực). Kèm #27 (ghim SHA 16 action, quyền token, Dependabot, SECURITY.md, CONTRIBUTING.md, mẫu issue), bật CodeQL default setup, #28 sửa 2 cảnh báo CodeQL high ở website.
 - [x] **TEN-1** ✅ Thư mục cục bộ đã đổi `~/projects/tsudev-swico` → `~/projects/tsuswico` (16/11/2026, phiên S008, chủ dự án cho phép làm trong phiên).
-- [ ] **TEN-2 / V1** 🔶 20/11/2026: mã + tài liệu khuôn mới (`tsuswico_{v}_windows-x64-*`, tiêu đề `Tsu Swico {v}`) trong PR `feat/v1-khuon-ten-tep-moi`; phát hành `v26.11.2001` + Scoop - xem mục Đã hoàn thành. Dòng cũ: Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
+- [x] **TEN-2 / V1** ✅ 20/11/2026: `v26.11.2001` phát hành theo khuôn mới (#40, ADR-0003), Scoop `tsuswico` + `tsudev-swico` (scoop-bucket#25), attest đạt. Còn: PR winget-pkgs 26.11.2001 (mục WINGET-2 dưới). Dòng cũ: Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
+- [ ] **WINGET-2** ⬜ Nộp PR `microsoft/winget-pkgs` cho `tsudev.SWICO` 26.11.2001 từ `winget-manifest-26.11.2001.zip`
+      của Release (`docs/WINGET.md`). Việc công khai ở repo bên thứ ba ⇒ hỏi chủ dự án trước khi mở PR.
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
 - [ ] **3.4** ⛔ Cấu hình SignPath sau khi được duyệt - chờ bên ngoài
@@ -76,6 +76,9 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 20/11/2026 - **tsuswico-68 (tiếp):** #39 PRO1 P1 (kiểm kê + ADR-0002 + v3.9.1); #40 khuôn V1 + **phát hành
+  `v26.11.2001`** (ADR-0003, không cầu nối) + scoop-bucket#25 + website `3efeca7e`; #41 AN1 (lock NuGet, ghim SDK,
+  cổng lỗ hổng NuGet). Bàn giao: `logs/handover/20261120-01_khep-phien-tsuswico-68.md`.
 - 20/11/2026 - **tsuswico-68:** #37 gộp (`2bf3b49`) - **T3** song ngữ vi/en theo hệ thống (`--lang`, `TSUSWICO_LANG`),
   `--json-only`, căn cột tiến trình; website deploy `54039846`; README vi/en + CHANGELOG. Phiếu T3 toàn hệ ghi dòng.
 
@@ -133,6 +136,9 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
   được (tham số đổi mỗi request); thêm Worker sinh nonce cho mọi site tĩnh tốn công và tốn lượt gọi. Turnstile của
   tsudev.com độc lập, không bị ảnh hưởng. Qua API `PUT /zones/{id}/bot_management`; ảnh chụp trước/sau chỉ khác đúng
   trường `enable_js`. Muốn bật lại Bot Fight Mode thì phải bật lại `enable_js` - khi đó lỗi console CSP quay lại.
+- 20/11/2026 - **ADR-0003: khuôn phát hành V1 từ `v26.11.2001`, KHÔNG bản cầu nối** (chủ dự án chọn trong phiên).
+  Bản 26.8.18/26.8.18.2 cập nhật một lần qua winget/Scoop/tải tay.
+- 20/11/2026 - **ADR-0002: Pro = đồng bộ/sao lưu báo cáo qua TsuDEV Sync**; miễn phí giữ nguyên, không thêm kết nối mạng.
 - 16/11/2026 - **ADR-0001: tên Tsu Swico / `tsuswico`** (chủ dự án). Giữ `swico.exe`, winget `tsudev.SWICO`, tên miền.
   Tên `tsudev-swico` (org) và `swico` (tsudev-tsudev) cấm tạo lại.
 
