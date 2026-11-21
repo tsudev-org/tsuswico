@@ -446,6 +446,7 @@ public sealed class HtmlReportRenderer
              font-family:var(--font-sans);font-size:var(--fs-body-web);line-height:var(--lh-body)}
         .wrap{max-width:1180px;margin:0 auto;padding:0 var(--sp-5)}
         a{color:var(--c-text-link)}
+        h1,h2,h3,.brand-name{font-family:var(--font-display)}
         .muted{color:var(--c-text-muted)}
         :focus-visible{outline:2px solid var(--c-focus-ring);outline-offset:2px}
 

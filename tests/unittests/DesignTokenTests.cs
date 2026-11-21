@@ -38,8 +38,8 @@ public class DesignTokenTests
             "mau primary trong CSS lay tu .standards/tokens/design-tokens.json");
         Assert.True(StyleBlock.Contains("'Inter'", StringComparison.Ordinal),
             "font Inter lay tu token (DESIGN_SYSTEM.md muc 4)");
-        Assert.True(StyleBlock.Contains("--radius-lg:8px", StringComparison.Ordinal),
-            "thang radius lay tu token");
+        Assert.True(StyleBlock.Contains("--radius-lg:" + DesignTokens.ShapeRadii[DesignTokens.ProductShape].Lg, StringComparison.Ordinal),
+            "thang radius lay tu bo bo goc cua san pham (shape)");
     }
 
     // --- Phan CSS VIET TAY khong duoc chua mot ma mau / co chu / radius nao
@@ -113,8 +113,9 @@ public class DesignTokenTests
         var printBlock = StyleBlock[printIdx..(printIdx + 900)];
         Assert.True(printBlock.Contains("--c-bg-base:" + DesignTokens.Color("light", "bg-base"), StringComparison.Ordinal),
             "khi IN thi bang mau bi ep ve che do SANG du may dang o che do toi");
-        Assert.True(!printBlock.Contains(DesignTokens.Color("dark", "bg-base"), StringComparison.Ordinal),
-            "khoi in khong lot mau cua che do toi");
+        // So theo cap bien:gia tri - tu token v3.0.0 nen toi #0A0A0A trung chu sang text-primary.
+        Assert.True(!printBlock.Contains("--c-bg-base:" + DesignTokens.Color("dark", "bg-base"), StringComparison.Ordinal),
+            "khoi in khong lot mau nen cua che do toi");
     }
 
     /// <summary>

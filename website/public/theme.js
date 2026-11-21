@@ -7,7 +7,7 @@
   var KHOA = 'tsudev-theme';
   var LUA_CHON = ['light', 'dark', 'system'];
   var MAC_DINH = 'system'; // PRODUCT_POLICY mục 1.2 (tsudev-standards v3.8.0): lần đầu theo hệ điều hành
-  var NEN = { light: '#fafafa', dark: '#0a0a0a' };   // --bg-base của src/styles/palette.css
+  var NEN = { light: '#fafafa', dark: '#0a0a0a' };   // --bg-base của .standards/tokens/tokens.css (lớp nền chung)
   var goc = document.documentElement;
   var heThong = null;
   try { heThong = window.matchMedia('(prefers-color-scheme: dark)'); } catch (e) { heThong = null; }

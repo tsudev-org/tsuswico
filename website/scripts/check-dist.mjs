@@ -47,7 +47,7 @@ function kiemTra(tep, html) {
   if (trung.length) loi.push(`${ten}: trùng id ${trung.join(', ')}`);
   const viTriChon = html.indexOf('id="giao-dien"');
   if (viTriChon < html.indexOf('<footer') || !/id="giao-dien" role="radiogroup" aria-label="Giao diện"/.test(html)) loi.push(`${ten}: bộ chọn giao diện phải là radiogroup trong <footer>`);
-  if (!/<html lang="vi" data-theme="dark">/.test(html)) loi.push(`${ten}: mặc định phải là data-theme="dark"`);
+  if (!/<html lang="vi" data-product="swico" data-theme="dark">/.test(html)) loi.push(`${ten}: phải có data-product="swico" (bản sắc v5.0.0) và mặc định data-theme="dark"`);
   if (/<style[\s>]/.test(html) || / style="/.test(html)) loi.push(`${ten}: có CSS nội tuyến (CSP chặn)`);
   for (const a of html.matchAll(/<a [^>]*target="_blank"[^>]*>/g)) {
     if (!a[0].includes('rel="noopener noreferrer"')) loi.push(`${ten}: thiếu rel noopener noreferrer: ${a[0]}`);

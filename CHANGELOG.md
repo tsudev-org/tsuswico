@@ -8,6 +8,13 @@
 
 ### Thay đổi
 
+- **Bản sắc riêng của Tsu Swico** (bộ quy ước v5.0.0, `DESIGN_SYSTEM.md` mục 1.2, phiếu `20261121-STD50`): màu nhấn
+  vàng hổ phách (hue 68: `#975D01` Sáng / `#E49324` Tối) thay xanh dùng chung của hệ, bo góc `sac` (2/3/4px, nút 3px),
+  tiêu đề Space Grotesk. Báo cáo HTML/`.xlsx` gộp đè `.standards/tokens/products/swico.json` lên lớp nền lúc build;
+  website nạp `tokens.css` + `products.css` từ `.standards/` với `<html data-product="swico">` và bỏ bảng màu tự khai
+  (`palette.css`, bản sao `tokens.css` cũ). Chữ ký nhà làm "TsuDEV" ở chân trang giữ màu của hệ. Nền, chữ, viền và màu
+  trạng thái theo lớp nền chung v3.0.0 (nền trung tính `#FAFAFA`/`#0A0A0A`).
+
 - **Báo cáo HTML mang logo và favicon của Tsu Swico, giống website swico.tsudev.com.** Tab trình duyệt hiện favicon
   sản phẩm (trùng byte với favicon website). Đầu trang hiện logo Tsu Swico + "Tsu Swico", dẫn về trang sản phẩm.
   Chân trang giữ khối nhà làm: logo tsudev hiện hành + "TsuDEV", dẫn về tsudev.com, thay logo cú cũ. Ảnh sinh bằng
