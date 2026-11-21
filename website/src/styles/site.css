@@ -101,6 +101,36 @@ pre {
 .minh-hoa img { display: block; width: 100%; border-radius: var(--radius-lg); }
 .minh-hoa figcaption { margin-top: 0.5rem; color: var(--text-muted); font-size: 0.88rem; text-align: center; }
 
+/* Bố cục chữ ký `cong-cu` (DESIGN_SYSTEM mục 1.2.2): vùng thao tác chính căn giữa ngay màn đầu */
+.mo-dau--cong-cu { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 2.5rem; }
+.mo-dau--cong-cu .mo-dau__luoi { gap: 2rem; grid-template-columns: minmax(0, 1fr); }
+.mo-dau--cong-cu .mo-dau__luoi > * { min-width: 0; max-width: 100%; }
+.mo-dau--cong-cu .mo-dau__phu { margin-bottom: 0; }
+/* Hoạ tiết `mach-in` (mục 1.2.4): TĨNH, nét accent mảnh và mờ ở hai dải mép, phủ < 15%, nằm dưới chữ */
+.mach-in { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.32; }
+.mach-in path { stroke: var(--accent); }
+.mach-in circle { fill: var(--accent); }
+.cong-cu {
+  width: 100%; max-width: 40rem; text-align: left;
+  background: var(--bg-surface); border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
+  box-shadow: 0 0 0 4px var(--glow);
+}
+.cong-cu__chinh { padding: 1.5rem 1.5rem 1.25rem; text-align: center; }
+.nut--lon { min-height: 3rem; padding: 0.8rem 1.6rem; font-size: 1.05rem; font-weight: 600; width: 100%; max-width: 22rem; }
+.cong-cu__tep { margin: 0.75rem 0 0; font-size: 0.88rem; color: var(--text-secondary); overflow-wrap: anywhere; }
+.cong-cu__phu { margin: 0.35rem 0 0; font-size: 0.88rem; }
+.cong-cu__lenh { border-top: 1px solid var(--border); padding: 1rem 1.5rem 1.25rem; }
+.cong-cu__lenh .cai-lenh__kenh { margin: 0.6rem 0 0; }
+.cong-cu__lenh .cai-lenh__ten { font-size: 0.9rem; }
+.cong-cu__lenh pre { padding: 0.6rem 0.8rem; font-size: 0.85rem; background: var(--bg-subtle); }
+.cong-cu__nhan { margin: 0; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.muc--gioi-thieu { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 2.5rem; align-items: center; }
+.muc--gioi-thieu .mo-dau__nut { justify-content: flex-start; }
+@media (max-width: 860px) {
+  .muc--gioi-thieu { grid-template-columns: 1fr; gap: 1.5rem; }
+  .cong-cu__chinh, .cong-cu__lenh { padding-left: 1rem; padding-right: 1rem; }
+}
+
 /* Các khối: ranh giới là khoảng trống, không dải nền */
 .muc { padding: 3.5rem 0; }
 .muc h2 { font-size: 1.75rem; margin: 0 0 0.5rem; letter-spacing: -0.015em; }

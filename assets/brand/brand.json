@@ -7,7 +7,6 @@
   "tileRadius": 0.22,
   "solidBg": "#2C3942",
   "ogGlow": "#24323b",
-  "ogAccent": "#e5e7eb",
   "domain": "swico.tsudev.com",
   "ogLines": [
     "Kiểm tra bản quyền Windows, Office",
@@ -43,5 +42,6 @@
       97,
       124
     ]
-  }
+  },
+  "_ghi_chu_og": "og-image: hoạ tiết mach-in + màu tên miền lấy từ .standards/tokens/products/<id>.json (bảng tối), không khai màu ở đây."
 }

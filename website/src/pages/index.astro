@@ -1,9 +1,17 @@
 ---
 import Trang from '../layouts/Trang.astro';
-import { banMoiNhat, boLuat, RELEASES_URL } from '../lib/noi-dung';
+import { banMoiNhat, boLuat, mb, RELEASES_URL } from '../lib/noi-dung';
+import { machInPhanTu } from '../lib/mach-in.mjs';
+import caiBangLenh from '../data/cai-bang-lenh.json';
 
 const ban = await banMoiNhat();
 const luat = boLuat();
+const setup = ban?.goi.find((g) => g.ma === 'setup');
+const kenhWin = caiBangLenh.nhom.find((n) => n.heDieuHanh === 'Windows')?.kenh ?? [];
+// Hoạ tiết mach-in: SVG nội tuyến sinh lúc build, tô bằng CSS var(--accent) (không thuộc tính style - CSP)
+const HOA_TIET_W = 1440;
+const HOA_TIET_H = 900;
+const hoaTiet = machInPhanTu({ w: HOA_TIET_W, h: HOA_TIET_H, soDuong: 11, dai: 0.28 });
 const soDauHieu = luat.suspiciousNames.length + luat.hookDirectories.length + luat.hookFiles.length + luat.knownKmsHosts.length + luat.hostsInterferenceKeywords.length;
 
 const tinhNang = [
@@ -18,20 +26,56 @@ const tinhNang = [
 ];
 ---
 <Trang moTa="Tsu Swico kiểm tra bản quyền Windows, Office và thu thập cấu hình phần cứng bằng một tệp .exe. Báo cáo HTML, JSON, XLSX; dữ liệu không rời khỏi máy." duongDan="/">
-  <section class="mo-dau">
+  <!-- Bố cục chữ ký `cong-cu` (DESIGN_SYSTEM mục 1.2.2): vùng thao tác chính ngay màn đầu, căn giữa; giới thiệu ở dưới -->
+  <section class="mo-dau mo-dau--cong-cu" aria-labelledby="tieu-de-chinh">
+    <svg class="mach-in" aria-hidden="true" focusable="false" viewBox={`0 0 ${HOA_TIET_W} ${HOA_TIET_H}`} preserveAspectRatio="xMidYMid slice" set:html={hoaTiet}></svg>
     <div class="khung mo-dau__luoi">
       <div>
         <span class="nhan">Miễn phí, mã nguồn mở, cho Windows 10 và 11</span>
-        <h1>Rà soát bản quyền và cấu hình máy tính <span class="chu-nhan">trong một lần chạy</span></h1>
-        <p class="mo-dau__phu">Tsu Swico kiểm tra tình trạng kích hoạt Windows và Office, tìm dấu hiệu kích hoạt trái phép, thu thập cấu hình phần cứng, rồi xuất báo cáo dễ đọc. Một tệp <code>.exe</code> duy nhất, không cần cài .NET Runtime.</p>
-        <div class="mo-dau__nut">
-          <a class="nut nut--chinh" href="/tai-ve/">Tải về{ban ? ` bản ${ban.phienBan}` : ''}</a>
-          <a class="nut nut--phu" href="/bao-cao-mau/">Xem báo cáo mẫu</a>
+        <h1 id="tieu-de-chinh">Rà soát bản quyền và cấu hình máy tính <span class="chu-nhan">trong một lần chạy</span></h1>
+        <p class="mo-dau__phu">Một tệp <code>.exe</code>, không cần cài .NET Runtime. Chạy xong có báo cáo HTML, JSON, XLSX ngay trên máy.</p>
+      </div>
+
+      <div class="cong-cu" role="group" aria-labelledby="cong-cu-tieu-de">
+        <h2 id="cong-cu-tieu-de" class="an-di">Tải và chạy</h2>
+        <div class="cong-cu__chinh">
+          <a class="nut nut--chinh nut--lon" href={setup?.url ?? '/tai-ve/'}>Tải bộ cài{ban ? ` ${ban.phienBan}` : ''}</a>
+          <p class="cong-cu__tep">{setup ? <><code>{setup.ten}</code> <span class="dem">· {mb(setup.kichThuoc)} · phát hành {ban!.ngay}</span></> : 'Xem các gói trên trang Tải về'}</p>
+          <p class="cong-cu__phu"><a href="/tai-ve/#chon-goi">Bản di động (ZIP) hoặc chỉ swico.exe</a> · <a href="/tai-ve/#kiem-tra">Kiểm SHA-256</a></p>
         </div>
-        <p class="mo-dau__ghi-chu">Không thu thập, không gửi dữ liệu của máy được quét đi đâu. Hạng sản phẩm C: chạy trọn vẹn không cần Internet và không cần tài khoản.</p>
+        {kenhWin.length > 0 && (
+          <div class="cong-cu__lenh">
+            <p class="cong-cu__nhan">Hoặc cài bằng lệnh</p>
+            {kenhWin.map((k) => (
+              <div class="cai-lenh__kenh">
+                <p class="cai-lenh__ten"><strong>{k.kenh}</strong>{k.ghiChu && <span class="dem"> - {k.ghiChu}</span>}</p>
+                <div class="cai-lenh__khoi">
+                  <pre><code>{k.lenh.join('\n')}</code></pre>
+                  <button type="button" class="nut nut--phu nut--nho cai-lenh__chep" data-chep={k.lenh.join('\n')} hidden>Chép<span class="an-di"> lệnh {k.kenh}</span></button>
+                </div>
+              </div>
+            ))}
+            <p class="an-di" aria-live="polite" id="chep-trang-thai"></p>
+            <script is:inline src="/chep.js" defer></script>
+          </div>
+        )}
+      </div>
+      <p class="mo-dau__ghi-chu">Không thu thập, không gửi dữ liệu của máy được quét đi đâu. Hạng sản phẩm C: chạy trọn vẹn không cần Internet và không cần tài khoản.</p>
+    </div>
+  </section>
+
+  <section class="muc" aria-labelledby="gioi-thieu">
+    <div class="khung muc--gioi-thieu">
+      <div>
+        <h2 id="gioi-thieu">Một lần chạy, đủ hồ sơ của một máy</h2>
+        <p class="muc__dan">Tsu Swico kiểm tra tình trạng kích hoạt Windows và Office, tìm dấu hiệu kích hoạt trái phép, thu thập cấu hình phần cứng, rồi xuất báo cáo dễ đọc.</p>
+        <div class="mo-dau__nut">
+          <a class="nut nut--phu" href="/bao-cao-mau/">Xem báo cáo mẫu</a>
+          <a class="nut nut--phu" href="/huong-dan/">Hướng dẫn sử dụng</a>
+        </div>
       </div>
       <figure class="minh-hoa">
-        <img src="/anh/bao-cao-ban-quyen-sang.png" alt="Báo cáo bản quyền mẫu: thẻ tóm tắt số phần mềm, SKU Windows hợp lệ, số dấu hiệu kích hoạt trái phép và điểm rủi ro" width="1280" height="800">
+        <img src="/anh/bao-cao-ban-quyen-sang.png" alt="Báo cáo bản quyền mẫu: thẻ tóm tắt số phần mềm, SKU Windows hợp lệ, số dấu hiệu kích hoạt trái phép và điểm rủi ro" width="1280" height="800" loading="lazy">
         <figcaption>Báo cáo bản quyền của một máy mẫu (dữ liệu giả lập).</figcaption>
       </figure>
     </div>
