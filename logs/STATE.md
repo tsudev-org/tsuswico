@@ -1,6 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp:** đọc `logs/handover/20261120-09_khep-phien-tsuswico-0e.md` mục 2-3 (WINGET-2 chờ moderator; dọn hồ sơ Windows tạm sau khởi động lại - máy VẪN chưa khởi động lại).
+> **Phiên kế tiếp:** đọc `logs/handover/20261121-01_khep-phien-tsuswico-a2.md` mục 2-3 (WINGET-2 chờ moderator; Dependabot #64/#31/#30).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
@@ -17,8 +17,8 @@
 > **`docs/STATE.md` thắng**. File này chỉ trỏ tới đó, không chép lại nội dung
 > (`AGENTS.md` mục 1: mỗi tri thức ghi một lần duy nhất).
 
-- **Phiên gần nhất:** tsuswico-0e - 20/11/2026
-- **Bàn giao gần nhất:** `logs/handover/20261120-09_khep-phien-tsuswico-0e.md`
+- **Phiên gần nhất:** tsuswico-a2 - 21/11/2026
+- **Bàn giao gần nhất:** `logs/handover/20261121-01_khep-phien-tsuswico-a2.md`
 
 ## Hàng đợi task (làm từ trên xuống)
 
@@ -37,7 +37,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - [x] **XM-2.3** ✅ 17/11/2026 (phiên tsudev-27): hồ sơ [16837](https://www.bestpractices.dev/projects/16837) passing 100% (`docs/best-practices.json`; `dynamic_analysis` Unmet trung thực). Kèm #27 (ghim SHA 16 action, quyền token, Dependabot, SECURITY.md, CONTRIBUTING.md, mẫu issue), bật CodeQL default setup, #28 sửa 2 cảnh báo CodeQL high ở website.
 - [x] **TEN-1** ✅ Thư mục cục bộ đã đổi `~/projects/tsudev-swico` → `~/projects/tsuswico` (16/11/2026, phiên S008, chủ dự án cho phép làm trong phiên).
 - [x] **TEN-2 / V1** ✅ 20/11/2026: `v26.11.2001` phát hành theo khuôn mới (#40, ADR-0003), Scoop `tsuswico` + `tsudev-swico` (scoop-bucket#25), attest đạt. Còn: PR winget-pkgs 26.11.2001 (mục WINGET-2 dưới). Dòng cũ: Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
-- [ ] **WINGET-2** 🔶 20/11/2026 (phiên 4c + 96 + 43 + 57 + 0e kiểm lại: vẫn MỞ, nhãn như cũ, không có bình luận mới của moderator. Phiên 93: nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` = báo động nhầm mã thoát 20 như #419878, chờ moderator - `docs/WINGET.md`; đã bình luận giải thích 20/11, issuecomment-7030535588): chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
+- [ ] **WINGET-2** 🔶 21/11/2026 (phiên a2: nhãn chỉ còn `New-Manifest`, chờ moderator duyệt). 20/11/2026 (phiên 4c + 96 + 43 + 57 + 0e kiểm lại: vẫn MỞ, nhãn như cũ, không có bình luận mới của moderator. Phiên 93: nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` = báo động nhầm mã thoát 20 như #419878, chờ moderator - `docs/WINGET.md`; đã bình luận giải thích 20/11, issuecomment-7030535588): chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
       (bước 01-07 đạt lúc nộp). Chờ bot cài thử + gộp. Kèm #43 sửa thư mục manifest `tsudev/SWICO`.
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
@@ -66,6 +66,9 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       (b) ~~**Warm Mode** cần nút chuyển~~ - BỎ: chủ dự án bỏ chế độ Ấm toàn hệ sinh thái (phiếu `20261110-05`,
       10/11/2026); chỉ còn Sáng / Tối / Hệ thống. `docs/STATE.md` mục QU-4.
 
+- [x] **STD50** ✅ 21/11/2026 (phiên a2): bản sắc swico v5.0.0 - #66 màu hổ phách/bo góc `sac`/Space Grotesk (web +
+      báo cáo HTML/.xlsx), #67 trang chủ `cong-cu` + hoạ tiết `mach-in` (hero + og-image); deploy `ca57caa8`. Kèm
+      **STD43** ✅ (sync thẳng v5.0.0). Phiếu `logs/handover/20261121-STD50_*`, `20261121-STD43_*`.
 - [x] **QU-STD-AUTH** ✅ S007 kiểm chứng: không có màn hình đăng nhập; chạy thật trên Windows 11 ở chế độ khách đủ chức năng. Kết nối duy nhất là kiểm tra bản mới (công bố trong PRIVACY.md, tắt bằng `--no-update-check`). Dòng cũ: Repo này là **hạng C - ngoại tuyến** (tài liệu nêu đích danh). Việc ở đây là **kiểm chứng chứ không phải cài đặt**: chạy đủ chức năng lõi ở chế độ khách, `MUST NOT` chặn chức năng nào sau màn hình đăng nhập, `MUST NOT` gọi mạng ngầm khi chưa đăng nhập. Checklist: `.standards/docs/AUTH_AND_ACCOUNT.md` mục 17, hai dòng cuối. Một phần mềm rà quét máy tính mà tự gọi ra ngoài là thứ đầu tiên bị công cụ bảo mật gắn cờ.
 - [x] **QU-STD-TABLE** XONG 11/11/2026: báo cáo HTML - bảng liệt kê (có ô lọc) có chân bảng bộ chọn `10/20/50/100/200` (mặc định 10, nhớ theo bảng) - tóm tắt `aria-live` - phân trang; đổi mốc giữ bản ghi đầu; in ra giấy đủ dòng; script gắn sự kiện trong khối (không thêm `on*=`), băm CSP báo cáo mẫu cập nhật. Không có máy chủ nên mục 12 "tải lại từ máy chủ / chặn 200 ở máy chủ" không áp dụng. Dòng cũ: Thêm bộ chọn số bản ghi `10/20/50/100/200` (mặc định `10`, góc dưới bên trái) cho các bảng liệt kê chương trình, gói UWP, dịch vụ, tác vụ theo lịch và mục khởi động. Chuẩn: `.standards/docs/DATA_TABLE.md` mục 12.
 - [x] **QU-STD-BRAND** ✅ 20/11/2026 #47: exe + bộ cài dùng chung `assets/brand/app/app.ico`, ảnh trình thuật sĩ 5+4 cỡ HiDPI sinh trong `brand-assets.mjs` (`--check`), CI biên dịch thử bộ cài, `assets/brand/README.md`. Dòng cũ: S007 làm phần web (favicon, og-image, manifest, `<head>` đủ ở swico.tsudev.com; README + metadata repo). Còn: đối chiếu checklist `BRAND_ASSETS.md` mục 14 cho icon app/bộ cài. Bổ sung tài sản nhận diện còn thiếu và siêu dữ liệu nối về `tsudev.com`. Chuẩn: `.standards/docs/BRAND_ASSETS.md` mục 14 và `.standards/docs/ECOSYSTEM_IDENTITY.md` mục 9.
@@ -80,6 +83,10 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 | (không có) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 21/11/2026 - **tsuswico-a2:** STD43 + STD50 xong: #66 bản sắc swico (sync v5.0.0; token sản phẩm cho web + báo cáo;
+  357 PASS), #67 bố cục `cong-cu` + hoạ tiết `mach-in`; deploy swico.tsudev.com `ca57caa8`; dọn hồ sơ Windows tạm
+  `tsuswicop10` sau khởi động lại; WINGET-2 chỉ còn nhãn `New-Manifest`. Bàn giao: `logs/handover/20261121-01_khep-phien-tsuswico-a2.md`.
 
 - 20/11/2026 - **tsuswico-57:** #59 báo cáo HTML mang favicon + logo Tsu Swico giống website (đầu trang sản phẩm, chân
   trang nhà làm tsudev hiện hành; ảnh từ `brand-assets.mjs` → `assets/brand/report/`, nhúng assembly), gỡ logo cú cũ;

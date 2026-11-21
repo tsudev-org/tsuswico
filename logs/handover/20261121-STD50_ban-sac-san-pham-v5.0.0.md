@@ -2,7 +2,7 @@
 
 - **Mã phiếu**: 20261121-STD50
 - **Từ**: phiên tsudev-standards, 21/11/2026 - **Đến**: phiên kế tiếp của `tsuswico`
-- **Trạng thái**: MỞ
+- **Trạng thái**: ĐÓNG (21/11/2026, phiên tsuswico-a2)
 - **Nguồn**: https://github.com/tsudev-org/tsudev-standards/releases/tag/v5.0.0 - `docs/DESIGN_SYSTEM.md` mục 1.2,
   CHANGELOG 5.0.0 "Hướng dẫn nâng cấp"
 - **Bối cảnh**: chủ dự án muốn mỗi sản phẩm có đặc trưng nổi bật riêng (màu, giao diện, bố cục). Trước v5.0.0, 9/11
@@ -46,4 +46,16 @@ kiểm chống trùng phải xanh. KHÔNG ghi đè tại repo này.
 
 ## Kết quả xử lý
 
-- 
+- **PR 1 #66 `7085d29`**: sync v5.0.0; website nạp `.standards/tokens/tokens.css` + `products.css`,
+  `<html data-product="swico">`, xoá `palette.css` + bản sao `tokens.css`; bo góc `var(--radius-*)`, nút
+  `var(--radius-control)`; h1-h3 `var(--font-display)` = Space Grotesk tự host (500 + 600; latin, latin-ext,
+  vietnamese - cần latin cho chữ cái thường). `warm` cũ vẫn đọc thành Sáng (`theme.js`, `check-theme`). Báo cáo
+  HTML/.xlsx (mục "việc riêng"): `DesignTokens.Color` gộp đè `products/swico.json`, bộ bo góc `sac`, `--font-display`;
+  chữ "Swico" ở đầu báo cáo lấy `colors.dark.accent` (gỡ 2 mã màu viết cứng); chữ ký TsuDEV chân trang giữ lớp nền.
+  Test `ProductIdentityTests`; 357 PASS.
+- **PR 2 #67 `68d6e95`**: trang chủ `cong-cu` (vùng thao tác: tải bộ cài + lệnh winget/Scoop có nút Chép, căn giữa
+  màn đầu; giới thiệu xuống dưới); hoạ tiết `mach-in` tĩnh ở hero (tô `var(--accent)`, hai dải mép) + `og-image.png`
+  sinh lại bằng chung `website/src/lib/mach-in.mjs`.
+- Ảnh trước/sau Sáng + Tối: `docs/anh-chup/ban-sac-v5/` (đính trong mô tả PR). axe 16 trang x 2 chế độ 0 lỗi.
+- Deploy swico.tsudev.com 21/11/2026 (version `ca57caa8`), production trả `data-product="swico"`.
+- "Màn hình đầu app": swico là CLI, không có màn hình GUI ⇒ bố cục chỉ áp cho website; báo cáo HTML nhận màu/bo góc/font.
