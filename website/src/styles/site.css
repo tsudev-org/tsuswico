@@ -103,7 +103,8 @@ pre {
 
 /* Bố cục chữ ký `cong-cu` (DESIGN_SYSTEM mục 1.2.2): vùng thao tác chính căn giữa ngay màn đầu */
 .mo-dau--cong-cu { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 2.5rem; }
-.mo-dau--cong-cu .mo-dau__luoi { gap: 2rem; }
+.mo-dau--cong-cu .mo-dau__luoi { gap: 2rem; grid-template-columns: minmax(0, 1fr); }
+.mo-dau--cong-cu .mo-dau__luoi > * { min-width: 0; max-width: 100%; }
 .mo-dau--cong-cu .mo-dau__phu { margin-bottom: 0; }
 /* Hoạ tiết `mach-in` (mục 1.2.4): TĨNH, nét accent mảnh và mờ ở hai dải mép, phủ < 15%, nằm dưới chữ */
 .mach-in { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.32; }
