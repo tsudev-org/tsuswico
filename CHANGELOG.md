@@ -8,6 +8,11 @@
 
 ### Thay đổi
 
+- **Trang chủ swico.tsudev.com theo bố cục `cong-cu` + hoạ tiết `mach-in`** (bộ quy ước v5.0.0, `DESIGN_SYSTEM.md` mục
+  1.2.2/1.2.4): màn đầu là vùng thao tác căn giữa - nút tải bộ cài bản mới nhất (tên tệp, dung lượng, ngày phát hành)
+  và lệnh winget/Scoop có nút Chép; giới thiệu + ảnh báo cáo nằm dưới. Nền hero có đường mạch in tĩnh tô bằng
+  `accent` ở hai dải mép; `og-image.png` sinh lại cùng hoạ tiết (cùng bộ sinh `website/src/lib/mach-in.mjs`).
+
 - **Bản sắc riêng của Tsu Swico** (bộ quy ước v5.0.0, `DESIGN_SYSTEM.md` mục 1.2, phiếu `20261121-STD50`): màu nhấn
   vàng hổ phách (hue 68: `#975D01` Sáng / `#E49324` Tối) thay xanh dùng chung của hệ, bo góc `sac` (2/3/4px, nút 3px),
   tiêu đề Space Grotesk. Báo cáo HTML/`.xlsx` gộp đè `.standards/tokens/products/swico.json` lên lớp nền lúc build;

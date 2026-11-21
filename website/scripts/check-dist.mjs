@@ -31,8 +31,8 @@ function kiemTra(tep, html) {
   // Script: đúng một thẻ <script src="/theme.js"></script> (không defer/async/module: phải chặn để không nháy màu),
   // nằm trong <head> và trước stylesheet đầu tiên. Script nội tuyến bị CSP chặn im lặng ở production.
   const theScript = [...html.matchAll(/<script(?![^>]*type="application\/ld\+json")[^>]*>/g)].map((m) => m[0]);
-  // Ngoại lệ duy nhất: /tai-ve/ thêm <script src="/chep.js" defer> cho nút Chép (tệp tĩnh cùng nguồn, không chặn).
-  const phu = ten === '/tai-ve/index.html' ? ['<script src="/chep.js" defer>'] : [];
+  // Ngoại lệ: /tai-ve/ và trang chủ (vùng thao tác `cong-cu`) thêm <script src="/chep.js" defer> cho nút Chép (tệp tĩnh cùng nguồn, không chặn).
+  const phu = ['/tai-ve/index.html', '/index.html'].includes(ten) ? ['<script src="/chep.js" defer>'] : [];
   const chinh = theScript.filter((t) => !phu.includes(t));
   if (chinh.length !== 1 || chinh[0] !== '<script src="/theme.js">' || theScript.length > 1 + phu.length) loi.push(`${ten}: script phải đúng một <script src="/theme.js">: ${theScript.join(' ')}`);
   const viTriScript = html.indexOf('<script src="/theme.js">');

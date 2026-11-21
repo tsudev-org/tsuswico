@@ -30,6 +30,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import { machInPhanTu } from '../src/lib/mach-in.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const WEB = path.resolve(HERE, '..');
@@ -38,6 +39,8 @@ const require = createRequire(path.join(WEB, 'package.json'));
 const sharp = require('sharp');
 
 const CFG = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/brand/brand.json'), 'utf8'));
+// Bản sắc sản phẩm (tsudev-standards v5.0.0): og-image nền tối ⇒ dùng bảng TỐI của products/<id>.json.
+const SP = JSON.parse(fs.readFileSync(path.join(ROOT, '.standards/tokens/products', `${CFG.id}.json`), 'utf8'));
 const CHECK = process.argv.includes('--check');
 const outputs = new Map(); // đường dẫn tuyệt đối -> Buffer
 
@@ -229,9 +232,10 @@ async function main() {
   const back = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
     <defs><radialGradient id="g" cx="0.28" cy="0.5" r="0.75"><stop offset="0%" stop-color="${CFG.ogGlow}"/><stop offset="100%" stop-color="#0a0a0a"/></radialGradient></defs>
     <rect width="${W}" height="${H}" fill="url(#g)"/>
+    <g opacity="0.3">${machInPhanTu({ w: W, h: H, mau: SP.colors.dark.accent, soDuong: 8, dai: 0.1 })}</g>
     <text x="500" y="270" font-family="DejaVu Sans, Verdana, sans-serif" font-size="68" font-weight="700" fill="#ededed">${esc(CFG.name)}</text>
     ${CFG.ogLines.map((l, i) => `<text x="500" y="${340 + i * 44}" font-family="DejaVu Sans, Verdana, sans-serif" font-size="30" fill="#b4b4b4">${esc(l)}</text>`).join('')}
-    <text x="500" y="${360 + CFG.ogLines.length * 44 + 20}" font-family="DejaVu Sans, Verdana, sans-serif" font-size="26" fill="${CFG.ogAccent}">${esc(CFG.domain)}</text>
+    <text x="500" y="${360 + CFG.ogLines.length * 44 + 20}" font-family="DejaVu Sans, Verdana, sans-serif" font-size="26" fill="${SP.colors.dark['text-link']}">${esc(CFG.domain)}</text>
   </svg>`);
   emit(
     pub('og-image.png'),

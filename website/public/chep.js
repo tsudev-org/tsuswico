@@ -1,4 +1,4 @@
-// Nút "Chép" của khối Cài bằng lệnh (/tai-ve/). Tệp tĩnh cùng nguồn (CSP script-src 'self'). Không có JavaScript thì
+// Nút "Chép" của khối Cài bằng lệnh (/tai-ve/ và vùng thao tác trang chủ). Tệp tĩnh cùng nguồn (CSP script-src 'self'). Không có JavaScript thì
 // nút vẫn ẩn và khối lệnh vẫn chọn/chép tay được.
 (function () {
   'use strict';
