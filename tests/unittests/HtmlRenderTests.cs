@@ -146,18 +146,19 @@ public class HtmlRenderTests
     /// <summary>
     /// QU-STD-1 (09/11/2026): token doc tu .standards/tokens/, khong con ban sao
     /// tokens/ cuc bo. Ban sao cu giu text-muted #5F7891 - tuong phan 4,13:1 tren
-    /// nen bg-base, truot WCAG AA; bo quy uoc v2.0.0 da doi sang #52627A.
+    /// nen bg-base, truot WCAG AA; bo quy uoc v2.0.0 doi sang #52627A, v5.0.0 (token v3.0.0, nen trung tinh) #52525B.
     /// </summary>
     [Fact]
     public void Token_lay_tu_bo_quy_uoc_chung()
     {
-        Assert.Equal("#52627A", DesignTokens.Color("light", "text-muted"), ignoreCase: true);
+        Assert.Equal("#52525B", DesignTokens.Color("light", "text-muted"), ignoreCase: true);
         Assert.DoesNotContain("#5F7891", Infected.Html, StringComparison.OrdinalIgnoreCase);
 
         // Wordmark o chan trang: tsu = text-primary, dev = text-link (BRAND_ASSETS.md).
         // Cam #D2690A cu chi dat 3,29:1 tren nen sang.
-        Assert.Contains("--brand-dev-foot:" + DesignTokens.Color("light", "text-link"), Infected.Html, StringComparison.Ordinal);
-        Assert.Contains("--brand-tsu-foot:" + DesignTokens.Color("light", "text-primary"), Infected.Html, StringComparison.Ordinal);
+        // Chu ky nha lam la khoi lien ket he sinh thai -> lop nen TsuDEV, khong theo ban sac swico (DESIGN_SYSTEM 1.2.1).
+        Assert.Contains("--brand-dev-foot:" + DesignTokens.BaseColor("light", "text-link"), Infected.Html, StringComparison.Ordinal);
+        Assert.Contains("--brand-tsu-foot:" + DesignTokens.BaseColor("light", "text-primary"), Infected.Html, StringComparison.Ordinal);
         Assert.DoesNotContain("#D2690A", Infected.Html, StringComparison.OrdinalIgnoreCase);
     }
 

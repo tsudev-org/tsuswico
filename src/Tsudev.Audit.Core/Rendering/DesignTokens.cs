@@ -23,12 +23,28 @@ namespace Tsudev.Audit.Core.Rendering;
 public static class DesignTokens
 {
     private const string ResourceName = "Tsudev.Audit.Core.Rendering.design-tokens.json";
+    private const string ProductResourceName = "Tsudev.Audit.Core.Rendering.product-swico.json";
+
+    /// <summary>
+    /// Bo bo goc theo truong <c>shape</c> cua san pham - sao tu .standards/docs/DESIGN_SYSTEM.md muc 1.2.3
+    /// (bo quy uoc khong ghi bang nay dang may doc duoc, chi sinh ra products.css). Test
+    /// <c>ProductIdentityTests</c> doi chieu tung gia tri voi .standards/tokens/products.css de bat lech khi nang quy uoc.
+    /// </summary>
+    public static readonly IReadOnlyDictionary<string, (string Sm, string Md, string Lg, string Control)> ShapeRadii =
+        new Dictionary<string, (string, string, string, string)>(StringComparer.Ordinal)
+        {
+            ["sac"] = ("2px", "3px", "4px", "3px"),
+            ["chuan"] = ("4px", "6px", "8px", "6px"),
+            ["mem"] = ("6px", "10px", "14px", "10px"),
+            ["tron"] = ("8px", "14px", "20px", "999px"),
+        };
 
     // Nhung khoa la loi giai thich cho nguoi doc, khong phai gia tri.
     private static readonly string[] NotValues = { "usage" };
 
     private static readonly Lazy<string> _rootCss = new(BuildRootCss, isThreadSafe: true);
-    private static readonly Lazy<JsonDocument> _doc = new(Load, isThreadSafe: true);
+    private static readonly Lazy<JsonDocument> _doc = new(() => Load(ResourceName), isThreadSafe: true);
+    private static readonly Lazy<JsonDocument> _product = new(() => Load(ProductResourceName), isThreadSafe: true);
 
     /// <summary>Phien ban bo token dang dung - de ghi vao chan trang bao cao.</summary>
     public static string Version => Str("meta", "version") ?? "?";
@@ -39,27 +55,48 @@ public static class DesignTokens
     /// </summary>
     public static string RootCss => _rootCss.Value;
 
-    /// <summary>Mot ma mau theo che do (light | warm | dark). Nem neu khong co.</summary>
+    /// <summary>Ma <c>id</c> san pham cua lop ban sac (<c>data-product</c>) - "swico".</summary>
+    public static string ProductId => Str(_product.Value, "id") ?? "?";
+
+    /// <summary>Bo bo goc cua san pham (sac | chuan | mem | tron).</summary>
+    public static string ProductShape => Str(_product.Value, "shape") ?? "chuan";
+
+    /// <summary>Font tieu de cua san pham (h1-h3, so lieu lon); than bai van la font-family chung.</summary>
+    public static string ProductFontDisplay => Str(_product.Value, "fontDisplay") ?? "";
+
+    /// <summary>
+    /// Mot ma mau theo che do (light | dark) SAU KHI gop de lop ban sac swico len lop nen chung
+    /// (DESIGN_SYSTEM muc 7). Vai tro san pham khong khai thi lay lop nen. Nem neu khong co.
+    /// </summary>
     public static string Color(string mode, string role)
+        => Str(_product.Value, "colors", mode, role) ?? BaseColor(mode, role);
+
+    /// <summary>
+    /// Ma mau cua LOP NEN CHUNG (bo vai tro nhan mac dinh cua TsuDEV), KHONG gop ban sac. Chi dung cho khoi
+    /// lien ket ve he sinh thai (chu ky "tsudev" o chan trang) - DESIGN_SYSTEM muc 1.2.1: giu nhan dien TsuDEV.
+    /// </summary>
+    public static string BaseColor(string mode, string role)
     {
-        var v = Str("color", mode, role);
+        var v = Str(_doc.Value, "color", mode, role);
         return v ?? throw new InvalidOperationException(
             $".standards/tokens/design-tokens.json khong co color.{mode}.{role}");
     }
 
-    private static JsonDocument Load()
+    private static JsonDocument Load(string resourceName)
     {
         var asm = Assembly.GetExecutingAssembly();
-        using var stream = asm.GetManifestResourceStream(ResourceName)
+        using var stream = asm.GetManifestResourceStream(resourceName)
             ?? throw new InvalidOperationException(
-                $"Khong tim thay tai nguyen nhung '{ResourceName}'. Kiem tra muc EmbeddedResource " +
-                "trong Tsudev.Audit.Core.csproj - duong dan la ../../.standards/tokens/design-tokens.json.");
+                $"Khong tim thay tai nguyen nhung '{resourceName}'. Kiem tra muc EmbeddedResource " +
+                "trong Tsudev.Audit.Core.csproj (../../.standards/tokens/...).");
         return JsonDocument.Parse(stream);
     }
 
-    private static string? Str(params string[] path)
+    private static string? Str(params string[] path) => Str(_doc.Value, path);
+
+    private static string? Str(JsonDocument doc, params string[] path)
     {
-        var el = _doc.Value.RootElement;
+        var el = doc.RootElement;
         foreach (var key in path)
         {
             if (el.ValueKind != JsonValueKind.Object || !el.TryGetProperty(key, out el)) return null;
@@ -73,6 +110,7 @@ public static class DesignTokens
         var sb = new StringBuilder();
 
         sb.Append("/* Sinh tu .standards/tokens/design-tokens.json v").Append(Version)
+          .Append(" + products/").Append(ProductId).Append(".json")
           .Append(" - KHONG sua tay o day, sua trong file token. */\n:root{\n");
 
         // --- Mau che do sang (mac dinh)
@@ -85,7 +123,11 @@ public static class DesignTokens
         AppendMap(sb, root, "--lh-", "typography", "line-height");
         AppendMap(sb, root, "--fw-", "typography", "weight");
         AppendMap(sb, root, "--ls-", "typography", "letter-spacing");
-        AppendMap(sb, root, "--radius-", "radius");
+        AppendRadius(sb, root);
+        // Bao cao mo offline, khong nhung tep font: may co font tieu de cua san pham thi dung, khong thi roi ve font than bai.
+        sb.Append("  --font-display:")
+          .Append(ProductFontDisplay.Length > 0 ? "'" + ProductFontDisplay + "',var(--font-sans)" : "var(--font-sans)")
+          .Append(";\n");
         AppendMap(sb, root, "--sp-", "spacing");
         AppendMap(sb, root, "--shadow-", "shadow");
         AppendMap(sb, root, "--z-", "z-index");
@@ -138,24 +180,41 @@ public static class DesignTokens
     // 3,29:1 tren nen bg-base sang (axe bao loi tren bao cao mau). Day cung la loi
     // giai cho QU-6: khong can them gi vao bo token.
     //
-    // DAU TRANG (nen gradient xanh co dinh, khong doi theo che do): hai sac cam
-    // va xanh nhat danh cho nen dam - BRAND_ASSETS cho phep "chi khi buoc phai
-    // dung dung sac cam thuong hieu". Do tren goc trai dau trang (primary-active,
-    // noi dat chu ky): 5,25:1 va 4,58:1, chu lon dam.
-    private const string BrandTsuOnDark = "#8FD0FF";
-    private const string BrandDevOnDark = "#FFA94D";
+    // DAU TRANG (nen gradient mau chinh SANG cua swico, co dinh, khong doi theo che do): chu "Swico" dung
+    // vai tro accent cua bang TOI (sac nhat danh cho nen dam) - lay tu token, khong viet cung. Truoc v5.0.0
+    // o day viet cung #8FD0FF/#FFA94D cho nen xanh. Do tren goc trai dau trang (primary-active, noi dat chu
+    // ky): #FCC181 tren #694003 = 5,6:1.
+    //
+    // Chan trang "tsudev" la khoi lien ket ve he sinh thai -> giu nhan dien TsuDEV (BaseColor), khong theo swico.
 
     private static void AppendBrand(StringBuilder sb, bool forDarkScheme, string indent = "  ")
     {
         if (!forDarkScheme)
-        {
-            sb.Append(indent).Append("--brand-tsu-hero:").Append(BrandTsuOnDark).Append(";\n");
-            sb.Append(indent).Append("--brand-dev-hero:").Append(BrandDevOnDark).Append(";\n");
-        }
+            sb.Append(indent).Append("--brand-tsu-hero:").Append(Color("dark", "accent")).Append(";\n");
 
         var mode = forDarkScheme ? "dark" : "light";
-        sb.Append(indent).Append("--brand-tsu-foot:").Append(Color(mode, "text-primary")).Append(";\n");
-        sb.Append(indent).Append("--brand-dev-foot:").Append(Color(mode, "text-link")).Append(";\n");
+        sb.Append(indent).Append("--brand-tsu-foot:").Append(BaseColor(mode, "text-primary")).Append(";\n");
+        sb.Append(indent).Append("--brand-dev-foot:").Append(BaseColor(mode, "text-link")).Append(";\n");
+    }
+
+    private static void AppendRadius(StringBuilder sb, JsonElement root)
+    {
+        if (!root.TryGetProperty("radius", out var el)) return;
+        if (!ShapeRadii.TryGetValue(ProductShape, out var shape))
+            throw new InvalidOperationException($"products/{ProductId}.json: shape '{ProductShape}' khong co trong DESIGN_SYSTEM muc 1.2.3");
+        foreach (var p in el.EnumerateObject())
+        {
+            if (IsNotValue(p)) continue;
+            var value = p.Name switch
+            {
+                "sm" => shape.Sm,
+                "md" => shape.Md,
+                "lg" => shape.Lg,
+                "control" => shape.Control,
+                _ => p.Value.GetString(),   // radius-none (khung layout) khong doi theo san pham
+            };
+            sb.Append("  --radius-").Append(p.Name).Append(':').Append(value).Append(";\n");
+        }
     }
 
     private static void AppendColors(StringBuilder sb, JsonElement root, string mode, string indent = "  ")
@@ -166,7 +225,8 @@ public static class DesignTokens
         foreach (var p in set.EnumerateObject())
         {
             if (IsNotValue(p)) continue;
-            sb.Append(indent).Append("--c-").Append(p.Name).Append(':').Append(p.Value.GetString()).Append(";\n");
+            // Gop de lop ban sac swico (DESIGN_SYSTEM muc 7) - vai tro nao san pham khai thi lay ban san pham.
+            sb.Append(indent).Append("--c-").Append(p.Name).Append(':').Append(Color(mode, p.Name)).Append(";\n");
         }
     }
 

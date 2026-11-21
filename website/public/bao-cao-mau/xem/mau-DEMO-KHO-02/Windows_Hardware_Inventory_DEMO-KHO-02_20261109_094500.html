@@ -4,34 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAn1BMVEVMaXEqOEApOUErOUIsOUMsOkMmNj0rOEIsOUIsOUIqOUFERnksOUItOkMvPEX///8mMz4pNkC/w8b09fUiMDofLDeBiI9qc3tRXGTf4uNMVl9lbnbHy84zP0n6+/uVnKE/S1Smq684RE53f4bv8PFyeoFZY2vZ3N2qr7PP0tVHUlu3u7+coqehpqvr7O1faXGIj5Xm6OmNlJmus7YWJS//L1jOAAAADHRSTlMAWx7vh+oh/PjTWQUQ8gRBAAAACXBIWXMAAA7DAAAOwwHHb6hkAAACTUlEQVQ4y1WT2XqrIBSFbZueJP2EzSQgOM+zGfr+z3bUJqnlClk/sDbu5TiO8344n9znQOgxOZ0P7842vj7wc9HFLn19YPzxtepvGB2Pj83IQ6H3RI5HhN8c598nesiYuETV0yXzCMbuCh3R5z/ngI8P2UtCBZMPRZxsyErgg3NeD9jkodftDVNVA0+NEAivR5yd1T8iwoxRpEeN78yIOYCor4hYbzk5q051H0GrZZqC30JbCc0AArtZ2wDCgM3C8uXshg0t+CVJFjak6AVwggIomGLAIzak/iS9oMB7wDU8lrU/6HCMChnwkrCR7K7gqIsk48qz8jtjkCYX05Uh3QFeB82VSzqnktgSyzhn150HVasEhsoHXwlzm7U0Nm+nlwcXGXO5Q5uQC4fACHuriKTsF1jeQVa6iWDEYQNwD6telXRXhYvyyuadbaGQpAuAD8am5lL/eYfcxGOorlDPnl2slFmZz3hfppFJWSb0xoF1QhbArFF/AJGrfJY5zVKAhpYg5V3THVAk91t4keZmkyoAPwb1HUzI3XnANu95QMSYCtJGA+QL8KoCe8sOMgVzXdgw6+opDkB3wAh6XkEzP6oy5o89NEOajtdCLytaPAEXCV1ESsTQxld+6aOo6q5Qej9VbJHBQvuL+aSNmqGo41sFy4/d9NNP0y5E1sOkvJxDHDbGr7tNX5v20faYivIKLEs62qt4IOTV9s/gLKlaHimSljdIe+6PvgbnN3qYenMNUIfLdvQbvV14ERZu3GT0EfBnePfxR1QIiv7E/z/x4FIpd5WhEwAAAABJRU5ErkJggg==">
-<meta name="theme-color" content="#1E40AF">
+<meta name="theme-color" content="#694003">
 <meta name="generator" content="Tsu Swico">
 <title>B&#225;o c&#225;o cấu h&#236;nh phần cứng thiết bị - DEMO-KHO-02</title>
 <style>
-/* Sinh tu .standards/tokens/design-tokens.json v2.0.0 - KHONG sua tay o day, sua trong file token. */
+/* Sinh tu .standards/tokens/design-tokens.json v3.0.0 + products/swico.json - KHONG sua tay o day, sua trong file token. */
 :root{
-  --c-bg-base:#EEF4FB;
+  --c-bg-base:#FAFAFA;
   --c-bg-surface:#FFFFFF;
-  --c-bg-subtle:#E3EDF8;
-  --c-bg-hover:#DCE8F6;
-  --c-border:#C9D9EC;
-  --c-border-strong:#9FB8D4;
-  --c-border-control:#74899F;
-  --c-text-primary:#1C2B3A;
-  --c-text-secondary:#44607C;
-  --c-text-muted:#52627A;
-  --c-text-link:#1D4ED8;
-  --c-primary:#2563EB;
-  --c-primary-hover:#1D4ED8;
-  --c-primary-active:#1E40AF;
+  --c-bg-subtle:#F4F4F5;
+  --c-bg-hover:#EBEBED;
+  --c-border:#E4E4E7;
+  --c-border-strong:#D4D4D8;
+  --c-border-control:#71717A;
+  --c-text-primary:#0A0A0A;
+  --c-text-secondary:#3F3F46;
+  --c-text-muted:#52525B;
+  --c-text-link:#804E03;
+  --c-primary:#975D01;
+  --c-primary-hover:#804E03;
+  --c-primary-active:#694003;
   --c-on-primary:#FFFFFF;
-  --c-focus-ring:#2563EB;
+  --c-focus-ring:#975D01;
+  --c-accent:#6F4302;
+  --c-glow:rgba(151, 93, 1, 0.1);
+  --c-icon-info:#975D01;
+  --c-icon-nav:#804E03;
   --c-success:#15803D;
   --c-warning:#B45309;
   --c-danger:#DC2626;
   --c-info:#0369A1;
   --c-on-status:#FFFFFF;
-  --c-overlay:rgba(15, 27, 45, 0.45);
+  --c-overlay:rgba(10, 10, 10, 0.45);
   --font-sans:'Inter', 'SF Pro Text', 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
   --font-mono:'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
   --fs-xs:12px;
@@ -55,9 +59,11 @@
   --ls-heading:-0.01em;
   --ls-caps-label:0.04em;
   --radius-none:0px;
-  --radius-sm:4px;
-  --radius-md:6px;
-  --radius-lg:8px;
+  --radius-sm:2px;
+  --radius-md:3px;
+  --radius-lg:4px;
+  --radius-control:3px;
+  --font-display:'Space Grotesk',var(--font-sans);
   --sp-1:4px;
   --sp-2:8px;
   --sp-3:12px;
@@ -67,9 +73,9 @@
   --sp-8:32px;
   --sp-10:40px;
   --sp-12:48px;
-  --shadow-sm:0 1px 2px rgba(15, 27, 45, 0.06);
-  --shadow-md:0 2px 8px rgba(15, 27, 45, 0.10);
-  --shadow-lg:0 8px 24px rgba(15, 27, 45, 0.14);
+  --shadow-sm:0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md:0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg:0 8px 24px rgba(0, 0, 0, 0.14);
   --z-dropdown:1000;
   --z-sticky:1020;
   --z-modal-overlay:1040;
@@ -80,72 +86,78 @@
   --motion-base:180ms;
   --motion-slow:260ms;
   --motion-easing:cubic-bezier(0.2, 0, 0, 1);
-  --c-code-bg:#0F1B2D;
-  --c-code-ink:#E6EDF5;
-  --c-hero-from:#1E40AF;
-  --c-hero-to:#2563EB;
+  --c-code-bg:#0A0A0A;
+  --c-code-ink:#EDEDED;
+  --c-hero-from:#694003;
+  --c-hero-to:#975D01;
   --c-hero-ink:#FFFFFF;
-  --brand-tsu-hero:#8FD0FF;
-  --brand-dev-hero:#FFA94D;
-  --brand-tsu-foot:#1C2B3A;
-  --brand-dev-foot:#1D4ED8;
+  --brand-tsu-hero:#FCC181;
+  --brand-tsu-foot:#0A0A0A;
+  --brand-dev-foot:#0757A3;
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --c-bg-base:#0F1B2D;
-    --c-bg-surface:#16263C;
-    --c-bg-subtle:#1C2F4A;
-    --c-bg-hover:#223A5A;
-    --c-border:#2C4363;
-    --c-border-strong:#3F5B80;
-    --c-border-control:#6E88AE;
-    --c-text-primary:#E6EDF5;
-    --c-text-secondary:#A9BBD0;
-    --c-text-muted:#9BB0C9;
-    --c-text-link:#7FB2F7;
-    --c-primary:#66A3F2;
-    --c-primary-hover:#7FB2F7;
-    --c-primary-active:#4E8FE6;
-    --c-on-primary:#0C1930;
-    --c-focus-ring:#66A3F2;
+    --c-bg-base:#0A0A0A;
+    --c-bg-surface:#0F1114;
+    --c-bg-subtle:#15181D;
+    --c-bg-hover:#1C2027;
+    --c-border:#22272F;
+    --c-border-strong:#2C323C;
+    --c-border-control:#6E6E6E;
+    --c-text-primary:#EDEDED;
+    --c-text-secondary:#B4B4B4;
+    --c-text-muted:#8F8F8F;
+    --c-text-link:#EDA756;
+    --c-primary:#E49324;
+    --c-primary-hover:#F0AA59;
+    --c-primary-active:#CB7E04;
+    --c-on-primary:#0A0A0A;
+    --c-focus-ring:#E49324;
+    --c-accent:#FCC181;
+    --c-glow:rgba(228, 147, 36, 0.14);
+    --c-icon-info:#E49324;
+    --c-icon-nav:#EDA756;
     --c-success:#4ADE80;
     --c-warning:#FBBF24;
     --c-danger:#F87171;
     --c-info:#38BDF8;
-    --c-on-status:#0C1930;
+    --c-on-status:#0A0A0A;
     --c-overlay:rgba(0, 0, 0, 0.6);
-    --brand-tsu-foot:#E6EDF5;
-    --brand-dev-foot:#7FB2F7;
+    --brand-tsu-foot:#EDEDED;
+    --brand-dev-foot:#7DD3FC;
   }
 }
 @media print{
   :root{
-    --c-bg-base:#EEF4FB;
+    --c-bg-base:#FAFAFA;
     --c-bg-surface:#FFFFFF;
-    --c-bg-subtle:#E3EDF8;
-    --c-bg-hover:#DCE8F6;
-    --c-border:#C9D9EC;
-    --c-border-strong:#9FB8D4;
-    --c-border-control:#74899F;
-    --c-text-primary:#1C2B3A;
-    --c-text-secondary:#44607C;
-    --c-text-muted:#52627A;
-    --c-text-link:#1D4ED8;
-    --c-primary:#2563EB;
-    --c-primary-hover:#1D4ED8;
-    --c-primary-active:#1E40AF;
+    --c-bg-subtle:#F4F4F5;
+    --c-bg-hover:#EBEBED;
+    --c-border:#E4E4E7;
+    --c-border-strong:#D4D4D8;
+    --c-border-control:#71717A;
+    --c-text-primary:#0A0A0A;
+    --c-text-secondary:#3F3F46;
+    --c-text-muted:#52525B;
+    --c-text-link:#804E03;
+    --c-primary:#975D01;
+    --c-primary-hover:#804E03;
+    --c-primary-active:#694003;
     --c-on-primary:#FFFFFF;
-    --c-focus-ring:#2563EB;
+    --c-focus-ring:#975D01;
+    --c-accent:#6F4302;
+    --c-glow:rgba(151, 93, 1, 0.1);
+    --c-icon-info:#975D01;
+    --c-icon-nav:#804E03;
     --c-success:#15803D;
     --c-warning:#B45309;
     --c-danger:#DC2626;
     --c-info:#0369A1;
     --c-on-status:#FFFFFF;
-    --c-overlay:rgba(15, 27, 45, 0.45);
-    --brand-tsu-hero:#8FD0FF;
-    --brand-dev-hero:#FFA94D;
-    --brand-tsu-foot:#1C2B3A;
-    --brand-dev-foot:#1D4ED8;
+    --c-overlay:rgba(10, 10, 10, 0.45);
+    --brand-tsu-hero:#FCC181;
+    --brand-tsu-foot:#0A0A0A;
+    --brand-dev-foot:#0757A3;
   }
 }
 *{box-sizing:border-box}
@@ -153,6 +165,7 @@ body{margin:0;background:var(--c-bg-base);color:var(--c-text-primary);
      font-family:var(--font-sans);font-size:var(--fs-body-web);line-height:var(--lh-body)}
 .wrap{max-width:1180px;margin:0 auto;padding:0 var(--sp-5)}
 a{color:var(--c-text-link)}
+h1,h2,h3,.brand-name{font-family:var(--font-display)}
 .muted{color:var(--c-text-muted)}
 :focus-visible{outline:2px solid var(--c-focus-ring);outline-offset:2px}
 
