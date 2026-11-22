@@ -102,6 +102,11 @@ jobs:
         with:
           global-json-file: global.json
 
+      # Bo test chay CA tren Windows: release.yml chay test tren runner Windows (checkout CRLF), nen mot test chi dat
+      # tren Linux se chan phat hanh luc gan tag. Da xay ra o v26.11.2201 (ProRenewalTests doc PRODUCT_POLICY.md).
+      - name: Unit tests (Windows)
+        run: dotnet test tests/unittests -c Release
+
       - name: Publish single-file exe
         run: dotnet publish src/Tsudev.Audit.Cli -c Release -r win-x64 -o publish
 

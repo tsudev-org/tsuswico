@@ -206,6 +206,8 @@ public class ProRenewalTests
     public void Dieu_khoan_7_5_khop_nguyen_van_ban_quy_uoc_dong_bo()
     {
         var policy = File.ReadAllText(Path.Combine(RepoRoot(), ".standards", "docs", "PRODUCT_POLICY.md"))
+            // Runner Windows checkout voi CRLF (core.autocrlf) - chuan hoa truoc khi noi dong, neu khong test chi dat tren Linux.
+            .Replace("\r\n", "\n", StringComparison.Ordinal)
             .Replace("\n  - (en): ", " ", StringComparison.Ordinal).Replace("\n  ", " ", StringComparison.Ordinal);
         using (Loc.Use(AppLanguage.Vi))
             Assert.Contains(ProRenewal.PurchaseTerms.Replace("490.000 ₫", "{giá}", StringComparison.Ordinal), policy, StringComparison.Ordinal);
