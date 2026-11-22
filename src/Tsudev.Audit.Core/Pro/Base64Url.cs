@@ -1,6 +1,6 @@
 namespace Tsudev.Audit.Core.Pro;
 
-/// <summary>base64url khong dem (RFC 7515 muc 2). .NET 8 chua co System.Buffers.Text.Base64Url.</summary>
+/// <summary>base64url khong dem (RFC 7515 muc 2). Giu ban rieng (viet tu thoi .NET 8) - da co test, khong can doi sang System.Buffers.Text.Base64Url.</summary>
 public static class Base64Url
 {
     public static string Encode(ReadOnlySpan<byte> data)

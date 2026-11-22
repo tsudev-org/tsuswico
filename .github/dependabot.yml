@@ -8,13 +8,6 @@ updates:
     groups:
       nuget:
         patterns: ['*']
-    # Goi runtime ban 11+ bao "doesn't support net8.0" (khong nham net8). Bo khi
-    # chuyen TargetFramework sang net10 (viec NET10 trong logs/STATE.md).
-    ignore:
-      - dependency-name: 'System.Management'
-        versions: ['>= 11']
-      - dependency-name: 'System.CodeDom'
-        versions: ['>= 11']
   - package-ecosystem: github-actions
     directory: /
     schedule:

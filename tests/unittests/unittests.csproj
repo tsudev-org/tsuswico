@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!-- Bo test xUnit. Chay bang:  dotnet test tests/unittests
-         Chay duoc tren Linux/macOS vi chi tham chieu Core (net8.0).
+         Chay duoc tren Linux/macOS vi chi tham chieu Core (net10.0).
 
          OutputType=Exe + GenerateProgramFile=false: project nay VUA la bo test
          (dotnet test), VUA la cong kiem tra quy uoc dat ten chay qua
@@ -9,7 +9,7 @@
          `dotnet run` khong con cho nao de cam cong do. -->
     <OutputType>Exe</OutputType>
     <GenerateProgramFile>false</GenerateProgramFile>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>Tsudev.Audit.Tests</RootNamespace>
     <AssemblyName>Tsudev.Audit.Tests</AssemblyName>
     <IsPackable>false</IsPackable>

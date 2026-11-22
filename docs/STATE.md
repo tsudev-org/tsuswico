@@ -50,7 +50,7 @@ Repo      : ✅ github.com/tsudev-org/tsuswico - PUBLIC (chuyển từ tsudev-ts
             từ tsudev-org/tsudev-swico 16/11/2026 - ADR-0001; HAI TÊN CŨ BẤT KHẢ XÂM PHẠM - bản đã cài cập nhật
             nhờ chuyển hướng)
 Website   : ✅ https://swico.tsudev.com - Workers Static Assets, mã ở website/ (S007)
-SDK       : ✅ ghim 8.0.424 qua global.json (dev và CI dùng CÙNG một SDK)
+SDK       : ✅ ghim 10.0.404 qua global.json (trước 22/11/2026: 8.0.x) (dev và CI dùng CÙNG một SDK)
 Windows   : ✅ đã chạy thật, cài thật, dữ liệu đúng, đối chiếu với bản PowerShell cũ xong
 Terminal  : 🔄 streaming tiến trình quét ĐÃ VIẾT XONG, phần "dáng vẻ" chờ kiểm bằng mắt
 Git       : ✅ ngang bằng origin/main (đếm bằng `git log --oneline origin/main..HEAD`)
@@ -284,7 +284,7 @@ tiếp theo là `26.8.1902` - `docs/VERSIONING.md` mục 6.
 
 ---
 
-### NET10 ⬜ Chuyển .NET 8 → .NET 10 LTS (phát hiện 22/11/2026, phiên tsuswico-d1)
+### NET10 ✅ (22/11/2026, phiên tsuswico-07, PR chore/net10-lts) Chuyển .NET 8 → .NET 10 LTS (phát hiện 22/11/2026, phiên tsuswico-d1)
 
 **.NET 8 hết hỗ trợ ngày 10/11/2026.** Bản phát hành là self-contained (`Tsudev.Audit.Cli.csproj`:
 `SelfContained` + `PublishSingleFile`) ⇒ `swico.exe` nhúng runtime .NET 8 không còn bản vá bảo mật.
@@ -299,6 +299,10 @@ Kế hoạch (một PR, làm được không cần người dùng; phát hành s
 4. Đọc cảnh báo phân tích mã mới (CA/IL trim, single-file) - 0 cảnh báo như hiện nay; `dotnet test` đủ PASS.
 5. CI Smoke test Windows + biên dịch thử Inno phải xanh; kiểm kích thước exe so với bản trước.
 6. Ghi CHANGELOG; bản phát hành kế tiếp (đầu tháng 12 ⇒ kiêm QU-2 ngày một chữ số) mang runtime 10.
+
+**Kết quả 22/11/2026:** SDK 10.0.404, TFM net10.0 / net10.0-windows (cả `tools/demo-report`), lock file sinh lại
+(System.Management 10.0.15 giữ nguyên), luật ignore `>= 11` trong `dependabot.yml` đã gỡ. Build Release 0 cảnh báo
+(không cần sửa mã), 357 PASS, không gói có lỗ hổng; `swico.exe` 86,7 MB (bản 26.11.2001: 79,7 MB). Chưa phát hành.
 
 ### S007 ✅ (09/11/2026) - website, nhận diện, ba nợ quy ước, hai lỗi báo cáo
 
@@ -436,7 +440,7 @@ vẫn thấy được registry ghi gì, `ParseExact` thì ném.
 
 - Máy dev là **Linux**. `dotnet` **không có trong PATH mặc định**:
   `export PATH="$HOME/.dotnet:$PATH"`.
-- **`global.json` ghim SDK 8.0.424 - đừng xoá.** Runner GitHub có sẵn .NET 10 và
+- **`global.json` ghim SDK (10.0.404 từ NET10) - đừng xoá.** Runner GitHub có sẵn .NET 10 và
   `dotnet build` luôn chọn bản mới nhất nếu không ghim (đã từng làm CI đỏ).
 - **Không có `pip`, `openpyxl`, LibreOffice, Excel, `winget`, Inno Setup.** Mọi
   thứ cần Windows phải kiểm chứng qua CI hoặc nhờ người dùng.

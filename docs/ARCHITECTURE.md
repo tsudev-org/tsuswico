@@ -8,9 +8,9 @@
 
 | Tầng | Thư mục | Nền tảng | Test trên Linux |
 |---|---|---|---|
-| Nghiệp vụ thuần | `src/Tsudev.Audit.Core/` | `net8.0` | ✅ |
-| Adapter hệ thống | `src/Tsudev.Audit.Windows/` | `net8.0-windows` | ❌ |
-| Điểm vào | `src/Tsudev.Audit.Cli/` | `net8.0-windows` | ❌ |
+| Nghiệp vụ thuần | `src/Tsudev.Audit.Core/` | `net10.0` | ✅ |
+| Adapter hệ thống | `src/Tsudev.Audit.Windows/` | `net10.0-windows` | ❌ |
+| Điểm vào | `src/Tsudev.Audit.Cli/` | `net10.0-windows` | ❌ |
 
 Vì sao tách, và chi tiết từng thư mục con: [`README.md`](../README.md) mục *Kiến trúc*.
 
