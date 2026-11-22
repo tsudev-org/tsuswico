@@ -11,6 +11,12 @@ Quy trình: `.standards/docs/DISTRIBUTION_TRUST.md` mục 3. Job `virustotal` c�
 | 22/11/2026 | `tsuswico_26.11.2201_windows-x64-setup.exe` (bản dựng lại, `SolidCompression=no`, **ĐÃ CÔNG BỐ**) | `5439b7cbb3cea3bfe73abcad2f597102ebf48f16d0f6ceb131875f927be346db` | APEX `Malicious`, DeepInstinct `MALICIOUS` (2/74) | Đo đối chứng: bộ cài **26.11.2001** đang công bố = 1/74 (APEX) ⇒ cờ APEX có từ trước, bám lớp bọc Inno chưa ký; `swico.exe` 0/70, zip 0/74. Công bố vì bản trước nhúng runtime .NET 8 hết vá (agent chọn theo uỷ quyền của chủ dự án 22/11/2026); ghi chú minh bạch trong Release notes | 👤 nộp báo nhầm APEX + DeepInstinct (hạn nội bộ 24/11/2026) - hồ sơ dưới |
 | 22/11/2026 | `tsuswico_26.11.2001_windows-x64-setup.exe` (đo đối chứng, tải lên VT lần đầu) | `7a1ec864f8c3fcf28fccb3c183dfd2ca19f7ee49999ad93983028fe14a3cb196` | APEX `Malicious` (1/74) | Bản cũ, đã thay bằng 26.11.2201 | Gộp vào hồ sơ APEX |
 
+## Gửi hãng
+
+Thư soạn sẵn gộp cả hệ (mỗi hãng một thư): `~/projects/logs/handover/20261122-AV1_bao-nham-antivirus-toan-he.md` mục 3 -
+DeepInstinct qua email `vt-fps-requests@deepinstinct.com`; APEX = SecureAge, biểu mẫu https://www.secureage.com/contact-us
+("Submit false positive"). Nguồn kênh: https://docs.virustotal.com/docs/false-positive-contacts.
+
 ## Hồ sơ báo nhầm (DISTRIBUTION_TRUST mục 3.1) - 👤 nộp ở cổng false positive của APEX và DeepInstinct
 
 - **Sản phẩm:** Tsu Swico 26.11.2201 (`tsuswico_26.11.2201_windows-x64-setup.exe`), kèm 26.11.2001 cho APEX.
