@@ -19,17 +19,6 @@
       "tsudev.audit.core": {
         "type": "Project"
       }
-    },
-    "net10.0-windows7.0/win-x64": {
-      "System.Management": {
-        "type": "Direct",
-        "requested": "[10.0.15, )",
-        "resolved": "10.0.15",
-        "contentHash": "U21LynVbH2ayLFLTqlLnd3hx52Fe/acpCXO4BAUIqfWs8CwFWT0zxlg8WR2+LZ7zcLgi/d08eq7rp4iLMMt+4w==",
-        "dependencies": {
-          "System.CodeDom": "10.0.15"
-        }
-      }
     }
   }
 }
