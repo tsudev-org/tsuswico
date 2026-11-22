@@ -284,6 +284,22 @@ tiếp theo là `26.8.1902` - `docs/VERSIONING.md` mục 6.
 
 ---
 
+### NET10 ⬜ Chuyển .NET 8 → .NET 10 LTS (phát hiện 22/11/2026, phiên tsuswico-d1)
+
+**.NET 8 hết hỗ trợ ngày 10/11/2026.** Bản phát hành là self-contained (`Tsudev.Audit.Cli.csproj`:
+`SelfContained` + `PublishSingleFile`) ⇒ `swico.exe` nhúng runtime .NET 8 không còn bản vá bảo mật.
+Dấu hiệu đầu tiên: Dependabot #31 đề xuất System.Management 11.0.0, gói báo "doesn't support net8.0-windows"
+⇒ đã từ chối (#69) và `dependabot.yml` bỏ qua System.Management/System.CodeDom `>= 11` - gỡ luật đó khi xong việc này.
+
+Kế hoạch (một PR, làm được không cần người dùng; phát hành sau đó thì cần chủ dự án quyết):
+1. `global.json` → SDK 10.0.x mới nhất, giữ `rollForward: disable` (mục 4.2 - không xoá ghim).
+2. `TargetFramework` net8.0 → net10.0 (`net10.0-windows` cho Windows/Cli), `actions/setup-dotnet` trong
+   ci.yml/release.yml đọc theo `global.json`.
+3. `dotnet restore --force-evaluate` cập nhật mọi `packages.lock.json`; System.Management/CodeDom lên 10.x hoặc 11.x.
+4. Đọc cảnh báo phân tích mã mới (CA/IL trim, single-file) - 0 cảnh báo như hiện nay; `dotnet test` đủ PASS.
+5. CI Smoke test Windows + biên dịch thử Inno phải xanh; kiểm kích thước exe so với bản trước.
+6. Ghi CHANGELOG; bản phát hành kế tiếp (đầu tháng 12 ⇒ kiêm QU-2 ngày một chữ số) mang runtime 10.
+
 ### S007 ✅ (09/11/2026) - website, nhận diện, ba nợ quy ước, hai lỗi báo cáo
 
 - **Website `swico.tsudev.com`** (`website/`, README ở đó): tài liệu lấy từ tệp repo lúc
