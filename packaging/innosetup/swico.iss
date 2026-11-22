@@ -88,7 +88,10 @@ WizardSmallImageFile={#Brand}wizard-small-58x58.bmp,{#Brand}wizard-small-77x77.b
 ; lzma2/max cham khi DONG GOI nhung giai nen nhanh nhu cac muc khac, ma nguoi
 ; dung chi cam nhan toc do giai nen.
 Compression=lzma2/max
-SolidCompression=yes
+; KHONG nen solid: v26.11.2201 dung solid bi 2/74 engine hoc may (APEX, DeepInstinct) gan co nham tren VirusTotal trong
+; khi swico.exe ben trong 0/70 va ban zip 0/74. tsucontact do 22/11/2026: lzma2/max khong solid = 0/74 (ISS-20261121-2340-3857
+; trong AKB). Payload gan nhu chi mot tep exe nen solid hau nhu khong giam dung luong. docs/store/antivirus.md.
+SolidCompression=no
 WizardStyle=modern
 UninstallDisplayName={#AppName}
 UninstallDisplayIcon={app}\{#AppExeName}
