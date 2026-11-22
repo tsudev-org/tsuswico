@@ -47,7 +47,7 @@ Bỏ qua A1, A2. Làm được toàn bộ phần còn lại.
 
 ### Cách 2 - chuyển cả kho mã kèm lịch sử git
 
-Nếu muốn làm cả A1/A2, hoặc muốn sửa mã trên Windows. Cần **.NET 8 SDK**.
+Nếu muốn làm cả A1/A2, hoặc muốn sửa mã trên Windows. Cần **.NET 10 SDK**.
 
 Trên máy dev đã tạo sẵn `dist/swico-repo.bundle` (116 KB) - một file duy nhất
 chứa **nguyên vẹn cả 7 commit và toàn bộ lịch sử**. Copy sang Windows rồi:

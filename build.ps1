@@ -1,7 +1,7 @@
 <#
     build.ps1 - Build, test va dong goi Tsu Swico
 
-    Chay tren Windows co .NET 8 SDK. Cung chay duoc tren Linux/macOS bang
+    Chay tren Windows co .NET 10 SDK. Cung chay duoc tren Linux/macOS bang
     pwsh - ke ca buoc publish win-x64 (cross-compile duoc), chi khong chay
     thu duoc file exe.
 

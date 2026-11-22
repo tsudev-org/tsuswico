@@ -303,7 +303,7 @@ Toàn bộ mã chạm tới mạng nằm trong hai file để bạn tự kiểm 
 
 ```
 src/
-  Tsudev.Audit.Core/        net8.0          ← KHÔNG phụ thuộc Windows
+  Tsudev.Audit.Core/        net10.0         ← KHÔNG phụ thuộc Windows
     Models/                                    JSON schema v3.0 (hợp đồng dùng chung)
     Abstractions/                              Các "cổng" (port): IWmiQuery, IRegistryReader...
     Collectors/                                TOÀN BỘ logic nghiệp vụ
@@ -313,13 +313,13 @@ src/
     Reports/                                   Lắp ráp collector thành báo cáo
     Rendering/                                 HTML + XLSX + Dashboard
     Testing/                                   Adapter giả lập cho unit test
-  Tsudev.Audit.Windows/     net8.0-windows  ← Adapter mỏng: WMI, Registry, Process
-  Tsudev.Audit.Cli/         net8.0-windows  ← 1 file exe
+  Tsudev.Audit.Windows/     net10.0-windows ← Adapter mỏng: WMI, Registry, Process
+  Tsudev.Audit.Cli/         net10.0-windows ← 1 file exe
 assets/
   brand/                    Logo sản phẩm: MỘT ảnh gốc → icon exe/bộ cài, ảnh trình thuật sĩ, ảnh nhúng báo cáo
                             HTML (favicon + logo sản phẩm + logo nhà làm tsudev) - xem brand/README.md
 tests/
-  unittests/                net8.0          ← xUnit, 179 ca kiểm tra, chạy được trên mọi nền tảng
+  unittests/                net10.0         ← xUnit, 179 ca kiểm tra, chạy được trên mọi nền tảng
 ```
 
 ### Vì sao tách `Core` khỏi Windows?
@@ -337,7 +337,7 @@ tests/
 
 ## Build từ mã nguồn
 
-Yêu cầu: **.NET 8 SDK**. Build được trên cả Windows lẫn Linux/macOS - kể cả
+Yêu cầu: **.NET 10 SDK** (LTS, ghim trong `global.json`). Build được trên cả Windows lẫn Linux/macOS - kể cả
 bước publish `win-x64` (cross-compile được), chỉ không chạy thử được file exe.
 
 ```powershell

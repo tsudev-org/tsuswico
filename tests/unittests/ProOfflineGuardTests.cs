@@ -56,7 +56,7 @@ public class ProOfflineGuardTests
     }
 
     /// <summary>
-    /// Lop Cli (net8.0-windows) khong chay duoc tren Linux - canh bang van ban nguon: ShowProNotice
+    /// Lop Cli (net10.0-windows) khong chay duoc tren Linux - canh bang van ban nguon: ShowProNotice
     /// thoat TRUOC moi luot goi mang khi chua dang nhap, va chi duoc goi khi khong --silent/--json-only.
     /// </summary>
     [Fact]

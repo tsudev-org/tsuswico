@@ -114,7 +114,7 @@ add `--no-verdict-exit`.
 
 ## Build from source
 
-Requires the .NET 8 SDK (pinned in `global.json`). The scanner runs on Windows; the core library and the 180+ unit
+Requires the .NET 10 SDK (LTS) (pinned in `global.json`). The scanner runs on Windows; the core library and the 180+ unit
 tests also run on Linux.
 
 ```bash

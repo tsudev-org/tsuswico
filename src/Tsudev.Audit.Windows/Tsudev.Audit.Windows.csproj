@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!-- Lop DUY NHAT phu thuoc Windows. Moi logic nghiep vu nam trong Core. -->
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Tsudev.Audit.Core/Tsudev.Audit.Core.csproj" />

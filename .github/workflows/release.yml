@@ -40,8 +40,8 @@ jobs:
 
       # Doc phien ban TU global.json, khong ghi cung o day.
       # Runner cua GitHub co san .NET 10 SDK, ma `dotnet build` luon chon SDK
-      # MOI NHAT tren may - khong ghim thi CI build bang .NET 10 con may dev
-      # build bang .NET 8, ra hai ket qua phan tich khac nhau.
+      # MOI NHAT tren may - khong ghim thi CI build bang SDK moi hon con may dev
+      # build bang SDK da ghim, ra hai ket qua phan tich khac nhau.
       - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           global-json-file: global.json
