@@ -157,6 +157,13 @@ hoạt bản quyền), bot hiểu mã khác 0 là "ứng dụng chạy lỗi". K
 - **KHÔNG** thêm `--no-verdict-exit` hay đổi hành vi mặc định chỉ để qua bot: mã thoát là hợp đồng với RMM (README mục
   Mã thoát).
 
+## PR đang mở
+
+| Phiên bản | PR | Ghi chú |
+| --- | --- | --- |
+| 26.11.2001 | microsoft/winget-pkgs#484563 | chờ moderator (nhãn báo động nhầm mã thoát) |
+| 26.11.2201 | microsoft/winget-pkgs#486462 | nộp 22/11/2026, hash tính lại từ `InstallerUrl` khớp; độc lập với #484563 |
+
 ## Sau khi pull request được hợp nhất
 
 Bot của winget chạy kiểm thử tự động, thường mất vài giờ tới vài ngày. Khi xong:
