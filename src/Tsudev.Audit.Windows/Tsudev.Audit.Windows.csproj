@@ -8,6 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <!-- WMI: goi NuGet chinh thuc cua Microsoft. Can internet khi restore. -->
-    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="System.Management" Version="10.0.15" />
   </ItemGroup>
 </Project>
