@@ -289,7 +289,7 @@ tiếp theo là `26.8.1902` - `docs/VERSIONING.md` mục 6.
 **.NET 8 hết hỗ trợ ngày 10/11/2026.** Bản phát hành là self-contained (`Tsudev.Audit.Cli.csproj`:
 `SelfContained` + `PublishSingleFile`) ⇒ `swico.exe` nhúng runtime .NET 8 không còn bản vá bảo mật.
 Dấu hiệu đầu tiên: Dependabot #31 đề xuất System.Management 11.0.0, gói báo "doesn't support net8.0-windows"
-⇒ đã từ chối (#69) và `dependabot.yml` bỏ qua System.Management/System.CodeDom `>= 11` - gỡ luật đó khi xong việc này.
+⇒ đã từ chối (#69; nhận 10.0.15 ở #72) và `dependabot.yml` bỏ qua System.Management/System.CodeDom `>= 11` - gỡ luật đó khi xong việc này.
 
 Kế hoạch (một PR, làm được không cần người dùng; phát hành sau đó thì cần chủ dự án quyết):
 1. `global.json` → SDK 10.0.x mới nhất, giữ `rollForward: disable` (mục 4.2 - không xoá ghim).

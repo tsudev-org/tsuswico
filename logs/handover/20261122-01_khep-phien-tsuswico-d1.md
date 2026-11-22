@@ -15,6 +15,7 @@
 | Dependabot #30 | Gộp `6ed7461`: astro 7.4.12, marked 18.2.1, playwright 1.65.1, wrangler 4.164.0. Không deploy (không đổi nội dung) |
 | Dependabot #31 | Đóng. Đỏ vì bỏ sót `src/Tsudev.Audit.Cli/packages.lock.json` (NU1004) và System.Management 11.0.0 báo "doesn't support net8.0-windows" |
 | #69 `29416f8` | Thay #31: Test.Sdk 18.12.0, xunit 2.9.3, runner 4.0.1; giữ System.Management 8.0.0; `dependabot.yml` bỏ qua System.Management/CodeDom `>= 11`. Build 0 cảnh báo, 357 PASS, CI đủ xanh |
+| Dependabot đợt 2 | Sau khi đổi `dependabot.yml`: gộp #70 (astro 7.4.13, wrangler 4.165.0), #71 (scorecard-action 2.6.0); #72 System.Management 8.0.0 → **10.0.15** (còn hỗ trợ net8) đỏ cùng lỗi NU1004 ⇒ đẩy thêm commit lock file Cli lên nhánh Dependabot, 0 cảnh báo, 357 PASS, gộp |
 | Phát hiện | .NET 8 hết hỗ trợ 10/11/2026; exe self-contained ⇒ việc mới **NET10** (`docs/STATE.md` mục NET10, kế hoạch 6 bước) |
 
 ## 2. Cạm bẫy / phát hiện
