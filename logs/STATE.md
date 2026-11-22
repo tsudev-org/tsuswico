@@ -1,6 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp:** đọc `logs/handover/20261122-02_khep-phien-tsuswico-07.md` mục 2-3 (WINGET-2 chờ moderator; NET10 ✅ - bản phát hành kế tiếp chỉ khi chủ dự án yêu cầu).
+> **Phiên kế tiếp:** đọc `logs/handover/20261122-03_khep-phien-tsuswico-ad.md` mục 2-3 (WINGET-2 chờ moderator; System.Management 11.0.0 đã gộp #76 - bản phát hành kế tiếp chỉ khi chủ dự án yêu cầu).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
@@ -17,8 +17,8 @@
 > **`docs/STATE.md` thắng**. File này chỉ trỏ tới đó, không chép lại nội dung
 > (`AGENTS.md` mục 1: mỗi tri thức ghi một lần duy nhất).
 
-- **Phiên gần nhất:** tsuswico-07 - 22/11/2026
-- **Bàn giao gần nhất:** `logs/handover/20261122-02_khep-phien-tsuswico-07.md`
+- **Phiên gần nhất:** tsuswico-ad - 22/11/2026
+- **Bàn giao gần nhất:** `logs/handover/20261122-03_khep-phien-tsuswico-ad.md`
 
 ## Hàng đợi task (làm từ trên xuống)
 
@@ -37,10 +37,10 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - [x] **XM-2.3** ✅ 17/11/2026 (phiên tsudev-27): hồ sơ [16837](https://www.bestpractices.dev/projects/16837) passing 100% (`docs/best-practices.json`; `dynamic_analysis` Unmet trung thực). Kèm #27 (ghim SHA 16 action, quyền token, Dependabot, SECURITY.md, CONTRIBUTING.md, mẫu issue), bật CodeQL default setup, #28 sửa 2 cảnh báo CodeQL high ở website.
 - [x] **TEN-1** ✅ Thư mục cục bộ đã đổi `~/projects/tsudev-swico` → `~/projects/tsuswico` (16/11/2026, phiên S008, chủ dự án cho phép làm trong phiên).
 - [x] **TEN-2 / V1** ✅ 20/11/2026: `v26.11.2001` phát hành theo khuôn mới (#40, ADR-0003), Scoop `tsuswico` + `tsudev-swico` (scoop-bucket#25), attest đạt. Còn: PR winget-pkgs 26.11.2001 (mục WINGET-2 dưới). Dòng cũ: Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
-- [ ] **WINGET-2** 🔶 22/11/2026 (phiên 07: không đổi, nhãn như d1, không bình luận mới). (phiên d1: moderator stephengillie cho `@wingetbot run` 21/11 15:16, nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` quay lại - cùng báo động nhầm mã thoát, đã giải thích từ 20/11; vẫn chờ). 21/11/2026 (phiên a2: nhãn chỉ còn `New-Manifest`, chờ moderator duyệt). 20/11/2026 (phiên 4c + 96 + 43 + 57 + 0e kiểm lại: vẫn MỞ, nhãn như cũ, không có bình luận mới của moderator. Phiên 93: nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` = báo động nhầm mã thoát 20 như #419878, chờ moderator - `docs/WINGET.md`; đã bình luận giải thích 20/11, issuecomment-7030535588): chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
+- [ ] **WINGET-2** 🔶 22/11/2026 (phiên ad: không đổi, không bình luận). (phiên 07: không đổi, nhãn như d1, không bình luận mới). (phiên d1: moderator stephengillie cho `@wingetbot run` 21/11 15:16, nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` quay lại - cùng báo động nhầm mã thoát, đã giải thích từ 20/11; vẫn chờ). 21/11/2026 (phiên a2: nhãn chỉ còn `New-Manifest`, chờ moderator duyệt). 20/11/2026 (phiên 4c + 96 + 43 + 57 + 0e kiểm lại: vẫn MỞ, nhãn như cũ, không có bình luận mới của moderator. Phiên 93: nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` = báo động nhầm mã thoát 20 như #419878, chờ moderator - `docs/WINGET.md`; đã bình luận giải thích 20/11, issuecomment-7030535588): chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
       (bước 01-07 đạt lúc nộp). Chờ bot cài thử + gộp. Kèm #43 sửa thư mục manifest `tsudev/SWICO`.
 - [x] **NET10** ✅ 22/11/2026 (phiên 07, #74 `9143f74`): SDK 10.0.404, net10.0, 0 cảnh báo, 357 PASS, Smoke Windows + Inno xanh, ignore dependabot đã gỡ. Dòng cũ: .NET 8 hết hỗ trợ 10/11/2026, exe self-contained nhúng runtime 8 ⇒ chuyển net10 LTS. Kế hoạch 6 bước: `docs/STATE.md` mục NET10. Làm được không cần người dùng (một PR); phát hành thì cần chủ dự án.
-- [x] **DEP-1** ✅ 22/11/2026 (phiên d1): gộp Dependabot #64 (actions) + #30 (website); #31 đóng, thay bằng #69 (gói test; KHÔNG nhận System.Management 11 - không hỗ trợ net8). Đợt 2: #70, #71, #72 (System.Management 10.0.15 + sửa lock file Cli).
+- [x] **DEP-1** ✅ 22/11/2026 (phiên d1): gộp Dependabot #64 (actions) + #30 (website); #31 đóng, thay bằng #69 (gói test; KHÔNG nhận System.Management 11 - không hỗ trợ net8). Đợt 2: #70, #71, #72 (System.Management 10.0.15 + sửa lock file Cli). Đợt 3 (phiên ad): #76 System.Management/CodeDom 11.0.0 + sinh lại lock file Cli (NU1004 lặp lại).
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
 - [ ] **3.4** ⛔ Cấu hình SignPath sau khi được duyệt - chờ bên ngoài
@@ -85,6 +85,10 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 | (không có) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 22/11/2026 - **tsuswico-ad:** gộp Dependabot #76 (System.Management + CodeDom 11.0.0 trên net10; Dependabot lại bỏ
+  sót lock file Cli ⇒ NU1004, sinh lại bằng `--force-evaluate`); 357 PASS, CI đủ xanh. WINGET-2 vẫn chờ.
+  Bàn giao: `logs/handover/20261122-03_khep-phien-tsuswico-ad.md`.
 
 - 22/11/2026 - **tsuswico-07:** NET10 xong: #74 chuyển .NET 8 → .NET 10 LTS (SDK 10.0.404, lock file sinh lại, gỡ ignore
   dependabot; sửa NU1004 do `publish -r` ghi RID vào lock file Windows); CI đủ xanh; website deploy `b9e7bdfc`.
