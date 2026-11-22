@@ -1,8 +1,8 @@
 # Privacy statement
 
 **Applies to:** `Tsu Swico` (the `swico.exe` CLI). The "TsuDEV account" section applies from the first release that
-ships `swico login` (after `26.11.2001`).
-**Updated:** 20/11/2026 · [Tiếng Việt](PRIVACY.md) (the Vietnamese text is authoritative)
+ships `swico login` (`26.11.2201`).
+**Updated:** 22/11/2026 · [Tiếng Việt](PRIVACY.md) (the Vietnamese text is authoritative)
 
 ## Summary
 

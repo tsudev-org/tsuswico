@@ -6,11 +6,15 @@
 
 ## [Chưa phát hành]
 
+## [26.11.2201] - 22/11/2026
+
+Bản bảo mật: runtime nhúng chuyển sang .NET 10 LTS (.NET 8 đã hết hỗ trợ 10/11/2026), kèm mọi thay đổi từ 26.11.2001.
+
 ### Bảo mật
 
 - **Chuyển sang .NET 10 LTS** (từ .NET 8, hết hỗ trợ 10/11/2026). `swico.exe` là bản self-contained nên mang theo
   runtime: từ bản kế tiếp, runtime nhúng là .NET 10 còn được Microsoft vá bảo mật đến 11/2028. SDK ghim `10.0.404`
-  (`global.json`), System.Management 10.0.15. Không đổi chức năng; `swico.exe` lớn hơn khoảng 7 MB (86,7 MB so với
+  (`global.json`), System.Management + System.CodeDom 11.0.0. Không đổi chức năng; `swico.exe` lớn hơn khoảng 7 MB (86,7 MB so với
   79,7 MB). Dependabot thôi chặn gói runtime bản 11.
 
 ### Thay đổi
