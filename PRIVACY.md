@@ -1,8 +1,8 @@
 # Tuyên bố quyền riêng tư
 
 **Áp dụng cho:** `Tsu Swico` (bản CLI `swico.exe`). Mục "Tài khoản TsuDEV" áp dụng từ bản phát hành đầu tiên có
-lệnh `swico login` (sau `26.11.2001`).
-**Cập nhật:** 20/11/2026 · [English](PRIVACY.en.md)
+lệnh `swico login` (`26.11.2201`).
+**Cập nhật:** 22/11/2026 · [English](PRIVACY.en.md)
 
 ## Tóm tắt
 
