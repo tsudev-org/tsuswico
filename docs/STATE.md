@@ -4,6 +4,7 @@
 > Phiên mới đọc `AGENTS.md` (quy ước bắt buộc) rồi tới **file này** - trước cả README.
 > Thứ tự đọc đầy đủ: `docs/CONTINUITY.md` mục 0.
 
+- **Bản đang phát hành (22/11/2026):** `v26.11.2201` (runtime .NET 10) - Latest; Scoop đã cập nhật; winget #486462.
 - **Cập nhật lần cuối:** 2026-11-20 (phiên tsuswico-68) - chỉ mục 3.5. ⚠️ Khối "Giai đoạn"/"VIỆC
   ĐẦU TIÊN" dưới đây còn từ S006 - trạng thái 11/2026 đọc `logs/STATE.md` + bàn giao mới nhất trong `logs/handover/`.
 - **Phiên gần nhất:** S006 - `docs/journal/S006-2026-08-20.md`

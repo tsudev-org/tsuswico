@@ -1,6 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp:** đọc `logs/handover/20261122-04_khep-phien-tsuswico-6e.md` mục 2-3 (WINGET-2 chờ moderator; System.Management 11.0.0 đã gộp #76 - bản phát hành kế tiếp chỉ khi chủ dự án yêu cầu).
+> **Phiên kế tiếp:** đọc `logs/handover/20261122-05_phat-hanh-26.11.2201.md` mục 2-3 (`v26.11.2201` .NET 10 đã phát hành; winget #484563 + #486462 chờ; 👤 nộp báo nhầm APEX/DeepInstinct).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
@@ -18,7 +18,7 @@
 > (`AGENTS.md` mục 1: mỗi tri thức ghi một lần duy nhất).
 
 - **Phiên gần nhất:** tsuswico-6e - 22/11/2026
-- **Bàn giao gần nhất:** `logs/handover/20261122-04_khep-phien-tsuswico-6e.md`
+- **Bàn giao gần nhất:** `logs/handover/20261122-05_phat-hanh-26.11.2201.md`
 
 ## Hàng đợi task (làm từ trên xuống)
 
@@ -37,10 +37,11 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 - [x] **XM-2.3** ✅ 17/11/2026 (phiên tsudev-27): hồ sơ [16837](https://www.bestpractices.dev/projects/16837) passing 100% (`docs/best-practices.json`; `dynamic_analysis` Unmet trung thực). Kèm #27 (ghim SHA 16 action, quyền token, Dependabot, SECURITY.md, CONTRIBUTING.md, mẫu issue), bật CodeQL default setup, #28 sửa 2 cảnh báo CodeQL high ở website.
 - [x] **TEN-1** ✅ Thư mục cục bộ đã đổi `~/projects/tsudev-swico` → `~/projects/tsuswico` (16/11/2026, phiên S008, chủ dự án cho phép làm trong phiên).
 - [x] **TEN-2 / V1** ✅ 20/11/2026: `v26.11.2001` phát hành theo khuôn mới (#40, ADR-0003), Scoop `tsuswico` + `tsudev-swico` (scoop-bucket#25), attest đạt. Còn: PR winget-pkgs 26.11.2001 (mục WINGET-2 dưới). Dòng cũ: Bản phát hành đầu tiên tên `tsuswico_*`: cập nhật `autoupdate` của gói Scoop `tsuswico` + `tsudev-swico` (tên tệp mới, tag 3 thành phần) cùng lúc; kiểm bước cosign/attest chạy thật.
-- [ ] **WINGET-2** 🔶 22/11/2026 (phiên 6e: không đổi, không bình luận). (phiên ad: không đổi, không bình luận). (phiên 07: không đổi, nhãn như d1, không bình luận mới). (phiên d1: moderator stephengillie cho `@wingetbot run` 21/11 15:16, nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` quay lại - cùng báo động nhầm mã thoát, đã giải thích từ 20/11; vẫn chờ). 21/11/2026 (phiên a2: nhãn chỉ còn `New-Manifest`, chờ moderator duyệt). 20/11/2026 (phiên 4c + 96 + 43 + 57 + 0e kiểm lại: vẫn MỞ, nhãn như cũ, không có bình luận mới của moderator. Phiên 93: nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` = báo động nhầm mã thoát 20 như #419878, chờ moderator - `docs/WINGET.md`; đã bình luận giải thích 20/11, issuecomment-7030535588): chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
+- [ ] **WINGET-2** 🔶 22/11/2026 (phiên 6e: #484563 không đổi; nộp thêm [#486462](https://github.com/microsoft/winget-pkgs/pull/486462) cho 26.11.2201, độc lập - gộp CẢ HAI hoặc #486462 ⇒ ✅). (phiên ad: không đổi, không bình luận). (phiên 07: không đổi, nhãn như d1, không bình luận mới). (phiên d1: moderator stephengillie cho `@wingetbot run` 21/11 15:16, nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` quay lại - cùng báo động nhầm mã thoát, đã giải thích từ 20/11; vẫn chờ). 21/11/2026 (phiên a2: nhãn chỉ còn `New-Manifest`, chờ moderator duyệt). 20/11/2026 (phiên 4c + 96 + 43 + 57 + 0e kiểm lại: vẫn MỞ, nhãn như cũ, không có bình luận mới của moderator. Phiên 93: nhãn `Validation-Executable-Error` + `Azure-Pipeline-Passed` = báo động nhầm mã thoát 20 như #419878, chờ moderator - `docs/WINGET.md`; đã bình luận giải thích 20/11, issuecomment-7030535588): chủ dự án đồng ý, đã nộp [microsoft/winget-pkgs#484563](https://github.com/microsoft/winget-pkgs/pull/484563)
       (bước 01-07 đạt lúc nộp). Chờ bot cài thử + gộp. Kèm #43 sửa thư mục manifest `tsudev/SWICO`.
-- [x] **NET10** ✅ 22/11/2026 (phiên 07, #74 `9143f74`): SDK 10.0.404, net10.0, 0 cảnh báo, 357 PASS, Smoke Windows + Inno xanh, ignore dependabot đã gỡ. Dòng cũ: .NET 8 hết hỗ trợ 10/11/2026, exe self-contained nhúng runtime 8 ⇒ chuyển net10 LTS. Kế hoạch 6 bước: `docs/STATE.md` mục NET10. Làm được không cần người dùng (một PR); phát hành thì cần chủ dự án.
+- [x] **NET10** ✅ 22/11/2026 (phiên 07, #74 `9143f74`; PHÁT HÀNH `v26.11.2201` phiên 6e): SDK 10.0.404, net10.0, 0 cảnh báo, 357 PASS, Smoke Windows + Inno xanh, ignore dependabot đã gỡ. Dòng cũ: .NET 8 hết hỗ trợ 10/11/2026, exe self-contained nhúng runtime 8 ⇒ chuyển net10 LTS. Kế hoạch 6 bước: `docs/STATE.md` mục NET10. Làm được không cần người dùng (một PR); phát hành thì cần chủ dự án.
 - [x] **DEP-1** ✅ 22/11/2026 (phiên d1): gộp Dependabot #64 (actions) + #30 (website); #31 đóng, thay bằng #69 (gói test; KHÔNG nhận System.Management 11 - không hỗ trợ net8). Đợt 2: #70, #71, #72 (System.Management 10.0.15 + sửa lock file Cli). Đợt 3 (phiên ad): #76 System.Management/CodeDom 11.0.0 + sinh lại lock file Cli (NU1004 lặp lại).
+- [ ] **AV-1** 👤 22/11/2026: bộ cài 26.11.2201 bị APEX + DeepInstinct (học máy) gắn cờ 2/74 (26.11.2001 cũng 1/74 APEX). Hồ sơ soạn sẵn `docs/store/antivirus.md` - chủ dự án nộp cổng báo nhầm của 2 hãng (hạn nội bộ 24/11/2026), ghi mã hồ sơ vào sổ. Gốc rễ: ký số (3.4).
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
 - [ ] **3.4** ⛔ Cấu hình SignPath sau khi được duyệt - chờ bên ngoài
@@ -85,6 +86,11 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
 | (không có) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 22/11/2026 - **tsuswico-6e (tiếp, chủ dự án uỷ quyền):** phát hành **`v26.11.2201`** (runtime .NET 10): #79 chuẩn bị,
+  #80 sửa test CRLF chỉ đỏ trên Windows + unit test chạy ở job Windows, #81 Inno không solid + `docs/store/antivirus.md`;
+  VT bộ cài 2/74 (đối chứng 26.11.2001 1/74) ⇒ công bố kèm ghi chú; scoop-bucket#28; website `df6d8416`; winget #486462.
+  Bàn giao: `logs/handover/20261122-05_phat-hanh-26.11.2201.md`.
 
 - 22/11/2026 - **tsuswico-6e:** chỉ kiểm: WINGET-2 #484563 không đổi (chờ moderator); không có PR Dependabot mở;
   main `868fb5a` xanh. Bàn giao: `logs/handover/20261122-04_khep-phien-tsuswico-6e.md`.
