@@ -1,6 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp:** đọc `logs/handover/20261122-05_phat-hanh-26.11.2201.md` mục 2-3 (`v26.11.2201` .NET 10 đã phát hành; winget #484563 + #486462 chờ; 👤 nộp báo nhầm APEX/DeepInstinct).
+> **Phiên kế tiếp:** đọc `logs/handover/20261123-01_av1-resend-chan.md` mục 2-3 (`v26.11.2201` đã phát hành; winget #484563 + #486462 chờ; AV1: thư DeepInstinct soạn xong nhưng CHƯA gửi - Resend chặn, phiếu EM1 ở repo tsudev).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
@@ -18,7 +18,7 @@
 > (`AGENTS.md` mục 1: mỗi tri thức ghi một lần duy nhất).
 
 - **Phiên gần nhất:** tsuswico-6e - 22/11/2026
-- **Bàn giao gần nhất:** `logs/handover/20261122-05_phat-hanh-26.11.2201.md`
+- **Bàn giao gần nhất:** `logs/handover/20261123-01_av1-resend-chan.md`
 
 ## Hàng đợi task (làm từ trên xuống)
 
@@ -41,7 +41,7 @@ Nguồn: `docs/STATE.md` mục 3. Ở đây chỉ ghi mã việc + trạng thái
       (bước 01-07 đạt lúc nộp). Chờ bot cài thử + gộp. Kèm #43 sửa thư mục manifest `tsudev/SWICO`.
 - [x] **NET10** ✅ 22/11/2026 (phiên 07, #74 `9143f74`; PHÁT HÀNH `v26.11.2201` phiên 6e): SDK 10.0.404, net10.0, 0 cảnh báo, 357 PASS, Smoke Windows + Inno xanh, ignore dependabot đã gỡ. Dòng cũ: .NET 8 hết hỗ trợ 10/11/2026, exe self-contained nhúng runtime 8 ⇒ chuyển net10 LTS. Kế hoạch 6 bước: `docs/STATE.md` mục NET10. Làm được không cần người dùng (một PR); phát hành thì cần chủ dự án.
 - [x] **DEP-1** ✅ 22/11/2026 (phiên d1): gộp Dependabot #64 (actions) + #30 (website); #31 đóng, thay bằng #69 (gói test; KHÔNG nhận System.Management 11 - không hỗ trợ net8). Đợt 2: #70, #71, #72 (System.Management 10.0.15 + sửa lock file Cli). Đợt 3 (phiên ad): #76 System.Management/CodeDom 11.0.0 + sinh lại lock file Cli (NU1004 lặp lại).
-- [ ] **AV-1** 👤 22/11/2026: bộ cài 26.11.2201 bị APEX + DeepInstinct (học máy) gắn cờ 2/74 (26.11.2001 cũng 1/74 APEX). Hồ sơ soạn sẵn `docs/store/antivirus.md`; thư gộp cả hệ ở phiếu điều phối `~/projects/logs/handover/20261122-AV1_*` (9 tệp / 5 dự án / 9 hãng, phiếu AV1 đã đặt ở 28 repo) - chủ dự án gửi (hạn nội bộ 24/11/2026), ghi mã hồ sơ vào sổ. Gốc rễ: ký số (3.4).
+- [ ] **AV-1** 👤 22/11/2026: bộ cài 26.11.2201 bị APEX + DeepInstinct (học máy) gắn cờ 2/74 (26.11.2001 cũng 1/74 APEX). Hồ sơ soạn sẵn `docs/store/antivirus.md`; thư gộp cả hệ ở phiếu điều phối `~/projects/logs/handover/20261122-AV1_*` (9 tệp / 5 dự án / 9 hãng, phiếu AV1 đã đặt ở 28 repo) . 23/11: chủ dự án chọn gửi qua Resend từ `security@tsudev.com` ⇒ 403 (tsudev.com bị team Resend khác nhận; phiếu `tsudev/logs/handover/20261123-EM1_*` mục 2b) - CHƯA gửi thư nào; SecureAge/WDSI/Malwarebytes 👤 tự nộp (hạn nội bộ 24/11/2026), ghi mã hồ sơ vào sổ. Gốc rễ: ký số (3.4).
 - [ ] **3.2** ⛔ Kiểm chứng chức năng tự cập nhật trên Windows thật - cần người dùng
 - [ ] **3.3** ⛔ Kiểm bằng mắt phần hiển thị tiến trình (mục H) - cần người dùng
 - [ ] **3.4** ⛔ Cấu hình SignPath sau khi được duyệt - chờ bên ngoài
