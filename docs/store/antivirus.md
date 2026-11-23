@@ -26,6 +26,14 @@ DeepInstinct qua email `vt-fps-requests@deepinstinct.com`; APEX = SecureAge, bi�
 - **Mô tả (gửi hãng, tiếng Anh):** *Tsu Swico is an open-source (Apache-2.0) Windows CLI that audits Windows/Office licensing and collects hardware inventory into a local HTML/XLSX report. It runs locally; its only network calls are an update check against the GitHub Releases API (can be disabled with `--no-update-check`) and, only after the user runs `swico login`, the TsuDEV account service. The installer is a standard Inno Setup 6 package built reproducibly on GitHub Actions with SLSA provenance; the contained `swico.exe` scans clean (0/70). Not yet Authenticode-signed (SignPath Foundation application pending).*
 - **Chính sách:** `PRIVACY.en.md`, `SECURITY.md` trong repo.
 
+## Đã gửi
+
+| Ngày | Hãng | Kênh | Tệp | Mã |
+| --- | --- | --- | --- | --- |
+| 23/11/2026 | DeepInstinct | email `vt-fps-requests@deepinstinct.com` từ `security@tsudev.com` (Resend) | setup 26.11.2201 (+ 2 tệp Lotus Share) | Resend `01a20843-b49e-7dee-9217-045bfca4857e` |
+
+APEX (SecureAge, biểu mẫu): 👤 chủ dự án tự nộp.
+
 ## Phòng từ khi dựng
 
 - Bộ cài Inno: `lzma2/max`, **không** solid.

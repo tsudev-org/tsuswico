@@ -1,6 +1,6 @@
 # STATE.md - Trạng thái project (agent đọc đầu phiên, cập nhật cuối phiên)
 
-> **Phiên kế tiếp:** đọc `logs/handover/20261123-01_av1-resend-chan.md` mục 2-3 (`v26.11.2201` đã phát hành; winget #484563 + #486462 chờ; AV1: thư DeepInstinct soạn xong nhưng CHƯA gửi - Resend chặn, phiếu EM1 ở repo tsudev).
+> **Phiên kế tiếp:** đọc `logs/handover/20261123-01_av1-resend-chan.md` mục 2-3 (`v26.11.2201` đã phát hành; winget #484563 + #486462 chờ; AV1: thư DeepInstinct ĐÃ GỬI 23/11 (Resend team B); APEX 👤 tự nộp; đo lại VT sau 3-7 ngày).
 
 > ## ⚠️ QUAN HỆ VỚI `docs/STATE.md` - đọc trước khi ghi vào file này
 >
