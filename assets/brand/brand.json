@@ -4,6 +4,13 @@
   "name": "Tsu Swico",
   "source": "source/logo-swico.png",
   "mode": "tile",
+  "vector": {
+    "_ghi_chu": "Logo vector xoá nền 24/11/2026 (phiếu 20261124-LG2): sinh bởi tsudev packages/brand/build-vector-marks.js từ source/logo-swico.png (SHA-256 cb2f58a2...7bb8). SHA-256: mark.svg 966c2e43..., mark-light.svg 11648024..., mark-adaptive.svg 4c8d74b0.... Đổi logo: thay PNG gốc ⇒ chạy lại dây chuyền tsudev ⇒ chép 3 tệp về đây.",
+    "dark": "source/mark.svg",
+    "light": "source/mark-light.svg",
+    "adaptive": "source/mark-adaptive.svg",
+    "tileScale": 0.84
+  },
   "tileRadius": 0.22,
   "solidBg": "#2C3942",
   "ogGlow": "#24323b",

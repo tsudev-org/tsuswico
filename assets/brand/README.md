@@ -6,7 +6,8 @@ Chuẩn: `.standards/docs/BRAND_ASSETS.md` mục 12, 14, 15. **Không sửa tay,
 
 | Tệp | Cỡ | SHA-256 |
 | --- | --- | --- |
-| `source/logo-swico.png` | 554x543, logo vẽ sẵn trên ô nền `#2C3942` | `cb2f58a2f7344a6c065d5b959a9a1d9c300622403a36fb5f2dfe355fb5ee7bb8` |
+| `source/logo-swico.png` | 554x543, logo vẽ sẵn trên ô nền `#2C3942` (gốc của gốc) | `cb2f58a2f7344a6c065d5b959a9a1d9c300622403a36fb5f2dfe355fb5ee7bb8` |
+| `source/mark.svg`, `mark-light.svg`, `mark-adaptive.svg` | Logo VECTOR xoá nền (24/11/2026, phiếu `20261124-LG2`) sinh bởi tsudev `packages/brand/build-vector-marks.js` từ PNG trên: bản nền Tối, bản nền Sáng (nét trắng đổi màu `#2C3942`), bản tự đổi theo hệ thống | xem `brand.json` `vector._ghi_chu` |
 
 Chủ dự án duyệt logo riêng ngày 13/11/2026 (phiếu `logs/handover/20261113-01_yeu-cau-logo-rieng-swico.md`).
 Nhận ảnh logo rời từ bất kỳ đâu: đối chiếu SHA-256 với bảng trên trước khi dùng (mục 13).
@@ -21,7 +22,9 @@ node website/scripts/brand-assets.mjs           # ghi tệp
 node website/scripts/brand-assets.mjs --check   # CI (job website): lệch ảnh gốc ⇒ đỏ
 ```
 
-Cấu hình: `brand.json` (`mode: tile`, `installer` = dãy cỡ ảnh trình thuật sĩ).
+Cấu hình: `brand.json` (`vector` = ba SVG ở trên, `tileScale` = cỡ logo trong ô nền đặc; `installer` = dãy cỡ ảnh
+trình thuật sĩ). Website dùng SVG trong suốt (`logo-swico.svg` / `-light.svg` đổi theo `data-theme`, `favicon.svg`
+tự đổi theo hệ thống); favicon.ico/PNG dự phòng, icon ứng dụng, apple-touch, maskable là ô nền đặc dựng TỪ SVG.
 
 ## Đầu ra và nơi dùng
 
@@ -49,7 +52,7 @@ làm") - bản đã sinh của dây chuyền repo `tsudev` (`packages/brand/`), 
 | --- | --- |
 | Icon ứng dụng theo nền tảng | `.ico` - chỉ phát hành Windows, không cần `.icns`/PNG Linux |
 | Dấu hiệu thu gọn trong giao diện | Ứng dụng dòng lệnh; báo cáo HTML mang logo sản phẩm (đầu trang) + logo nhà làm (chân trang), favicon sản phẩm |
-| Bản cho nền tối | Logo là ô nền đặc, đọc được trên cả nền Sáng và Tối |
+| Bản cho nền tối | Hai SVG trong suốt (Tối/Sáng), mỗi màu ≥ 3:1 với nền; ô nền đặc chỉ ở icon ứng dụng |
 | Icon khay hệ thống | Không có khay - không áp dụng |
 | Ảnh mở đầu bản cài | `app/wizard-*.bmp` |
 | Ảnh đại diện repo GitHub | Ảnh đại diện tổ chức `tsudev-org` |
