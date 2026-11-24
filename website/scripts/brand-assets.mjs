@@ -78,6 +78,40 @@ async function tile(buf) {
   return { rounded: await sharp(sq).composite([{ input: mask, blend: 'dest-in' }]).png().toBuffer(), square: sq };
 }
 
+/**
+ * Logo VECTOR xoá nền (BRAND_ASSETS 15.4, 24/11/2026): `vector.dark` (nền Tối), `vector.light` (nền Sáng),
+ * `vector.adaptive` (theo prefers-color-scheme) sinh bởi tsudev `packages/brand/build-vector-marks.js` từ ảnh gốc
+ * PNG ở trên. Ô nền đặc (favicon.ico dự phòng, icon ứng dụng, apple-touch, maskable) dựng từ SVG nên sắc ở mọi cỡ;
+ * `mark` là logo trong suốt cho og-image.
+ */
+async function vectorTile(v) {
+  const big = 1024;
+  const read = (f) => fs.readFileSync(path.join(ROOT, 'assets/brand', f));
+  const svg = { dark: read(v.dark), light: read(v.light), adaptive: read(v.adaptive) };
+  const vb = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(svg.dark.toString())
+    .slice(1)
+    .map(Number);
+  const render = (side) =>
+    sharp(svg.dark, { density: Math.min(2400, (72 * side * 2) / Math.max(...vb)) })
+      .resize(side, side, { fit: 'contain', background: CLEAR, kernel: 'lanczos3' })
+      .png()
+      .toBuffer();
+  const solid = hex(CFG.solidBg);
+  const inner = Math.round(big * (v.tileScale ?? 0.84));
+  const onTile = async () =>
+    sharp({ create: { width: big, height: big, channels: 4, background: solid } })
+      .composite([{ input: await render(inner), gravity: 'center' }])
+      .png()
+      .toBuffer();
+  const square = await onTile();
+  const r = Math.round(big * (CFG.tileRadius ?? 0.22));
+  const mask = Buffer.from(
+    `<svg width="${big}" height="${big}"><rect width="${big}" height="${big}" rx="${r}" ry="${r}"/></svg>`
+  );
+  const rounded = await sharp(square).composite([{ input: mask, blend: 'dest-in' }]).png().toBuffer();
+  return { rounded, square, mark: await render(big), svg };
+}
+
 /** Xoá nền trắng nối liền mép; giữ mọi mảng trắng nằm TRONG logo. */
 async function noWhite(buf, { inner = 12, outer = 40 } = {}) {
   const { data, info } = await sharp(buf).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
@@ -186,7 +220,8 @@ const esc = (s) => String(s).replace(/[<>&'"]/g, (c) => `&#${c.charCodeAt(0)};`)
 
 async function main() {
   const raw = fs.readFileSync(path.join(ROOT, 'assets/brand', CFG.source));
-  const { rounded, square } = CFG.mode === 'tile' ? await tile(raw) : await noWhite(raw);
+  const V = CFG.vector ? await vectorTile(CFG.vector) : null;
+  const { rounded, square } = V ?? (CFG.mode === 'tile' ? await tile(raw) : await noWhite(raw));
   const SOLID = hex(CFG.solidBg);
   const at = (size, src = rounded) =>
     sharp(src).resize(size, size, { fit: 'contain', background: CLEAR, kernel: 'lanczos3' }).png({ compressionLevel: 9 }).toBuffer();
@@ -207,11 +242,17 @@ async function main() {
     return buildIco(entries);
   };
 
-  // --- Logo cho giao diện website (<picture>).
-  for (const s of [48, 96, 144, 192]) {
-    const base = sharp(await at(s));
-    emit(pub(`brand/logo-${CFG.id}-${s}.avif`), await base.clone().avif({ quality: 70, effort: 9 }).toBuffer());
-    emit(pub(`brand/logo-${CFG.id}-${s}.webp`), await base.clone().webp({ quality: 90, effort: 6 }).toBuffer());
+  // --- Logo cho giao diện website: SVG trong suốt hai bản (đổi theo data-theme) + favicon.svg tự đổi theo hệ thống.
+  if (V) {
+    emit(pub(`brand/logo-${CFG.id}.svg`), V.svg.dark);
+    emit(pub(`brand/logo-${CFG.id}-light.svg`), V.svg.light);
+    emit(pub('favicon.svg'), V.svg.adaptive);
+  } else {
+    for (const s of [48, 96, 144, 192]) {
+      const base = sharp(await at(s));
+      emit(pub(`brand/logo-${CFG.id}-${s}.avif`), await base.clone().avif({ quality: 70, effort: 9 }).toBuffer());
+      emit(pub(`brand/logo-${CFG.id}-${s}.webp`), await base.clone().webp({ quality: 90, effort: 6 }).toBuffer());
+    }
   }
   emit(pub(`brand/logo-${CFG.id}.png`), await png(512));
 
@@ -240,7 +281,7 @@ async function main() {
   emit(
     pub('og-image.png'),
     await sharp(back)
-      .composite([{ input: await at(L), left: 140, top: Math.round((H - L) / 2) }])
+      .composite([{ input: await at(L, V ? V.mark : rounded), left: 140, top: Math.round((H - L) / 2) }])
       .png({ palette: true, quality: 92, effort: 10, compressionLevel: 9 })
       .toBuffer()
   );
