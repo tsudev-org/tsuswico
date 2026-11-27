@@ -109,7 +109,7 @@ jobs:
 
       - name: Ky exe (SignPath)
         if: env.SIGNPATH_CONFIGURED == 'true'
-        uses: signpath/github-action-submit-signing-request@4a84eb4ad763290f059275786f2deed97c2c672b # v3.1
+        uses: signpath/github-action-submit-signing-request@a2c5b60d9c75f073142b653c354b632eedce097b # v3.2
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
           organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
@@ -140,7 +140,7 @@ jobs:
 
       - name: Ky installer (SignPath)
         if: env.SIGNPATH_CONFIGURED == 'true'
-        uses: signpath/github-action-submit-signing-request@4a84eb4ad763290f059275786f2deed97c2c672b # v3.1
+        uses: signpath/github-action-submit-signing-request@a2c5b60d9c75f073142b653c354b632eedce097b # v3.2
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
           organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
@@ -243,7 +243,7 @@ jobs:
       # Ky SHA256SUMS.txt bang Sigstore keyless (danh tinh = workflow nay tren repo tsudev-org/tsuswico, khong co khoa
       # rieng nao de lo) va sinh chung thuc nguon goc build SLSA cho moi tep. Cach kiem: README muc "Xac minh tep tai ve".
       - name: Cai cosign
-        uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+        uses: sigstore/cosign-installer@881c63bd87e38389154debd8331404ce7ca8a3ab # v4.1.4
 
       - name: Ky SHA256SUMS.txt (Sigstore keyless)
         shell: pwsh
